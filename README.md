@@ -15,4 +15,4 @@ npm run build      # typecheck and production build
 
 ## Status
 
-Milestone 1 (lore import) is done. See [docs/PLAN.md](docs/PLAN.md) for the full plan and what comes next.
+Milestones 1 (lore import) and 2 (engine without AI) are done: you can create a character in Port Harlan and live their life through time skips. See [docs/PLAN.md](docs/PLAN.md) for the full plan and what comes next.
