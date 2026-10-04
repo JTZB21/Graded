@@ -1,0 +1,2510 @@
+[
+ {
+  "id": 0,
+  "title": "History Timeline",
+  "kind": "era",
+  "keys": [
+   "history",
+   "timeline",
+   "1947",
+   "Halcyon Event",
+   "origin of powers",
+   "where powers came from"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: History]\n1947: The Halcyon Event. US Army Private August Rennick survives a munitions-depot explosion in New Mexico unharmed and levitates the wreckage off his unit. He is the first documented Graded. No cause has ever been confirmed.\n1950s: Scattered Kindlings worldwide. A Cold War arms race in Graded recruitment begins.\n1958: Aurelian Pharmaceuticals buys Rennick's blood samples from the Army and isolates Ichor, a synthetic catalyst. This stays secret.\n1962: The Enhanced Persons Act makes registration mandatory and creates the Federal Bureau of Enhanced Affairs.\n1971: The Saigon Burn. A US-deployed S-Rank Flares during an operation and kills about 40,000 people. 1974: the Halden Accords restrict the military use of S-Ranks.\n1983: Aurelian licenses the first corporate hero team, the Pinnacle.\n1999: The Chicago Flare. An S-Rank's uncontrolled release levels six city blocks and kills 2,300. Strain science goes mainstream. 2003: Quell, the first power suppressant, is approved.\n2008: Halcyon (Rennick) falls into an unexplained coma.\n2014: Rush, a street drug made from stolen Ichor, appears.\n2019: Hush Band Law: PSI-category Graded of B-Rank and above must wear inhibitor bands in public.\n2023: Flatline publicly kills the A-Rank hero Cascade.\n2026: The present."
+ },
+ {
+  "id": 1,
+  "title": "Omega Rank",
+  "kind": "rules",
+  "keys": [
+   "Omega",
+   "Ω",
+   "Ω-rank",
+   "Omega-rank",
+   "planetary",
+   "Halcyon",
+   "August Rennick",
+   "The Tenant"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Omega Rank (Ω)]\nPlanetary-scale power. Two individuals are confirmed.\nHALCYON (August Rennick, born 1925, age 101): Ω, KIN/COR dual. The first Graded. He aged as if he were 45 until his 2008 coma. He is kept in a UN-administered facility outside Geneva, guarded by a rotating international S-Rank detail. Monitors have recorded rising brain activity since early 2026. Nobody knows what happens if he wakes. Ichor was derived from his blood, and Aurelian would pay anything to keep that fact buried.\nTHE TENANT (identity unknown): Ω SPA. Appeared in 1988. Lives in a self-made pocket dimension and steps into reality a few times a year, anywhere on Earth. Several governments quietly pay \"rent,\" in resources, art, and once a person, to keep it disinterested. In 1996 it relocated a mountain in Kazakhstan by 40 km for no stated reason. It has never been seen to take damage.\nΩ-Rank power is treated as weather or an act of god, not as something to be fought."
+ },
+ {
+  "id": 2,
+  "title": "SS Rank",
+  "kind": "rules",
+  "keys": [
+   "SS-rank",
+   "SS rank",
+   "cataclysmic",
+   "Granite",
+   "Weatherman",
+   "Proxy"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: SS Rank (Cataclysmic)]\nNational or continental scale. 9 confirmed: USA 2, China 2, Russia 1, India 1, Brazil 1, Nigeria 1, stateless 1. Each one is effectively a nuclear deterrent with a pulse, and governments negotiate with them more than they command them.\nGRANITE (USA): COR/MAT dual. A Department of Defense asset since 1994, never shown publicly. Officially a \"contingency.\" Rumored to have sunk a Chinese carrier group in a 2011 incident that both governments deny.\nWEATHERMAN (Leonard Coyle, USA, age 71): KIN, atmospheric control. Once broke a Midwest drought on live TV. Now deep in the Fade and living as a recluse in Montana under permanent Bureau watch. Doctors fear Inversion: an SS-Rank storm with no one steering it.\nPROXY (stateless): PSI, mass compulsion and possession across a city at once. Escaped Russian custody in 2017. The most wanted person on Earth. Can be anyone."
+ },
+ {
+  "id": 3,
+  "title": "Unbounded Rank",
+  "kind": "rules",
+  "keys": [
+   "Unbounded",
+   "X-rank",
+   "X rank",
+   "universal",
+   "universal level",
+   "Project Lantern",
+   "Lantern"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: X Rank (Unbounded)]\nThe theoretical top of the scale: power that operates on a universal level and would break physics outright. The Bureau keeps the X band only \"for completeness.\" None are confirmed.\nRumor: PROJECT LANTERN, a classified joint Bureau and Aurelian file, allegedly documents one Kindling in 2009 in which a child in Ohio briefly \"rewrote local constants\": gravity reversed, light slowed, and the reading equipment logged values that should be impossible. The town of Lantern, Ohio, was evacuated that year after an \"industrial chemical leak.\" The child's fate is unknown. Conspiracy forums, Flatline, and the Ascension Church all treat it as true.\nIf anyone ever proves an X-Rank exists, every government on Earth will want to own them, cage them, or kill them, and possibly all three."
+ },
+ {
+  "id": 4,
+  "title": "S Rank and Strategic Assets",
+  "kind": "rules",
+  "keys": [
+   "S-rank",
+   "S rank",
+   "strategic",
+   "strategic asset",
+   "strategic assets",
+   "Strategics",
+   "Strategic License"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: S Rank (Strategic)]\nCity-devastating power. ~310 worldwide; the US has 41. Black Grade Card with a gold band.\nUnder the Strategic Assets Act of 1991, every US S-Rank must hold a Strategic License, which means one of three things: military service, a Bureau-approved corporate contract (Aurelian holds 6), or \"voluntary residency,\" a guarded and comfortable compound. International travel requires State Department approval, and their movements are tracked by implanted transponder.\nS-Ranks are rich, powerful, and never free. Assassination attempts by Flatline and foreign states are routine. Other Graded fear them; baselines cross the street. An S-Rank's death or Flare is front-page news everywhere.\nAn unregistered S-Rank is a national security emergency. Expect Containment teams, military assets, and every corporation and cartel in the country making offers at the same time."
+ },
+ {
+  "id": 5,
+  "title": "A Rank",
+  "kind": "rules",
+  "keys": [
+   "A-rank",
+   "A rank",
+   "A-ranks",
+   "severe rank"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: A Rank (Severe)]\nMilitary-grade power: enough to wreck a city block or beat a SWAT team. ~24,000 worldwide; about 1,500 in the US. Red Grade Card.\nA-Ranks are the stars of the powered world: corporate heroes, cartel warlords, private military contractors, elite Bureau operatives. A mid-tier corporate A-Rank earns $2-20M a year. Police rarely arrest an A-Rank without Bureau backup, and rarely charge a sponsored one at all.\nSocial reality: A-Ranks attend parties where B-Ranks work as security. An A-Rank dating a C-Rank is tabloid material. Many A-Ranks have never met a baseline as an equal.\nDownside: constant surveillance, contract clauses covering their bodies and private lives, Flatline target lists, and the pressure of knowing a single bad day can kill dozens."
+ },
+ {
+  "id": 6,
+  "title": "B Rank",
+  "kind": "rules",
+  "keys": [
+   "B-rank",
+   "B rank",
+   "B-ranks",
+   "highgrade",
+   "highgrades"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: B Rank (Major)]\nPowerful enough to threaten a squad of armed people or a building. ~95,000 worldwide. Purple Grade Card.\nB-Ranks are the \"upper middle class\" of the Graded: regional hero contracts, corporate security chiefs, Bureau Containment field agents, gang lieutenants, and high-end mercenaries ($150k-2M a year). Being a B-Rank gets you invited to things and gets you noticed by recruiters, criminals, and Flatline alike.\nB is also where the Sump starts: B-Ranks and above go to the Sump for felonies instead of a normal prison.\nSocial reality: B-Ranks look up at A's with envy and down at C's with polite contempt. \"Bottom-B\" is a common insult among Highgrades."
+ },
+ {
+  "id": 7,
+  "title": "C Rank",
+  "kind": "rules",
+  "keys": [
+   "C-rank",
+   "C rank",
+   "C-ranks",
+   "midgrade",
+   "midgrades"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: C Rank (Moderate)]\nClearly superhuman: stronger, faster, or more dangerous than several trained, armed people. ~210,000 worldwide. Blue Grade Card.\nC-Ranks are the street level: local and independent heroes, police Enhanced Response Units, gang enforcers, bodyguards, high-risk industrial work ($50-150k a year). This is the most common rank among both licensed vigilantes and violent criminals.\nMost baselines who've met \"a real super\" met a C-Rank. Highgrades consider them muscle: useful, replaceable, and not invited to dinner.\nA C-Rank with Grade IV or V control is often more effective in a real fight than a careless B or A."
+ },
+ {
+  "id": 8,
+  "title": "D Rank",
+  "kind": "rules",
+  "keys": [
+   "D-rank",
+   "D rank",
+   "D-ranks",
+   "lowgrade",
+   "lowgrades"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: D Rank (Minor)]\nPeak-human ability or a useful niche, roughly what a trained baseline with the right tool can do. Examples: lifting 300 kg, running 40 km/h, a reliable torch-flame, sensing electrical wiring in walls. ~340,000 worldwide. Green Grade Card.\nD-Ranks are the blue-collar Graded: construction, demolition, firefighting, couriers, nightclub security, warehouse work, all under Utility Licenses. Pay is barely above baseline wages, and employers know they can work them harder.\nSocial reality: Highgrades call them \"lowgrades.\" Baselines often resent them as competition for working-class jobs. Many D-Ranks live in the Old Foundry. Gangs recruit them in bulk, and Rush dealers target them hardest, selling the promise of being \"C for a night.\""
+ },
+ {
+  "id": 9,
+  "title": "F and E Ranks (Duds)",
+  "kind": "rules",
+  "keys": [
+   "F-rank",
+   "F rank",
+   "E-rank",
+   "E rank",
+   "dud",
+   "duds",
+   "null rank",
+   "trivial rank"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: F and E Ranks (\"Duds\")]\nF (Null): cosmetic or useless powers. Examples: changing your eye color, hands that stay warm, always knowing which way is north, glowing faintly in the dark, tasting colors. ~500,000 worldwide. Gray Grade Card.\nE (Trivial): party tricks and minor utility. Examples: lighting a cigarette with a finger, moving a coin by telekinesis, holding your breath for 10 minutes, healing paper cuts. ~420,000. Gray Grade Card with a white stripe.\nDuds carry the whole legal burden of being Graded (registration, card checks, Bureau records, insurance surcharges, some employers refusing to hire \"Enhanced\") and get none of the respect. Graded mock them as fake supers; baselines mock them as \"freaks who couldn't even manage that.\"\nDud culture: dark humor, Dud comedy clubs, and the Equal Ground movement. Some Duds join gangs as lookouts or chase Rush or Ichor trials hoping to become \"real.\" Others discover that a \"useless\" power is priceless in the right job: a perfect-north sense for a smuggler, warm hands for a surgeon, glowing skin for a nightclub act."
+ },
+ {
+  "id": 10,
+  "title": "Grades I-V and Training",
+  "kind": "rules",
+  "keys": [
+   "Grade I",
+   "Grade II",
+   "Grade III",
+   "Grade IV",
+   "Grade V",
+   "training",
+   "train",
+   "trains",
+   "trained",
+   "mastery",
+   "control",
+   "practice"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Grades and Training]\nGrade measures control: how much of a Rank's ceiling a person can actually reach, how precisely, and at what Strain cost.\nI Raw: misfires under stress, imprecise, high Strain. Most new Kindlings.\nII Functional: reliable basic use; can hold a Utility job.\nIII Proficient: combat-ready, precise; can improvise. Most licensed heroes.\nIV Expert: efficient (about half the Strain of Grade II), creative, multiple techniques.\nV Master: about 5% of the Graded. Finds applications others don't realize the power has (a fire user who controls oxygen; a speedster who can vibrate through walls). Grade V looks like a jump in Rank without being one.\nProgress takes practice, danger, and time. Formal training (Ashgrove, corporate programs, the Bureau) is safe and slow. Street experience is fast and can get you killed. A good mentor roughly doubles the speed. Grade can also slip from disuse, injury, trauma, or the Fade."
+ },
+ {
+  "id": 11,
+  "title": "Breakthrough and Reassessment",
+  "kind": "rules",
+  "keys": [
+   "breakthrough",
+   "breakthroughs",
+   "rank up",
+   "ranked up",
+   "reassessment",
+   "re-assessment",
+   "reassessed",
+   "re-ranked"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Breakthroughs and Reassessment]\nThe Bureau reassesses every Graded yearly until age 25, then every 3 years, and also after any \"significant incident.\" Results can rise or fall, and the Grade Card is reissued.\nBreakthrough: a permanent rise of one Rank tier. Rare (about 2% of Graded ever have one), almost always before age 30, and triggered by extreme circumstances: near-death, massive Strain survived, grief, an Ichor dose, or a Flare survived. Always at a cost: scarring, a permanent Strain penalty, changed personality, chronic pain, a lost secondary power, or something stranger.\nDownranking happens too, from Burnout damage, the Fade, Inversion, or a botched Quell overdose. A downrank can end careers, contracts, and marriages.\nRank fraud is real. Corporations pay for inflated ranks (\"brand ranks\"), and criminals pay Assessors to under-rank them so they stay out of the Sump."
+ },
+ {
+  "id": 12,
+  "title": "The Kindling",
+  "kind": "rules",
+  "keys": [
+   "kindling",
+   "kindle",
+   "kindled",
+   "kindles",
+   "manifest",
+   "manifested",
+   "manifestation",
+   "awakening",
+   "awakened",
+   "first power",
+   "Kindle marker",
+   "Kindle markers",
+   "latent",
+   "late bloomer"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Kindling]\nThe Kindling is when powers first appear. About 85% happen between ages 12 and 21; it's rare before 12 (\"Early Kindling\") and very rare after 30 (\"Late Bloom\").\nTriggers: puberty, extreme stress, terror, injury, near-death, grief. Many Kindlings are violent: the first fire burns the bedroom, the first telekinetic burst breaks a parent's arm, the first telepathic wave puts a classroom in hospital. Some are quiet (you simply notice). Bureau statistics say 1 in 30 Kindlings injures someone and 1 in 400 kills someone.\nAfter a Kindling, the person must report for Assessment within 72 hours. Hiding a Kindling is a crime for the Graded person and for their parents.\nKindle Marker screening: newborns, then mandatory school blood tests at 12, 15, and 18. The test doesn't detect powers; it detects elevated odds. \"Marker-positive\" kids get watched, by the Bureau, by Aurelian recruiters, and by worse people.\nThe first weeks: misfires, Strain sickness, nightmares, and a body that suddenly needs 4,000+ calories a day."
+ },
+ {
+  "id": 13,
+  "title": "Strain, Burnout, and Flares",
+  "kind": "rules",
+  "keys": [
+   "strain",
+   "strained",
+   "burnout",
+   "burned out",
+   "flare",
+   "flares",
+   "flared",
+   "overuse",
+   "overexert",
+   "nosebleed",
+   "Strain sickness"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Strain]\nEvery power use stresses the body. Strain runs 0-100%:\n0-40% normal. 41-70%: nosebleeds, migraines, tremors, ravenous hunger, irritability. 71-90%: blackouts, organ stress, misfires, ruptured capillaries, cardiac arrhythmia. 91%+: danger.\nBURNOUT: the power shuts off for days or weeks. Many people find it terrifying (\"going quiet\"), and repeated Burnouts can cause permanent downranking.\nFLARE: the power releases uncontrolled at full output. The user often dies; bystanders often die. Flares are the reason Graded need licenses, the reason Strain science exists, and the reason S-Ranks are tracked. A Flare survivor almost always gets a Breakthrough or a permanent injury.\nRecovery: 10-20% per hour of real rest with food. Sugar and fat help most. Sleep deprivation, alcohol, Rush, and injury slow recovery. Strain wards in hospitals treat severe cases with IV glucose and cooling.\nLong-term: decades of high Strain cost the average Graded about 6 years of life, often through stroke or heart failure."
+ },
+ {
+  "id": 14,
+  "title": "Multiple Powers",
+  "kind": "rules",
+  "keys": [
+   "multiple powers",
+   "second power",
+   "third power",
+   "dual",
+   "duals",
+   "triad",
+   "triads",
+   "quad",
+   "quads",
+   "quintet",
+   "quintets",
+   "crosstalk",
+   "multi-power"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Multiple Powers]\nAbout 20% of Graded have more than one power. Duals (2) are about 13%, Triads (3) about 5%, Quads (4) about 1%, and Quintets (5) are vanishingly rare: 41 are confirmed worldwide, and none is above A-Rank. Five is the known maximum.\nRules:\n- One body, one Strain pool. Each power drains the same reserve, so a Quintet tires several times faster than a specialist.\n- Secondary powers are usually 1-3 ranks below the primary. Official Rank is the single strongest power.\n- Using two at once roughly doubles Strain and halves precision unless both are at Grade III or higher.\n- Crosstalk: some combinations interfere (e.g. electricity disrupting a telepath's own focus), causing misfires.\n- Each power's Grade must be trained separately, so multi-power people are often mediocre at everything.\nPublic perception: the media loves Quintets as novelty acts. Serious professionals know a B-IV specialist beats a C-II Quintet nine times out of ten."
+ },
+ {
+  "id": 15,
+  "title": "Aging and the Fade",
+  "kind": "rules",
+  "keys": [
+   "fade",
+   "fading",
+   "faded",
+   "aging",
+   "ageing",
+   "old age",
+   "elderly",
+   "go dark",
+   "gone dark",
+   "went dark",
+   "inversion",
+   "retire",
+   "retired",
+   "retirement",
+   "birthday",
+   "getting older"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Aging and the Fade]\nPowers follow the body's arc. Rising (18-30): fastest growth. Prime (31-44): peak control. Waning (45-59): the Fade begins. Twilight (60+): many \"go dark.\"\nTHE FADE: COR and KIN powers lose output first, roughly one effective Grade per 7-10 years. Strain recovers more slowly; injuries heal more slowly. PSI, PER, and CAU users often get more subtle and precise even as raw output drops.\nGOING DARK: about 40% of Graded over 60 lose their powers completely. Some feel relief; many fall into depression. Retired Graded have high suicide rates.\nINVERSION: a rare (about 3%) late-life condition in which the power turns against the user's body. Regenerators grow tumors, fire users run fevers that won't break, telepaths can't block anything out. It's usually fatal, and the Bureau monitors anyone at high risk.\nEXCEPTIONS: strong regenerators and some BIO users age very slowly; a few have passed 120.\nCAREER: Aurelian quietly retires heroes once they look older than about 40. Graded pensions barely exist. Old heroes often end up poor, bitter, or selling autographs, and they know where all the bodies are buried."
+ },
+ {
+  "id": 16,
+  "title": "Genetics, Pregnancy, and Family",
+  "kind": "rules",
+  "keys": [
+   "pregnant",
+   "pregnancy",
+   "baby",
+   "babies",
+   "child",
+   "children",
+   "kids",
+   "son",
+   "daughter",
+   "genetics",
+   "heredity",
+   "inherit",
+   "inherited",
+   "pairing program"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Genetics and Family]\nPowers are partly hereditary: about 1 in 40 children of one Graded parent Kindle (1 in 20 with two), compared with 1 in 5,000 overall. Children's ranks regress toward the mean; two A-Ranks usually have a C- or D-Rank child, if any. Category is not inherited reliably.\nPregnancy with a Graded parent can be complicated: COR fetuses may be too dense or strong for safe birth; KIN mothers can Flare in labor. Saint Bryce Medical has a specialist high-risk unit.\nDark side: Aurelian runs a voluntary \"Legacy Program\" that pays Highgrades to have children with partners chosen for genetic compatibility. Wealthy families pay for marker-screened IVF. Rich Graded dynasties exist, and they care about rank-pairing in marriage.\nA Graded parent with a baseline child, or baseline parents with a Graded child, is a common source of family tension."
+ },
+ {
+  "id": 17,
+  "title": "Category COR (Corporeal)",
+  "kind": "rules",
+  "keys": [
+   "COR",
+   "corporeal",
+   "super strength",
+   "superhuman strength",
+   "invulnerable",
+   "invulnerability",
+   "durability",
+   "super speed",
+   "speedster",
+   "regeneration",
+   "regenerator",
+   "healing factor"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: COR (Corporeal)]\nPowers that enhance the user's own body: strength, durability, speed, healing, senses, endurance. The most common category (about 31% of Graded).\nRealism:\n- Strength without durability tears your own tendons and breaks your bones. Most strength powers come with partial durability, but not always.\n- Leverage still applies. Lifting a car by the bumper rips the bumper off; you need a hold point and footing, or you just push yourself away.\n- Speedsters need matching reflexes or they hit walls. Friction burns shoes and skin; the calorie burn is enormous (10,000+ a day).\n- Durability isn't immunity: a bullet that doesn't penetrate still hits like a hammer, and concussions and drowning still happen.\n- Regeneration needs mass and calories. Regrowing a limb takes weeks and food for three.\nRank examples: D: lift 300 kg, run 40 km/h. C: shrug off pistol rounds, lift a car with good footing. B: rifle-proof, throw a car. A: survive anti-tank weapons, punch through a building wall. S: shrug off artillery, break a dam."
+ },
+ {
+  "id": 18,
+  "title": "Category KIN (Kinetic)",
+  "kind": "rules",
+  "keys": [
+   "KIN",
+   "kinetic",
+   "pyrokinesis",
+   "pyrokinetic",
+   "fire power",
+   "fire powers",
+   "electricity",
+   "electrokinesis",
+   "telekinesis",
+   "telekinetic",
+   "energy blast",
+   "energy blasts",
+   "light powers",
+   "sound powers",
+   "force field",
+   "force fields"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: KIN (Kinetic)]\nProjecting or manipulating energy and force: fire, electricity, light, sound, kinetic force, telekinesis. About 22% of Graded. The most visible and most destructive category.\nRealism:\n- Energy goes somewhere. A force blast has recoil; a flamethrower heats the air around the user; heat buildup cooks hands at high output.\n- Fire users are not immune to smoke, oxygen depletion, or the building collapsing around them.\n- Electricity follows the path of least resistance, not your intent. Wet ground, metal, and bystanders change everything.\n- Telekinesis is usually limited by range, line of sight, and the user's mental \"grip.\" Fine control (a trigger, a lock) is much harder than brute shoving.\n- Light and sound powers blind and deafen allies too.\nRank examples: E: light a cigarette. D: blowtorch-level flame, a taser shock. C: knock a person across a room, set a car burning. B: flamethrower at 20 m, bring down a wall. A: gut a building. S: firestorm across a district."
+ },
+ {
+  "id": 19,
+  "title": "Category MAT (Material)",
+  "kind": "rules",
+  "keys": [
+   "MAT",
+   "material power",
+   "transmutation",
+   "transmute",
+   "earth manipulation",
+   "metal manipulation",
+   "water manipulation",
+   "hydrokinesis",
+   "density control",
+   "geokinesis",
+   "ice powers"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: MAT (Material)]\nManipulating, shaping, or transforming matter: earth, stone, metal, water, ice, glass, density, transmutation. About 11% of Graded. Prized for construction, mining, demolition, and sabotage.\nRealism:\n- Most users must touch or see the material; manipulating something they can't see is far harder.\n- Moving mass takes effort that scales with weight: shaping a bucket of water is easy, a river is S-Rank.\n- Transmutation is slow, exhausting, and often unstable; transmuted gold reverting to lead is a classic con.\n- Pulling metal out of rebar can collapse a building with the user inside it.\n- Ice users still need water to start from; dry desert air is a hard limit.\nRank examples: D: reshape a few kilos of clay or metal. C: pull a manhole cover from 10 m, wall off a doorway. B: rip up a street. A: collapse a building. S: redirect a river, cause an earthquake."
+ },
+ {
+  "id": 20,
+  "title": "Category PSI (Psionic)",
+  "kind": "rules",
+  "keys": [
+   "PSI",
+   "psionic",
+   "psychic",
+   "telepath",
+   "telepathy",
+   "telepathic",
+   "mind reading",
+   "mind control",
+   "compulsion",
+   "illusion",
+   "illusions",
+   "empath",
+   "empathy",
+   "hush band",
+   "hush bands"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: PSI (Psionic)]\nPowers that affect minds: telepathy, emotional sensing and manipulation, compulsion, illusion, memory editing. About 9% of Graded. The most feared and most legally restricted category.\nRealism:\n- Minds are noisy. Telepaths get fragments, emotion, and imagery, not neat sentences. Crowds cause headaches, insomnia, and breakdowns.\n- Compulsion has limits: simple commands, short duration, and resistance from strong-willed or prepared targets. Victims usually realize afterward, and everyone hates you for it.\n- Memory edits leave \"seams\" that skilled PSI users and Bureau forensics can sometimes detect.\n- Illusions affect perception, not reality; cameras usually see through them.\nLAW: under the Hush Band Law, PSI users of B-Rank and above must wear a Bureau inhibitor band (a thin silver collar or wristband) in public. Removing it is a felony. Evidence obtained by PSI is inadmissible in court. Many employers, landlords, and dating apps openly refuse PSI Graded.\nRank examples: D: sense strong emotions nearby. C: read surface thoughts by touch. B: compel one person for seconds. A: rewrite a day of someone's memory. S: control a crowd."
+ },
+ {
+  "id": 21,
+  "title": "Category SPA (Spatial)",
+  "kind": "rules",
+  "keys": [
+   "SPA",
+   "spatial",
+   "teleport",
+   "teleports",
+   "teleported",
+   "teleporting",
+   "teleportation",
+   "teleporter",
+   "portal",
+   "portals",
+   "gravity",
+   "gravity control",
+   "phasing",
+   "phase",
+   "intangible",
+   "intangibility"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: SPA (Spatial)]\nManipulating space and position: teleportation, portals, gravity, phasing through matter, spatial folding. About 5% of Graded. Hugely valuable to logistics, militaries, and criminals.\nRealism:\n- Teleporters need to know where they're going: line of sight, a memorized location, or a beacon. Blind jumps into the unknown can end inside a wall, which is fatal.\n- Displaced air causes a loud pop and sometimes ear damage. Carrying others multiplies Strain.\n- Momentum is conserved. Teleport while falling and you're still falling.\n- Phasing users must stay solid enough to breathe; partial phasing inside matter is lethal.\n- Gravity powers affect the user's own blood flow, causing blackouts and nosebleeds.\nLAW: SPA Graded need special permits to approach prisons, banks, and federal buildings, and they're barred from most airports. Smugglers pay them more than anyone.\nRank examples: D: blink 5 m. C: teleport 100 m in sight. B: 2 km, or carry a person. A: across a city, or open a portal for a car. S: across a continent, or crush a building under gravity."
+ },
+ {
+  "id": 22,
+  "title": "Category BIO (Biological)",
+  "kind": "rules",
+  "keys": [
+   "BIO",
+   "biological",
+   "biokinesis",
+   "shapeshift",
+   "shapeshifter",
+   "shapeshifting",
+   "healer",
+   "healers",
+   "healing power",
+   "heal others",
+   "disease",
+   "poison",
+   "venom",
+   "plant control",
+   "animal control"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: BIO (Biological)]\nAffecting living things other than (or in addition to) yourself: healing others, causing disease, shapeshifting, plant control, animal control, venom, pheromones. About 8% of Graded.\nRealism:\n- Healing others always borrows from somewhere: the patient's own reserves (they wake starving and exhausted), or the healer's (who takes on pain, wounds, or years). Healers burn out faster than anyone.\n- Healers can't cure everything. Cancer, old age, and brain damage are hard limits for all but the strongest.\n- Shapeshifting is painful, needs mass (you can't become a cat if you're 80 kg), and anatomy has to work: extra arms need extra muscle and nerves.\n- Disease-causers are nightmare figures to the public, and most are registered as potential bioweapons.\n- Plant and animal control depends on what's nearby; a city has pigeons, rats, and weeds.\nHealers are always needed. Hospitals hire them, cartels kidnap them, and the rich keep them on retainer.\nRank examples: D: speed recovery from a cold. C: close a knife wound. B: save a gunshot victim, give someone a fever. A: regrow a limb, start an outbreak. S: heal or kill a crowd."
+ },
+ {
+  "id": 23,
+  "title": "Category TEC (Technopathic)",
+  "kind": "rules",
+  "keys": [
+   "TEC",
+   "technopath",
+   "technopathy",
+   "technopathic",
+   "machine control",
+   "hacking",
+   "hacker",
+   "electronics",
+   "tech power",
+   "cyber"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: TEC (Technopathic)]\nInterfacing with machines and electronics: sensing circuits, controlling devices, intuitive engineering, data reading, network intrusion. About 4% of Graded. In the 21st century, rapidly the most valuable category to corporations and governments.\nRealism:\n- Encryption still matters. A TEC user can feel a server, but strong encryption is slow and painful to break.\n- Most need physical proximity or contact; remote network access takes high Rank.\n- Old analog machines are often harder to influence than modern ones.\n- Overloading a device can feed back as shock, burns, or seizures.\n- Air-gapped systems, Faraday rooms, and the Bureau's \"dead rooms\" stop most TEC users cold.\nLAW: TEC Graded are banned from election infrastructure, defense contractors (unless hired by them), and financial trading floors. Many work quietly for Aurelian security, the NSA, or the Choir.\nRank examples: D: start a car without the key. C: control a building's cameras and locks. B: take over a police drone fleet. A: crash a city's power grid. S: control a continent's networks."
+ },
+ {
+  "id": 24,
+  "title": "Category PER (Perceptive)",
+  "kind": "rules",
+  "keys": [
+   "PER",
+   "perceptive",
+   "perception power",
+   "x-ray vision",
+   "precognition",
+   "precog",
+   "danger sense",
+   "enhanced senses",
+   "postcognition",
+   "clairvoyance",
+   "sniffer",
+   "sniffers",
+   "power detection"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: PER (Perceptive)]\nGaining information: enhanced or impossible senses, seeing through walls, danger sense, precognition, postcognition (reading the past of objects or places), and power detection. About 6% of Graded. Low on raw destruction, high on value.\nRealism:\n- Information overload is the main danger: headaches, sensory breakdowns, insomnia. Many PER users wear tinted glasses, earplugs, or gloves.\n- Precognition shows probabilities, not certainties, and becomes useless when other precogs are involved.\n- Postcognition gets intense emotional \"residue\": reading a murder scene means feeling the murder.\n- Sniffers (who sense other Graded and their ranks) are employed by the Bureau, by Aurelian talent scouts, by gangs, and at major airports and events.\nPER Graded are often underestimated in rank (most are C or below), but a good PER is the most important member of any team, legal or not.\nRank examples: D: perfect hearing. C: see through a wall, sense a Graded nearby. B: 3 seconds of reliable danger sense. A: read a room's last 48 hours. S: watch anywhere in a city remotely."
+ },
+ {
+  "id": 25,
+  "title": "Category CAU (Causal)",
+  "kind": "rules",
+  "keys": [
+   "CAU",
+   "causal",
+   "probability",
+   "probability manipulation",
+   "luck",
+   "luck power",
+   "time manipulation",
+   "time stop",
+   "time travel",
+   "reality warping",
+   "reality manipulation",
+   "precognitive luck"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: CAU (Causal)]\nBending cause and effect: luck, probability, local time (slowing, accelerating, rewinding seconds), and reality alteration. Under 1% of Graded. The rarest category, with the highest ceiling and the strangest costs. Most Ω-level speculation and the X band involve CAU.\nRealism and costs:\n- Luck is zero-sum. Good luck for the user usually means bad luck for someone nearby, or for the user later. Big wins come with big bills.\n- Time manipulation ages the user, or burns Strain at extreme rates. A few seconds of stopped time can cost hours of exhaustion.\n- Reality alterations tend to be small, local, and temporary, and sometimes they snap back violently.\n- CAU Graded are notoriously unstable: paranoia, déjà vu, insomnia, a sense that the world is \"wrong.\"\nLAW: casinos and financial markets ban them. The Bureau assesses every CAU at least one rank higher than they measure, \"for safety.\" Aurelian and the military recruit them before anyone else can.\nRank examples: E: win coin flips slightly more often. C: make a gun jam. B: slow time for a few seconds. A: rewind ten seconds once a day. S: rewrite the outcome of a battle."
+ },
+ {
+  "id": 26,
+  "title": "Category ANO (Anomalous)",
+  "kind": "rules",
+  "keys": [
+   "ANO",
+   "anomalous",
+   "anomaly",
+   "weird power",
+   "strange power",
+   "unclassified power"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: ANO (Anomalous)]\nPowers that fit no other category. About 4% of Graded. Examples: summoning a specific dead person's voice; making people forget the user's name (but not face); turning sadness into light; switching bodies with whoever last touched you; making any written promise physically binding; growing a door in any wall that opens onto the same unknown room; sharing pain with everyone in a building.\nRealism:\n- ANO powers often have strict, odd rules, and the user may not know all of them for years.\n- Assessment is guesswork. ANO ranks are frequently wrong, in both directions, and get revised often.\n- Research labs, Aurelian, and the Bureau's \"Special Cases\" office take a strong interest in ANO Kindlings. Some vanish into \"voluntary study.\"\n- The Ascension Church considers ANO Graded closest to the divine.\nAn ANO power is a story engine. Narrate its rules consistently once they're established."
+ },
+ {
+  "id": 27,
+  "title": "The Bureau (FBEA)",
+  "kind": "world",
+  "keys": [
+   "Bureau",
+   "FBEA",
+   "Federal Bureau of Enhanced Affairs",
+   "Federal Plaza",
+   "registration",
+   "register",
+   "registered",
+   "unregistered",
+   "Bureau agent",
+   "Bureau agents",
+   "caseworker"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Bureau]\nThe Federal Bureau of Enhanced Affairs (FBEA, \"the Bureau\") was founded in 1962. It registers, assesses, licenses, monitors, and polices every Graded in the US, with a $31 billion annual budget. Port Harlan field office: Federal Plaza, downtown.\nDivisions: Registration & Assessment (Grading Centers), Licensing, Strain Medicine, Special Cases (ANO and X-band research), Containment (enforcement), and Strategic Oversight (S-Ranks).\nReality: underfunded where it matters and overfunded where it doesn't. Bureau caseworkers handle 300+ Graded each. Agents range from idealists to thugs. Aurelian lobbyists write half the Bureau's regulations, and many senior officials take Aurelian consulting jobs after retiring.\nUnregistered Graded (\"ghosts\") face felony charges, and their families face charges for concealment. The Bureau's database is the most hacked target in America."
+ },
+ {
+  "id": 28,
+  "title": "Assessment and Grading Centers",
+  "kind": "world",
+  "keys": [
+   "assessment",
+   "assessments",
+   "grading center",
+   "grading centers",
+   "assessed",
+   "assessor",
+   "assessors",
+   "ranking test",
+   "ranking day",
+   "rank test"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Assessment]\nA new Kindling must report to a Bureau Grading Center within 72 hours. Assessment takes 1-3 days: blood work, a medical exam, a PER Sniffer reading, controlled power demonstrations in reinforced test chambers (with Containment agents and Quell on standby), and a psychological interview.\nResults: Rank (F to X), Category code, Grade, a list of known powers, risk flags (Flare risk, PSI, unstable), and License eligibility. Then the Grade Card is issued, the same day for minors, who must be accompanied by a guardian.\nWaiting rooms are notoriously grim: scared kids, crying parents, Ashgrove scouts in the lobby, and gang recruiters smoking outside. The Bureau publishes rank statistics by school, which local news turns into league tables.\nAssessors can be bribed, intimidated, or simply wrong. Appeals take 6-14 months."
+ },
+ {
+  "id": 29,
+  "title": "Grade Card",
+  "kind": "world",
+  "keys": [
+   "Grade Card",
+   "Grade Cards",
+   "grade card",
+   "ID card",
+   "card check",
+   "card checks",
+   "show your card"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Grade Card]\nThe federal ID every registered Graded must carry (mandatory since the 1978 Grade Card Act; before that, paper \"Bureau papers\" with no visible rank). It shows a photo, name, Bureau number, Rank letter in a colored band, Category code, Grade, License type, and a QR code linking to a Bureau record that police can scan.\nColor bands: F gray · E gray with a white stripe · D green · C blue · B purple · A red · S black with a gold band · SS and above have no physical card (they are known on sight).\nPolice may demand a card at any time; failure to show one is a federal misdemeanor, and repeat failures are a felony. Bars, clubs, employers, landlords, and dating apps ask for it openly.\nSocial life: \"flashing purple\" (showing off a B card) is a classic move. Duds hide their gray cards. Fake cards, showing higher ranks or baseline status, are a booming black-market product. Equal Ground campaigns to abolish the card; the Ascension Church wants rank displayed on all clothing."
+ },
+ {
+  "id": 30,
+  "title": "Licensing",
+  "kind": "world",
+  "keys": [
+   "license",
+   "licenses",
+   "licensed",
+   "unlicensed",
+   "Civilian License",
+   "Utility License",
+   "Vigilance License",
+   "vigilante",
+   "vigilantes",
+   "rogue",
+   "rogues"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Licensing]\nUsing powers in public requires a license. Using them in private on your own property, for harmless purposes, is legal.\nCIVILIAN: the default. No public use except in immediate self-defense, which courts rarely accept for Graded.\nUTILITY: power use for a specific job (construction, firefighting, medicine, security). Issued per employer; misuse voids it.\nVIGILANCE: active hero work (patrol, intervention, detention of suspects). Requires B-Rank or above (or C with Grade III+), a clean record, liability insurance, and a sponsor: a corporation such as Aurelian, a city, or the Bureau itself. Sponsors own the hero's image and can revoke at will.\nSTRATEGIC: S-Rank and above; see the Strategic Assets Act.\nUnlicensed heroics = vigilantism, a felony. Unlicensed vigilantes (\"rogues\") are popular on social media, hunted by the Bureau, and often recruited quietly, or killed, by people who don't like competition."
+ },
+ {
+  "id": 31,
+  "title": "Containment and Anti-Graded Tech",
+  "kind": "world",
+  "keys": [
+   "Containment",
+   "Containment Division",
+   "Containment agent",
+   "Containment agents",
+   "Quell",
+   "suppressant",
+   "Quell round",
+   "Quell rounds",
+   "dampener",
+   "dampeners",
+   "damper field",
+   "anti-Graded",
+   "tungsten rounds"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Containment and Countermeasures]\nCONTAINMENT DIVISION: the Bureau's armed enforcement wing. Teams combine baseline tactical agents with C- to A-Rank Graded operatives, and arrive in unmarked gray vans or armored trucks. They shoot first when facing B-Rank or above.\nQUELL: an injectable power suppressant (approved 2003). It shuts powers down for 4-72 hours depending on dose and Rank. Side effects: severe nausea, bone-deep aching, depression, and seizures in overdose. Repeated use causes tolerance and, sometimes, permanent downranking. Street name: \"the leash.\"\nQUELL ROUNDS: darts or frangible bullets for capture. Effective on C-Rank and below in one hit; B needs several; A and above often aren't affected. Expensive and tightly controlled, but Flatline has a supply.\nDAMPENERS: fixed field generators that suppress powers inside a room. Huge, power-hungry, and expensive. Found in the Sump, courtrooms, Bureau interview rooms, and S-Rank residences.\nOther tools: tungsten-core rounds for COR targets, sonic disorientation grenades, Faraday nets for TEC, and blindfolds plus earplugs for PER."
+ },
+ {
+  "id": 32,
+  "title": "The Sump",
+  "kind": "world",
+  "keys": [
+   "Sump",
+   "the Sump",
+   "supermax",
+   "prison",
+   "prisons",
+   "sentence",
+   "sentenced",
+   "inmate",
+   "inmates",
+   "parole"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Sump]\nFederal Enhanced Detention Facility 1, called \"the Sump,\" is a supermax 400 meters under the Nevada desert, built in 1986 and expanded in 2019. It holds about 3,900 Graded of B-Rank and above.\nConditions: dampener-lined cells, Quell injections every 72 hours, prisoners known only by Rank and number, cameras everywhere, and no natural light. Guards are baselines plus vetted Graded. Inmate hierarchy follows Rank brutally; the S-Wing is a separate world of its own.\nCriticism: human rights groups call it torture. Inmates come out with Quell dependency, depression, and chronic pain. Riots in 2009 and 2021 killed dozens.\nParolees leave with a reissued card, no license, a Bureau supervising agent, and almost no job prospects, which makes them prime recruits for the Choir.\nBelow B-Rank, Graded criminals go to ordinary state prisons with weekly Quell, where they're targets for both guards and inmates."
+ },
+ {
+  "id": 33,
+  "title": "Law, Crime, and Police",
+  "kind": "world",
+  "keys": [
+   "crime",
+   "crimes",
+   "criminal",
+   "criminals",
+   "arrested",
+   "arrest",
+   "police",
+   "cop",
+   "cops",
+   "PHPD",
+   "court",
+   "trial",
+   "lawyer",
+   "attorney",
+   "Enhanced Response Unit",
+   "ERU"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Law and Police]\nEnhanced crimes carry harsher penalties: \"Enhanced Assault\" (assault using powers) is always a felony, and sentencing multiplies with Rank (B-Rank: x2, A-Rank: x3). A Graded who kills with powers faces a capital charge in most states.\nPORT HARLAN PD: mostly baseline. Its Enhanced Response Unit (ERU) has 60 Graded officers, mostly C-Rank. Police generally follow a \"call Containment\" policy for anything above C. Baseline officers are scared of Graded and often overreact; police shootings of D- and E-Rank Graded are a recurring scandal.\nCOURTS: trials happen in dampened courtrooms. PSI evidence is inadmissible. Sponsored heroes almost never face trial: Aurelian settles, Echo erases, witnesses relocate.\nSelf-defense with powers is legally treacherous: juries are mostly baseline."
+ },
+ {
+  "id": 34,
+  "title": "Military and the Halden Accords",
+  "kind": "world",
+  "keys": [
+   "military",
+   "army",
+   "soldier",
+   "soldiers",
+   "war",
+   "wars",
+   "Halden Accords",
+   "Accords",
+   "Project Ironwood",
+   "Ironwood",
+   "Pentagon",
+   "Department of Defense"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Military]\nTHE HALDEN ACCORDS (1974): signed after the Saigon Burn. They ban deploying S-Rank and above in offensive combat without UN Security Council notification, require registering all Strategic-tier individuals, and outlaw Graded \"breeding programs.\" Widely ignored in practice, especially the last part.\nPROJECT IRONWOOD: the US military's Graded program. About 2,600 enlisted Graded serve, mostly C to A, in special operations, logistics (SPA teleporters), and intelligence (PER, TEC). Enlisting gives Graded citizens a full license, decent pay, and medical care, at the cost of deployment to wars that rarely make the news.\nPrivate military companies, led by Aurelian's subsidiary Aurelian Defense Solutions, hire Graded mercenaries for contracts abroad. Aurelian is lobbying hard for the Graded Defense Initiative (see Current Events)."
+ },
+ {
+  "id": 35,
+  "title": "Aurelian Group",
+  "kind": "world",
+  "keys": [
+   "Aurelian",
+   "Aurelian Group",
+   "Aurelian Tower",
+   "Margit Lindahl",
+   "Aurelian Defense Solutions",
+   "Hero Development"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Aurelian Group]\nA $900B conglomerate headquartered in Aurelian Tower, a gold-glass skyscraper in the Spire, Port Harlan. Founded in 1951 as Aurelian Pharmaceuticals. Divisions: Hero Development (talent, licensing, the Pinnacle), Media (Spotlight network, films, merchandise), Pharmaceuticals (Strain medicine, and secretly Ichor), Defense Solutions (private military), and Real Estate.\nBusiness model: Aurelian owns 60% of America's licensed A-Rank heroes. It earns more from merchandising, film, and streaming than from government contracts. Heroes are products, and each is managed by a brand team.\nCEO MARGIT LINDAHL (58, baseline): brilliant, patient, entirely unsentimental. Speaks softly. Treats Graded as appreciating assets with a shelf life. Funds the Ascension Church and Equal Ground at the same time, \"to own both sides of the conversation.\"\nSecrets: Ichor and its Sponsored Trials; brand-rank fraud; Echo's memory clean-ups; the Halsey Street cover-up; Project Lantern."
+ },
+ {
+  "id": 36,
+  "title": "Ichor",
+  "kind": "world",
+  "keys": [
+   "Ichor",
+   "serum",
+   "synthetic",
+   "synthetic Graded",
+   "Sponsored Trial",
+   "Sponsored Trials",
+   "artificial powers"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Ichor]\nA synthetic catalyst Aurelian derived from Halcyon's blood in 1958. Injected into an adult, it forces a Kindling.\nOutcomes: about 30% die within 48 hours (fever, organ failure, or a Flare); 25% get nothing; 45% Kindle, usually at C to A Rank, rarely S. Synthetic Graded tend to have more Strain problems and to Fade earlier.\nAurelian runs secret \"Sponsored Trials,\" recruiting the desperate, the indebted, and the faithful (via the Ascension Church) under NDAs. Survivors who are photogenic get hero contracts and invented \"natural Kindling\" origin stories. Those who die are reported as \"workplace accidents.\"\nPublicly, Aurelian insists every one of its heroes Kindled naturally. In reality, four of the six Pinnacle members are synthetic. Proof of this would be the scandal of the century, and several journalists have died looking for it."
+ },
+ {
+  "id": 37,
+  "title": "Rush",
+  "kind": "world",
+  "keys": [
+   "Rush",
+   "juicer",
+   "juicers",
+   "juice",
+   "juiced",
+   "street drug",
+   "overdose"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Rush]\nA street drug cooked from stolen or diluted Ichor, distributed mostly by the Choir. It appeared in 2014. Sold as iridescent vials ($200-800 each) or as cheaper \"dust.\"\nEffect on baselines: a 40% chance of a random, temporary power (usually D or C, occasionally B) lasting 2-6 hours, plus euphoria. Effect on Graded: a temporary boost of roughly one Rank tier, with a huge Strain spike.\nCosts: crashes, intense addiction, hallucinations, strokes, and permanent nerve damage. Overdoses cause Flares, and Rush Flares have killed hundreds in Port Harlan. About 1 in 200 baseline users Kindles permanently, which keeps the myth alive.\nRush users are called \"juicers,\" a slur that baselines also apply to all Graded. The Old Foundry and Riverside are hit hardest. Possession is a felony; dealing gets 20 years."
+ },
+ {
+  "id": 38,
+  "title": "The Pinnacle",
+  "kind": "world",
+  "keys": [
+   "Pinnacle",
+   "the Pinnacle",
+   "Pinnacle Tower",
+   "hero team"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Pinnacle]\nAurelian's flagship hero team since 1983 and the most famous superhero brand on Earth. Six members (2026): Meridian (leader), Bulwark, Echo, Gridlock, Saint Cecile, and Jackknife. Based on the top floors of Aurelian Tower.\nPublic image: America's heroes. Charity galas, blockbuster films about themselves, cereal boxes, a reality show (Pinnacle: Off Duty), and a spotless record.\nReality: a corporate product. Every appearance is scripted and scheduled for camera coverage. Members are contractually forbidden from dating without approval, criticizing the company, or aging visibly. Rescues are prioritized by camera access and neighborhood demographics. Four members are synthetic (Ichor). The team's internal relationships are toxic: rivalries, affairs, and blackmail. Their \"spotless record\" is maintained by Echo and Aurelian Legal.\nMembership is the dream of almost every young Graded in America."
+ },
+ {
+  "id": 39,
+  "title": "Meridian",
+  "kind": "world",
+  "keys": [
+   "Meridian",
+   "Claire Dunmore"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Meridian]\nClaire Dunmore. Leader of the Pinnacle. Rank S-IV KIN (light: hard-light constructs, solar beams, flight by light pressure). Synthetic: Sponsored Trial at 19.\nPublic age 29; actual age 41. America's golden girl, with a radiant smile, a faint gold glow under cameras, and a famous \"I believe in you\" catchphrase.\nIn private: terrified of aging out of relevance as she watches Aurelian groom her replacement. She takes an experimental Aurelian anti-aging treatment (\"Lumen\") that keeps her face young and makes her power unstable; her light has begun flickering and burning hotter than she intends. Charming, controlled, intensely competitive, ruthless when her image is threatened, and lonely in a way she has never admitted. She isn't a sadist, but she has signed off on cover-ups that killed people, and she sleeps fine.\nHolds a Strategic License through Aurelian."
+ },
+ {
+  "id": 40,
+  "title": "Bulwark",
+  "kind": "world",
+  "keys": [
+   "Bulwark",
+   "Clement Pasternak"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Bulwark]\nClement Pasternak, 52. Rank A-V COR (density control and near-invulnerability; can become nearly immovable). Natural Kindling at 16. The longest-serving Pinnacle member (since 1998) and America's \"big dad.\"\nIn the Fade: his density control is slipping, and in the last year he was hurt by a rifle round for the first time in decades. Aurelian is quietly preparing his \"retirement.\" He drinks too much, he's divorced, and his daughter is a baseline who won't speak to him.\nHe knows nearly every secret the Pinnacle has, including Halsey Street and the Sponsored Trials, and he's starting to wonder what he could do with that before they push him out. Gruff, tired, decent in flashes. A potential mentor, whistleblower, or very dangerous man with nothing left to lose."
+ },
+ {
+  "id": 41,
+  "title": "Echo",
+  "kind": "world",
+  "keys": [
+   "Echo",
+   "Pinnacle telepath"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Echo]\nReal name sealed. 34. Rank A-IV PSI (memory editing: can erase or rewrite up to about 72 hours of a person's memory by touch; light surface telepathy). Natural Kindling at 13.\nPublicly the \"quiet one\" of the Pinnacle, rarely on camera, and always wearing her silver hush band in public. Her actual job is to clean up. When a hero kills a bystander or a witness sees too much, Echo visits.\nShe has erased thousands of people's worst days, and she keeps a handwritten diary of every edit, hidden somewhere only she knows. She despises Aurelian, the other heroes, and herself, in roughly that order. Emotionally flat, extremely perceptive, and occasionally (unpredictably) merciful. She's planning something. The diary would destroy Aurelian."
+ },
+ {
+  "id": 42,
+  "title": "Gridlock",
+  "kind": "world",
+  "keys": [
+   "Gridlock",
+   "Tomás Arrieta",
+   "Tomas Arrieta"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Gridlock]\nTomás Arrieta, 24. Rank A-III SPA (teleportation of self and touched objects up to about 2 km; needs line of sight or a memorized location). Synthetic: a Sponsored Trial at 21 after being recruited out of the Low Kings.\nAurelian sells him as a redemption story: \"From Riverside to the Pinnacle.\" In reality he's the team's least-respected member, used for fast rescue shots and kept off the most sensitive operations. He secretly uses Rush to keep up with the team's schedule and the Strain of carrying people.\nLoyal to his mother and his old neighborhood, guilty about the friends he left, and torn between the life he dreamed of and what he's learned about Aurelian. Funny, warm, insecure, and increasingly reckless. Dez Uwaifo of the Low Kings still considers him family, and a traitor."
+ },
+ {
+  "id": 43,
+  "title": "Saint Cecile",
+  "kind": "world",
+  "keys": [
+   "Saint Cecile",
+   "Cecile Amand",
+   "Cecile"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Saint Cecile]\nCecile Amand, 30. Officially A-Rank; actually B-IV BIO (healing by transferring a wound into her own body, then healing it slowly herself over hours or days). Natural Kindling at 15. Aurelian bought her an A-Rank \"brand rank\" through bribed reassessments.\nBranded as the Pinnacle's faith-friendly healer, with white and gold costumes, hospital visits, and Ascension Church appearances (she isn't a believer). Because she carries other people's wounds, she lives in constant pain and is addicted to opioids, which Aurelian supplies through a company doctor.\nGentle, devout in her own private way, exhausted, and quietly furious. She has saved more lives than the rest of the team combined, and almost none of those rescues were filmed."
+ },
+ {
+  "id": 44,
+  "title": "Jackknife",
+  "kind": "world",
+  "keys": [
+   "Jackknife",
+   "Dane Kroll",
+   "Halsey Street",
+   "Halsey Street incident"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Jackknife]\nDane Kroll, 27. Dual: A-III COR (super speed, about 300 km/h bursts) and C-II COR (retractable bone blades from the forearms). Synthetic.\nThe Pinnacle's \"bad boy\" brand: leather, tattoos, energy-drink sponsorships, and a huge teenage fanbase. In reality: arrogant, impulsive, cruel when bored, and protected by the company.\nTHE HALSEY STREET INCIDENT (2023): during a filmed chase, Jackknife cut through a crowd at full speed and killed 7 civilians, including two children. Aurelian blamed a \"villain explosion.\" Echo erased the witnesses' memories, and the footage was destroyed. Bulwark, Echo, Meridian, and a handful of Aurelian executives know the truth, and so does at least one surviving witness Echo deliberately left untouched."
+ },
+ {
+  "id": 45,
+  "title": "Hero Business",
+  "kind": "world",
+  "keys": [
+   "hero contract",
+   "hero contracts",
+   "sponsor",
+   "sponsors",
+   "sponsorship",
+   "sponsorships",
+   "endorsement",
+   "endorsements",
+   "brand",
+   "branding",
+   "Q-score",
+   "merch",
+   "merchandise",
+   "PR",
+   "publicist",
+   "talent agent"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Hero Business]\nLicensed heroes are entertainers with a body count. A Vigilance License requires a sponsor, and most sponsors are corporations.\nContracts: base salary plus bonuses for \"visible saves,\" merchandising cuts, and appearance fees. Image clauses cover hair, weight, dating, social media, politics, and religion. Morality clauses apply to the hero, never to the company. Non-compete clauses last 5 years.\nQ-score: the industry's popularity metric, tracked weekly. A low Q-score gets heroes reassigned to \"regional markets\" or dropped.\nTiers: regional sponsored heroes (C/B, $60-300k), national brands (A, millions), and the Pinnacle (tens of millions plus film deals).\nDirty truths: staged rescues, \"sparring partner\" villains paid to lose on camera, saves prioritized by camera access and neighborhood income, and hush money for injured bystanders. Independent (non-corporate) heroes are tolerated only while they're useful."
+ },
+ {
+  "id": 46,
+  "title": "Media and Spotlight",
+  "kind": "world",
+  "keys": [
+   "news",
+   "newscast",
+   "Spotlight",
+   "Spotlight Network",
+   "tabloid",
+   "tabloids",
+   "reality show",
+   "interview",
+   "interviews",
+   "headlines",
+   "journalist",
+   "journalists",
+   "reporter",
+   "reporters",
+   "social media",
+   "viral"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Media]\nSPOTLIGHT NETWORK: Aurelian-owned cable news and streaming, the most-watched network in the country, with hero-friendly coverage, rank-celebrity gossip, and reality shows (Pinnacle: Off Duty, Rookie Season, Dud Life).\nThe Harlan Ledger: the city's last independent paper. Underfunded, brave, and periodically sued.\nGradeWatch: a social app where users post sightings of Graded with their rank, and expose \"rank fakers.\"\nCoverage reality: hero violence is reported as heroism; Graded crime as an epidemic; Dud and lowgrade stories as comedy. A viral video can make or ruin a Graded overnight. Journalists investigating Aurelian have a habit of quitting suddenly, forgetting what they were working on, or dying.\nHeadlines on any given day include hero rankings, Rush overdoses, Flatline attacks, celebrity rank-dating gossip, and Strain-related deaths."
+ },
+ {
+  "id": 47,
+  "title": "Flatline",
+  "kind": "world",
+  "keys": [
+   "Flatline",
+   "Ansel Brandvold",
+   "Brandvold",
+   "anti-Graded",
+   "anti-super",
+   "super hunters"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Flatline]\nA baseline militant network that hunts and kills Graded, especially corporate heroes and high-rank criminals. Founded around 2017; designated a terrorist organization in 2024. Thought to have about 200 core members nationwide, with thousands of sympathizers, many of them ex-military, ex-police, and survivors of hero collateral damage.\nMethods: Quell rounds, tungsten ammunition, ambush tactics, research into weaknesses, and blackmail. Famous for killing the A-Rank hero Cascade in 2023 on a livestream.\nLeader in Port Harlan: ANSEL BRANDVOLD (54, baseline), a former Bureau Containment agent whose wife and son died as bystanders in a hero fight that was recorded as a heroic save. Brilliant, methodical, ruthless, and walks with a limp. He believes the Graded will enslave humanity unless stopped now. He will work with anyone, Graded included, if it brings down Aurelian.\nFlatline splits between those who target only \"guilty\" Graded and those who want all Graded dead. That fracture is widening."
+ },
+ {
+  "id": 48,
+  "title": "The Choir",
+  "kind": "world",
+  "keys": [
+   "Choir",
+   "the Choir",
+   "Cantor",
+   "The Cantor",
+   "Vivian Sallow",
+   "Sallow"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Choir]\nPort Harlan's dominant Graded crime syndicate: Rush manufacturing and distribution, Graded mercenary brokering, fake Grade Cards, smuggling (with SPA couriers), and protection rackets. Sign: a single embossed musical note.\nLeader: THE CANTOR, Vivian Sallow (46). B-V PSI (vocal compulsion: commands of five words or fewer are obeyed for a few seconds, longer for the weak-willed). She wears a hush band in public, legally, and is so precise at Grade V that she's never needed to break the law herself on camera. Elegant, patient, and a businesswoman first. She considers corporate heroes the biggest gangsters in the city, and she isn't wrong.\nCulture: Rank matters in the Choir, but loyalty matters more. Members (\"voices\") are well paid and never abandoned; the Choir pays for lawyers, bail, and Sump-time support for families. It always pays its debts, and it always collects."
+ },
+ {
+  "id": 49,
+  "title": "Low Kings",
+  "kind": "world",
+  "keys": [
+   "Low Kings",
+   "Low King",
+   "Dez Uwaifo",
+   "Desmond Uwaifo",
+   "Uwaifo",
+   "Dez",
+   "gang",
+   "gangs"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Low Kings]\nA Riverside Docks street gang made up mostly of D-, E-, and F-Rank Graded, plus a few C's and some baseline family members. Started in 2011 as a neighborhood self-defense crew after Graded kids kept getting beaten by police and Highgrade \"heroes.\" Now a mix of protection racket, community mutual aid, and petty crime. Members wear a plain steel ring.\nLeader: DESMOND \"DEZ\" UWAIFO (38). C-IV COR (durability). Scarred, calm, funny, fiercely protective of Riverside's lowgrades. Runs a soup kitchen and a chop shop out of the same building. Hates Rush and fights the Choir over it, which is a losing war. He raised Gridlock (Tomás Arrieta) like a little brother and hasn't forgiven him for leaving.\nThe Low Kings recruit Duds nobody else wants. Code: never sell Rush, never hurt kids, never talk to the Bureau."
+ },
+ {
+  "id": 50,
+  "title": "Underworld Economy",
+  "kind": "world",
+  "keys": [
+   "black market",
+   "fixer",
+   "fixers",
+   "mercenary",
+   "mercenaries",
+   "merc",
+   "mercs",
+   "bounty",
+   "bounties",
+   "hitman",
+   "contract killer",
+   "smuggling",
+   "smuggler",
+   "fence",
+   "fake ID",
+   "fake card"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Underworld Economy]\nGraded crime is big business.\nMercenary rates (per job): D $2-5k, C $10-40k, B $50-250k, A $500k+. A PER or TEC specialist commands a premium. Fixers broker jobs and take 15-20%.\nProducts: Rush, fake Grade Cards ($2k for a baseline ID, $15k for a convincing higher-rank card), black-market Quell, kidnapped healers rented by the hour, and Graded \"fight clubs\" with betting (most famous: The Pit, under the Riverside cold-storage yards).\nBounties: the Bureau posts bounties on unregistered and wanted Graded. Bounty hunters (many of them Graded) collect. Flatline and the Choir post their own.\nFences and fixers in Port Harlan: \"Mother Liang\" (baseline, runs a dim sum restaurant in the Old Foundry and brokers everything), and \"Static\" (a TEC hacker no one has met in person)."
+ },
+ {
+  "id": 51,
+  "title": "Equal Ground",
+  "kind": "world",
+  "keys": [
+   "Equal Ground",
+   "Imani Brooks",
+   "activist",
+   "activists",
+   "protest",
+   "protests",
+   "civil rights",
+   "Graded rights"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Equal Ground]\nA civil rights organization fighting for the rights of low-rank Graded and against rank discrimination. Also opposes anti-Graded violence. Its goals: abolish the Grade Card, end Rank-based sentencing, end the Hush Band Law, and close the Sump.\nLeader: IMANI BROOKS (44), an F-Rank (her power: she always knows the exact time) and a civil rights attorney. Sharp, tireless, and a magnetic speaker. She regularly beats the Bureau in court, and she has been arrested 31 times.\nProblems: baselines see Equal Ground as \"pro-freak,\" while Highgrades find it embarrassing. It's infiltrated by the Bureau and secretly part-funded by Aurelian (Brooks doesn't know). Its rallies are a common target for Flatline and Ascension Church counter-protesters."
+ },
+ {
+  "id": 52,
+  "title": "The Ascension Church",
+  "kind": "world",
+  "keys": [
+   "Ascension",
+   "Ascension Church",
+   "Church of Ascension",
+   "Danforth",
+   "Lyle Danforth",
+   "Prophet",
+   "prophet",
+   "church",
+   "cult"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Ascension Church]\nA fast-growing religious movement teaching that the Graded are humanity's next step, chosen by God, and that higher Rank means greater holiness. S-Ranks are treated as living saints. Members show their Rank on white robes during services; baseline members are \"Waiting Ones,\" and Duds are \"the Unfinished.\"\nLeader: PROPHET LYLE DANFORTH (61), a baseline former televangelist. Golden-voiced, warm, and a con man who may have come to believe his own sermons. Secretly funded by Aurelian. In exchange, the church channels its most devoted Waiting Ones and Duds into Ichor Sponsored Trials, which it calls \"the Sanctification.\" Many never come back.\nCongregation of about 4 million nationwide, with a megachurch in Kesler Heights. Ascension members picket Equal Ground rallies and pray outside the Sump for \"the fallen Graded.\""
+ },
+ {
+  "id": 53,
+  "title": "Ashgrove Academy",
+  "kind": "world",
+  "keys": [
+   "Ashgrove",
+   "Ashgrove Academy",
+   "Helena Marsh",
+   "Dean Marsh",
+   "the Ladder"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Ashgrove Academy]\nAn elite private boarding school for Graded aged 13-21, in the wooded hills north of Port Harlan, founded in 1979. Aurelian is its main donor, and its top graduates often get hero contracts. Tuition is $70k a year, with a few scholarships for promising lower-income Kindlings.\nCurriculum: academics, power training in reinforced facilities, combat, media training, ethics (\"brand responsibility\"), and Strain medicine. Uniform: navy blazer, house scarf.\nTHE LADDER: a public, weekly-updated ranking of every student based on combat sparring, Grade progress, and \"marketability.\" It decides privileges, dorm rooms, social standing, and who gets scouted. It is brutal. Students sabotage each other, and there have been suicides.\nDean HELENA MARSH (58): a former A-Rank KIN hero (sound) deep in the Fade; her voice is now ordinary. Exacting, cold, and believes suffering makes heroes. She protects her students' futures more fiercely than their wellbeing."
+ },
+ {
+  "id": 54,
+  "title": "Public School and the GIP",
+  "kind": "world",
+  "keys": [
+   "school",
+   "schools",
+   "high school",
+   "middle school",
+   "Integration Program",
+   "GIP",
+   "classmate",
+   "classmates",
+   "teacher",
+   "teachers",
+   "homework",
+   "detention"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Public School]\nMost Graded kids attend ordinary public schools under the Graded Integration Program (GIP). Kindled students carry a Grade Card from age 12, attend a weekly \"power management\" class (often taught by an underqualified D-Rank), and may be banned from contact sports, chemistry labs, or exams if their power could be used to cheat (PSI and PER).\nSocial reality: a Kindling changes your entire school life overnight. A C+ Rank makes you popular, feared, or both; F and E make you a joke (\"Dud\" is the meanest word in any hallway). Baseline kids form \"blank pride\" cliques. Fights involving powers result in expulsion and police. Teachers are wary of Graded students, and bullied Graded kids are a well-known Flare risk.\nMarker-positive kids who haven't Kindled yet are watched by teachers, recruiters, and each other."
+ },
+ {
+  "id": 55,
+  "title": "Port Harlan",
+  "kind": "world",
+  "keys": [
+   "Port Harlan",
+   "the city",
+   "downtown",
+   "Harlan"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Port Harlan]\nA fictional East Coast port city of 3.1 million, on the Harlan River estuary. Home of Aurelian Group, and the unofficial superhero capital of America. Registered Graded population: about 3,800 (plus an estimated 600 unregistered \"ghosts\").\nWeather: grey, wet, and windy; harsh winters, humid summers.\nDistricts: The Spire (corporate downtown), Riverside Docks (port and industry, the gang heartland), the Old Foundry (\"the Grades,\" a poor Graded ghetto), Kesler Heights (baseline suburbs), Saint Bryce (university and hospital district), Federal Plaza (government), and the Ashgrove hills (north, rich).\nTransit: an aging subway (the \"H-Line\"), constantly delayed by \"Enhanced incidents.\" Damage from hero fights averages $400M a year; the city's insurance premiums are the highest in the country.\nMayor: Gerald Pryce, baseline, re-elected with Aurelian money."
+ },
+ {
+  "id": 56,
+  "title": "The Spire District",
+  "kind": "world",
+  "keys": [
+   "the Spire",
+   "Spire",
+   "Spire District",
+   "Aurelian Plaza"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Spire]\nDowntown Port Harlan: glass towers, luxury apartments, flagship stores, and Aurelian Tower, 88 floors of gold glass with the Pinnacle's headquarters at the top and a Pinnacle museum and gift shop at street level.\nClean, heavily policed, under constant camera coverage, and full of tourists hoping to see a hero. Highgrades live, party, and do business here. Exclusive clubs (The Ceiling, Halo) require A-Rank or B-Rank cards, or very large amounts of money.\nLowgrades and baselines from other districts work here as cleaners, servers, and security, and take the H-Line home. Hero activity in the Spire is fast, well-filmed, and focused on property protection."
+ },
+ {
+  "id": 57,
+  "title": "Riverside Docks",
+  "kind": "world",
+  "keys": [
+   "Riverside",
+   "Riverside Docks",
+   "the Docks",
+   "docks",
+   "Pier 9",
+   "The Pit",
+   "Cal's Diner"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Riverside Docks]\nPort Harlan's working waterfront: container terminals, warehouses, cold-storage yards, rusting cranes, cheap diners, and row houses. Home turf of the Low Kings; the Choir controls the shipping. The center of the Rush trade, and of Graded smuggling via the port.\nLandmarks: Cal's All-Night Diner (neutral ground, the best fries in the city), Pier 9 (frequent hero brawls), The Pit (an underground Graded fight club beneath the cold-storage yards), and the Low Kings' soup kitchen and garage on Mercer Street.\nHeroes arrive late here, if they come at all. Police patrol in pairs. Rough, loyal, and poor. Locals trust each other far more than any badge or cape."
+ },
+ {
+  "id": 58,
+  "title": "Old Foundry (The Grades)",
+  "kind": "rules",
+  "keys": [
+   "Old Foundry",
+   "Foundry",
+   "the Grades",
+   "Graded ghetto",
+   "Mother Liang"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Old Foundry (\"the Grades\")]\nA former steel district turned de facto Graded ghetto, because landlords elsewhere refuse low-rank tenants and the rents are cheap. Mostly D-, E-, and F-Rank Graded and their families. Brick tenements, scorch marks, power-damaged buildings left unrepaired, and murals of local folk heroes.\nProblems: the epicenter of the Rush epidemic, of Strain illness without healthcare, and of police raids and heavy-handed card checks.\nCulture: the strongest Graded community in the city. Dud comedy clubs, illegal Graded street races, power-assisted food stalls, and a mutual-aid network run by Equal Ground. Mother Liang's restaurant (a dim sum place that is also the city's best-connected fence) is here.\nPeople call it \"the Grades,\" and if you live here, the insult is also a badge of pride."
+ },
+ {
+  "id": 59,
+  "title": "Kesler Heights",
+  "kind": "world",
+  "keys": [
+   "Kesler Heights",
+   "Kesler",
+   "suburbs",
+   "suburb",
+   "suburban"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Kesler Heights]\nPort Harlan's middle-class baseline suburbs: lawns, cul-de-sacs, megachurches (including the Ascension Church's Harlan Cathedral), and strip malls.\nAttitudes: suspicious of the Graded. Neighborhood \"Baseline Watch\" groups keep an eye out, HOAs quietly discourage Graded buyers, and residents pay a private-security surcharge for baseline-only patrols. Strong Flatline sympathy beneath a polite surface. Yet Kesler families also love the Pinnacle, buy the merch, and are crushed or thrilled when their own child Kindles.\nA Kindling in Kesler Heights often means a family crisis: friends drift away, the HOA sends letters, and some parents send the child to Ashgrove to get them out of the neighborhood."
+ },
+ {
+  "id": 60,
+  "title": "Saint Bryce and Healthcare",
+  "kind": "world",
+  "keys": [
+   "Saint Bryce",
+   "Saint Bryce Medical",
+   "hospital",
+   "hospitals",
+   "Strain Ward",
+   "doctor",
+   "doctors",
+   "injury",
+   "injuries",
+   "injured",
+   "medical",
+   "healthcare",
+   "ER",
+   "emergency room",
+   "university"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Saint Bryce and Healthcare]\nSAINT BRYCE is Port Harlan's university and hospital district: Harlan State University, cafes, and Saint Bryce Medical Center.\nSAINT BRYCE MEDICAL: a Level I trauma center with a dedicated Strain Ward (IV glucose, cooling beds, dampener-shielded rooms for patients at risk of Flare) and a high-risk Graded maternity unit. Staff includes 4 licensed BIO healers, who are overworked and constantly offered private contracts.\nGraded healthcare: Graded physiology confuses standard medicine (COR patients break needles; KIN patients run hot; regenerators heal around bullets that have to be cut back out). Insurers add a \"Graded surcharge\" of 30-200%. Healer treatment costs $5-50k per session, so the poor go without.\nHero collateral damage keeps the ER full. Saint Bryce's chief of emergency medicine, Dr. Ray Szczepanski, is an outspoken critic of corporate heroes."
+ },
+ {
+  "id": 61,
+  "title": "Baselines and Society",
+  "kind": "world",
+  "keys": [
+   "baseline",
+   "baselines",
+   "blank",
+   "blanks",
+   "freak",
+   "freaks",
+   "normal people",
+   "normals",
+   "Ungraded",
+   "Baseline Protection Act",
+   "Baseline Watch"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Baselines and Society]\nBaselines are 99.98% of humanity. Their attitudes toward the Graded range from worship (Pinnacle fans, the Ascension Church) to envy, fear, resentment, and hatred (Flatline). Most feel all of these at once.\nSlurs: Graded call baselines \"blanks\"; baselines call Graded \"freaks\" and Ichor or Rush users \"juicers.\" A baseline with a Graded partner is a \"freak chaser\"; a Graded who hides their Rank \"passes.\"\nThe Baseline Protection Act (2015) bans Graded from some jobs (air traffic control, judgeships, contact sports) and lets employers ask about Rank. Many baselines support stricter registration laws; many also want a Graded child.\nHow baselines treat Graded by rank: F/E are mocked; D/C are feared as muscle and resented as job competition; B/A are celebrities or monsters, depending on the day; S and above are gods or weapons."
+ },
+ {
+  "id": 62,
+  "title": "Rank in Daily Life",
+  "kind": "rules",
+  "keys": [
+   "dating",
+   "RankMatch",
+   "rent",
+   "apartment",
+   "landlord",
+   "landlords",
+   "job",
+   "jobs",
+   "hiring",
+   "hired",
+   "salary",
+   "wage",
+   "wages",
+   "career",
+   "careers",
+   "job hunting",
+   "broke"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Rank in Daily Life]\nDATING: RankMatch, the most popular dating app among Graded, shows Rank badges and lets users filter by Rank. \"Dating down\" is gossip; \"dating a blank\" is either scandalous or romantic, depending on who's talking.\nHOUSING: landlords legally ask about Rank. Higher Ranks pay \"risk deposits\" (COR, KIN); PSI tenants are often refused. Lowgrades end up in the Old Foundry; Highgrades rent in the Spire.\nWORK: typical jobs and pay by rank. F/E: baseline jobs, often with discrimination. D: Utility work at $35-55k (construction, demolition, couriers, bouncers). C: $50-150k (police ERU, security, hazardous industry, regional heroes, enforcers). B: $150k-2M. A: millions. S: owned. Healers, TEC, and PER earn above their rank everywhere.\nEVERYDAY: card checks at bars, Graded-only gyms, rank jokes, and pressure from family. Restaurants charge Graded with high-calorie needs for \"double portions\" without asking."
+ },
+ {
+  "id": 63,
+  "title": "Power Detection",
+  "kind": "world",
+  "keys": [
+   "scanner",
+   "scanners",
+   "Gradient scanner",
+   "Gradient scanners",
+   "detector",
+   "detectors",
+   "detect",
+   "detected",
+   "airport",
+   "airports",
+   "checkpoint",
+   "checkpoints",
+   "passing"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Detecting the Graded]\nThere is no reliable test for whether a person is Graded while their power is dormant. Detection methods:\n- GRADIENT SCANNERS: detect active power use, and recent use (within roughly an hour), through heat, EM, and gravitational signatures. Installed at airports, federal buildings, stadiums, and the Spire. High-Strain users light them up.\n- SNIFFERS: PER Graded who can sense nearby Graded and estimate Rank. Rare and expensive. Employed by the Bureau, Aurelian talent scouts, casinos, and gangs.\n- BLOOD TESTS: show Kindle markers and Strain residue, but can't confirm a Kindling.\n- Behavior: calorie intake, Strain symptoms (nosebleeds, tremors), and stress misfires.\nSo unregistered Graded can \"pass\" as baselines, as long as they never use their powers near a scanner and avoid Sniffers. Many do, for years."
+ },
+ {
+  "id": 64,
+  "title": "Port Harlan NPCs: Bureau",
+  "kind": "world",
+  "keys": [
+   "Pike",
+   "Anson Pike",
+   "Deputy Director",
+   "Okabe",
+   "Hana Okabe",
+   "Dr. Okabe",
+   "Dr Okabe"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Bureau NPCs, Port Harlan]\nDEPUTY DIRECTOR ANSON PIKE (55, baseline): runs the Port Harlan field office. Ex-Marine, pragmatic, sarcastic, and politically skilled. Privately despises S-Ranks and corporate heroes, publicly does whatever Aurelian needs, and keeps files on everyone for the day that changes. He respects competence above everything and will deal with criminals if it serves the city.\nDR. HANA OKABE (47): Chief Assessor at the Federal Plaza Grading Center. C-IV PER, a Sniffer who can sense Rank and Category by proximity. Tired, honest in a dishonest institution, kind to frightened kids in ways she can't afford to be. She has refused Aurelian's bribes for brand ranks at least three times, and she knows her career is stalled because of it. She suspects Ichor exists because synthetic Graded \"feel different\" to her senses."
+ },
+ {
+  "id": 65,
+  "title": "Current Events 2026",
+  "kind": "era",
+  "keys": [
+   "current events",
+   "2026",
+   "election",
+   "Graded Defense Initiative",
+   "GDI",
+   "Repeal",
+   "what's happening",
+   "headlines today"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Current Events, 2026]\n- GRADED DEFENSE INITIATIVE (GDI): Aurelian is lobbying Congress to let private corporations hold Strategic Licenses for domestic defense. In effect, a corporate super-army. The vote is expected next year.\n- CARD REPEAL: Equal Ground's lawsuit to abolish the Grade Card has reached the Supreme Court.\n- RUSH EPIDEMIC: overdoses in Port Harlan are up 60% this year. A new, stronger strain (\"Choirsong\") is circulating.\n- FLATLINE ESCALATION: two corporate B-Ranks were killed in the past four months. Aurelian heroes now travel with baseline security.\n- MERIDIAN'S WOBBLE: tabloids have noticed odd light flares in Meridian's recent footage. Spotlight calls it \"artistic lighting.\"\n- HALCYON: rumors of rising brain activity in the Geneva facility have leaked.\n- MIDTERM ELECTIONS: the \"Baseline First\" party is polling strongly on a registration-and-curfew platform for Graded.\nUse these as background news, radio chatter, and plot hooks."
+ },
+ {
+  "id": 66,
+  "title": "Era 1947-1969: The Early Years",
+  "kind": "era",
+  "keys": [
+   "1947",
+   "1948",
+   "1949",
+   "1950",
+   "1951",
+   "1952",
+   "1953",
+   "1954",
+   "1955",
+   "1956",
+   "1957",
+   "1958",
+   "1959",
+   "1960",
+   "1961",
+   "1962",
+   "1963",
+   "1964",
+   "1965",
+   "1966",
+   "1967",
+   "1968",
+   "1969",
+   "1950s",
+   "1960s",
+   "fifties",
+   "sixties"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 1947-1969]\nPowers are new and terrifying. In 1947 there are only a few hundred known Graded worldwide, and the public calls them \"Changed\" or \"Specials.\"\n- 1947: Halcyon Event. 1950-53: Korea, the first war with Graded soldiers on both sides. McCarthy-era hearings accuse Graded of being Soviet \"plants\"; PSI Graded are blacklisted.\n- 1958: Aurelian isolates Ichor (secret). 1962: Enhanced Persons Act; the Bureau is founded; registration on paper \"Bureau papers\" (no Grade Cards or colored bands yet; the letter ranks are internal only).\n- 1963-68: Graded civil rights marches run alongside the wider civil rights movement, often uneasily. Some states pass \"Special Persons\" segregation laws, struck down in 1967.\n- 1969: The Apollo 11 Moon landing; the Soviets publicly fly a COR cosmonaut the same year.\nDaily life: no suppressants exist. Dangerous Graded are sedated with barbiturates, institutionalized, or quietly killed. PSI Kindlings are sometimes lobotomized \"for public safety.\" Early-Kindled children go to Juniper House. Heroes are mostly military, police, or lone eccentrics; corporate heroes don't exist yet."
+ },
+ {
+  "id": 67,
+  "title": "Era 1970s: Timeline",
+  "kind": "era",
+  "keys": [
+   "1970",
+   "1971",
+   "1972",
+   "1973",
+   "1974",
+   "1975",
+   "1976",
+   "1977",
+   "1978",
+   "1979",
+   "1970s",
+   "seventies",
+   "'70s",
+   "70s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 1970s Timeline]\n- 1970: The first Graded Pride march in Port Harlan, broken up by police with fire hoses and dogs.\n- 1971: The Saigon Burn. An S-Rank Flare kills about 40,000 in Vietnam. The antiwar movement explodes.\n- 1972: Aurelian moves its headquarters to Port Harlan. Watergate burglary (a TEC Graded wiretapper is among those arrested).\n- 1973: Oil crisis. Graded \"Heat Sinks\" (KIN fire and electric users) are hired to run struggling power stations. The Ferris Hit: an NFL linebacker with an unregistered COR power kills an opponent on live TV.\n- 1974: Halden Accords signed. Nixon resigns. The Enhanced Evidence Act (1975) bars PSI testimony from court after the Watergate hearings.\n- 1976: Bicentennial. All major pro sports ban Graded athletes.\n- 1977: The Blackout of '77. A KIN Flare at a Manhattan substation leads to a citywide blackout, then riots aimed at Graded.\n- 1978: The Grade Card Act. Color-banded Grade Cards become mandatory.\n- 1979: Three Mile Island (a Heat Sink worker is credited with preventing worse). The Iran hostage crisis begins. The Old Foundry steel mills begin closing."
+ },
+ {
+  "id": 68,
+  "title": "Era 1970s: Daily Life",
+  "kind": "era",
+  "keys": [
+   "1970",
+   "1971",
+   "1972",
+   "1973",
+   "1974",
+   "1975",
+   "1976",
+   "1977",
+   "1978",
+   "1979",
+   "1970s",
+   "seventies",
+   "'70s",
+   "70s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 1970s Daily Life]\nTech: landline phones, payphones, TV with three networks plus UHF, cassette tapes, 8-tracks, Polaroids, typewriters, no internet, no personal computers until the late '70s. Cars: big sedans, muscle cars, then gas lines.\nMoney: a gallon of gas about $0.40-0.90; a movie $2; average rent $200-280 a month; a D-Rank Utility worker earns about $9-12k a year.\nGraded life: open discrimination. \"No Specials\" signs are still common until about 1975 and legal in some places. Slang: Graded are \"Specials\" or \"freaks\"; baselines are \"straights.\" Ranks are known but not shown until the 1978 Grade Card Act. Kindled kids are often expelled from school. Graded commune culture, Graded rock stars (KIN light shows at concerts), and the first Graded vigilantes in New York and Port Harlan. Police routinely beat Graded suspects; there is no suppressant, so arrests are violent.\nMood: post-Vietnam distrust, stagflation, crime waves, disco, punk, and fear of the Saigon Burn happening again at home."
+ },
+ {
+  "id": 69,
+  "title": "Era 1980s: Timeline",
+  "kind": "era",
+  "keys": [
+   "1980",
+   "1981",
+   "1982",
+   "1983",
+   "1984",
+   "1985",
+   "1986",
+   "1987",
+   "1988",
+   "1989",
+   "1980s",
+   "eighties",
+   "'80s",
+   "80s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 1980s Timeline]\n- 1980: Operation Eagle Claw. The hostage rescue fails when the SPA teleporter on the mission Flares. Reagan wins.\n- 1981: Hostages released. Mandatory school Kindle-marker screening (ages 12, 15, 18) begins.\n- 1982-84: The Psi Panic. Daycare \"mind control\" accusations lead to trials and lynchings of PSI Graded; nearly all the accusations are later proven false.\n- 1983: Aurelian licenses the Pinnacle, the first corporate hero team. The Grenada invasion is its first \"assist.\"\n- 1984: The LA Olympics formally ban Graded athletes. The rival Enhanced Games launch in Las Vegas.\n- 1986: Chernobyl. Soviet Graded Liquidators die containing the reactor; one survivor becomes the SS-Rank \"Graphite.\" The Sump opens.\n- 1987: Black Monday. The market crash is blamed on a CAU trader, the \"Wall Street Jinx,\" and CAU Graded are banned from trading floors. Halcyon is sighted in public for the last time, at age 62.\n- 1988: Drought. Weatherman (SS) breaks it on live TV and becomes a national hero.\n- 1989: The Berlin Wall falls after the Stasi's Graded unit refuses orders."
+ },
+ {
+  "id": 70,
+  "title": "Era 1980s: Daily Life",
+  "kind": "era",
+  "keys": [
+   "1980",
+   "1981",
+   "1982",
+   "1983",
+   "1984",
+   "1985",
+   "1986",
+   "1987",
+   "1988",
+   "1989",
+   "1980s",
+   "eighties",
+   "'80s",
+   "80s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 1980s Daily Life]\nTech: VCRs, cable TV and MTV, Walkmans, arcades, the NES (1985), early home computers, answering machines, brick cell phones for the rich, fax machines.\nMoney: gas about $0.90-1.20; a movie $3.50; rent $350-450 a month; a D-Rank worker about $15-20k a year; a C-Rank police ERU officer about $25k.\nGraded life: Pinnacle mania. Saturday-morning cartoons, action figures, lunchboxes, and posters, and kids act out rank fights on the playground. Grade Cards are now universal, and \"flashing your color\" becomes slang. Being a Highgrade is suddenly glamorous; Duds become a punchline on sitcoms. Cold War paranoia: civil defense films warn about Soviet PSI agents. The Psi Panic means PSI kids get bullied or hunted. In the Old Foundry, the mills shut and the Graded move in. Drugs: crack hits the cities, and \"Burn\" (an amphetamine Graded use to push through Strain) is common at Graded clubs and among enforcers.\nMood: greed, glamour, nuclear fear, and corporate heroes on every screen."
+ },
+ {
+  "id": 71,
+  "title": "Era 1990s: Timeline",
+  "kind": "era",
+  "keys": [
+   "1990",
+   "1991",
+   "1992",
+   "1993",
+   "1994",
+   "1995",
+   "1996",
+   "1997",
+   "1998",
+   "1999",
+   "1990s",
+   "nineties",
+   "'90s",
+   "90s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 1990s Timeline]\n- 1990-91: The Gulf War, the first televised Graded war. Aurelian Defense heroes fight alongside US forces. Paragon, the Pinnacle's founding leader, is killed in Kuwait; the nation mourns.\n- 1991: The USSR collapses, and its ~4,000 Graded scatter: the \"Loose Graded\" crisis. Strategic Assets Act.\n- 1992: The Foundry Riots. Port Harlan police officers are acquitted after beating D-Rank courier Calvin Merritt on video; the Old Foundry burns for three days.\n- 1993: The Hollow Creek Siege. A 51-day standoff with a PSI cult leader in Texas ends in fire.\n- 1994: Aurelian Tower is completed. Newborn Kindle-marker screening begins. Granite becomes a Department of Defense asset.\n- 1995: The Ghostline Trial. A Pinnacle member is acquitted of murdering his ex-wife, and the verdict splits America along Graded and baseline lines.\n- 1996: The Tenant moves a mountain in Kazakhstan. The dot-com boom; TEC Graded command huge salaries.\n- 1998: Bulwark joins the Pinnacle.\n- 1999: The Chicago Flare kills 2,300. Y2K panic; TEC Graded are hired to fix code."
+ },
+ {
+  "id": 72,
+  "title": "Era 1990s: Daily Life",
+  "kind": "era",
+  "keys": [
+   "1990",
+   "1991",
+   "1992",
+   "1993",
+   "1994",
+   "1995",
+   "1996",
+   "1997",
+   "1998",
+   "1999",
+   "1990s",
+   "nineties",
+   "'90s",
+   "90s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 1990s Daily Life]\nTech: pagers, cordless phones, the early cell phones and Nokias of the late '90s, dial-up internet (AOL, chatrooms, GeoCities Graded fan sites), CDs, the PlayStation and N64, video rental stores, Windows 95.\nMoney: gas about $1.10-1.30; a movie $4.50; rent $500-650 a month; a D-Rank Utility worker about $22-28k a year; a C-Rank hero on a regional contract $40-80k.\nGraded life: heroes go fully corporate. Q-scores are invented (1993), hero talk shows, Spotlight Network launches (1996), and \"rank-reveal\" daytime TV. Graded sitcoms and grunge bands; teens wear knockoff Pinnacle jackets. The Foundry Riots and the Ghostline Trial make rank and race the decade's biggest arguments. Highgrade club culture in the Spire, and the Graded Fighting League on pay-per-view. Loose Soviet Graded flood the mercenary market. The Choir is a small Riverside crew; the Low Kings don't exist yet.\nMood: optimism and money on top, rage in the Old Foundry, and a growing sense that heroes are products."
+ },
+ {
+  "id": 73,
+  "title": "Era 2000s and 2010s: Timeline and Life",
+  "kind": "era",
+  "keys": [
+   "2000",
+   "2001",
+   "2002",
+   "2003",
+   "2004",
+   "2005",
+   "2006",
+   "2007",
+   "2008",
+   "2009",
+   "2010",
+   "2011",
+   "2012",
+   "2013",
+   "2014",
+   "2015",
+   "2016",
+   "2017",
+   "2018",
+   "2019",
+   "2000s",
+   "2010s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 2000s-2010s]\n2000s: 2003, Quell is approved and policing changes overnight. 2006, Meridian debuts in the Pinnacle. 2008, the financial crash, and Halcyon falls into a coma. 2009, Lantern, Ohio is evacuated (Project Lantern). Tech: flip phones, then the iPhone (2007); MySpace and early YouTube clips of Graded fights; reality TV booms (Rookie Season, 2004).\n2010s: 2011, the alleged Granite carrier incident. Also in 2011, the Low Kings form in Riverside. 2014, Rush hits the streets. 2015, Baseline Protection Act. 2017, Proxy escapes Russia; Flatline forms. 2019, the Hush Band Law. Tech: smartphones, social media, GradeWatch (2013), RankMatch (2015), viral hero clips. Hero brands live and die on Instagram.\nMoney (2010s): gas $2.50-3.50; rent in Port Harlan $1,200-1,800 a month; a D-Rank worker about $35-45k a year.\nMood: surveillance, constant content, the Rush epidemic, and growing baseline rage."
+ },
+ {
+  "id": 74,
+  "title": "Era 2020s: Timeline and Life",
+  "kind": "era",
+  "keys": [
+   "2020",
+   "2021",
+   "2022",
+   "2023",
+   "2024",
+   "2025",
+   "2020s"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED ERA: 2020s]\n- 2020: Global pandemic. BIO healers are conscripted under emergency law; healers can't cure the virus at scale, and several die of exhaustion. Graded essential workers are hailed, then forgotten.\n- 2021: Riot in the Sump.\n- 2023: The Halsey Street Incident (officially a \"villain explosion\"). Flatline kills Cascade on a livestream.\n- 2024: Flatline is designated a terrorist organization.\n- 2025: Equal Ground's Grade Card case is accepted by the Supreme Court. \"Choirsong\" Rush appears.\nTech: smartphones everywhere, AI assistants, drones (police drone fleets, which TEC Graded hijack), Gradient scanners in every major venue.\nMoney: gas $3.50-4.50; rent in Port Harlan $1,800-2,600 a month; a D-Rank worker about $35-55k a year."
+ },
+ {
+  "id": 75,
+  "title": "Era Rule: Who Exists When",
+  "kind": "era",
+  "keys": [
+   "born in",
+   "when was",
+   "how old",
+   "what year",
+   "back then",
+   "at the time"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Era Consistency]\nNPC ages in this lorebook are given as of 2026. For other years, calculate: age = listed age - (2026 - current year). Characters not born yet don't appear; younger versions of NPCs appear at their correct age and status.\nBirth years: Halcyon 1925 · Weatherman 1955 · Danforth 1965 · Margit Lindahl 1968 · Helena Marsh 1968 · Anson Pike 1971 · Ansel Brandvold 1972 · Bulwark 1974 · Sallow (the Cantor) 1980 · Imani Brooks 1982 · Hana Okabe 1979 · Meridian 1985 · Dez Uwaifo 1988 · Echo 1992 · Cecile 1996 · Jackknife 1999 · Gridlock 2002.\nInstitutions founded: Bureau 1962 · Grade Cards 1978 · Ashgrove 1979 · school screening 1981 · the Pinnacle 1983 · the Sump 1986 · newborn screening 1994 · Aurelian Tower 1994 · Spotlight 1996 · Quell 2003 · Low Kings 2011 · GradeWatch 2013 · Rush 2014 · RankMatch 2015 · Flatline 2017 · Hush Bands 2019.\nBefore Quell (2003), the only ways to stop a Graded are sedation, restraint, bullets, or another Graded. Before the Sump (1986), high-rank prisoners go to Fort Lowell."
+ },
+ {
+  "id": 76,
+  "title": "Contemporaries of a 1970s Birth",
+  "kind": "era",
+  "keys": [
+   "classmate",
+   "classmates",
+   "childhood friend",
+   "grew up with",
+   "same age",
+   "generation",
+   "Gen X",
+   "Generation X"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: People Born 1965-1980 (Gen X)]\nFor a character born in the 1970s, these people are peers who can cross paths with them at school, in the street, at Ashgrove, or in their careers:\n- CLEMENT PASTERNAK (b. 1974): Kindles in 1990 at 16, a working-class kid from Riverside. Ashgrove scholarship student; joins the Pinnacle in 1998 as Bulwark.\n- ANSEL BRANDVOLD (b. 1972): a Kesler Heights baseline. Army in the Gulf War, Bureau Containment agent from 1995, a rising star in the 2000s.\n- ANSON PIKE (b. 1971): a Marine in the Gulf War, joins the Bureau in 1997.\n- MARGIT LINDAHL (b. 1968): a Harvard MBA who joins Aurelian in 1992 as a junior brand strategist and invents the Q-score in 1993. Ruthless and brilliant even then.\n- HELENA MARSH (b. 1968): Kindles in 1983. As the sound-KIN hero \"Resonance\" (A-Rank), she's a top regional star of the '90s who never quite makes the Pinnacle. Already demanding and already bitter about it.\n- LYLE DANFORTH (b. 1965): a cable televangelist in the '90s who starts preaching Graded \"chosenness\" in 1997.\n- HANA OKABE (b. 1979): Kindles in 1994; a Bureau trainee assessor by 2003.\nIn the '80s and '90s these people are young, ambitious, and not yet who they will become. Early choices with them can change their futures."
+ },
+ {
+  "id": 77,
+  "title": "Juniper House",
+  "kind": "world",
+  "keys": [
+   "Juniper House",
+   "Juniper",
+   "early Kindling",
+   "early kindler",
+   "institution",
+   "institutionalized",
+   "orphanage"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Juniper House]\nA Bureau-run residential institution for children who Kindle before age 12, open from 1964 to 1998 in rural Pennsylvania. Officially a \"school and care facility.\" In reality: barbiturate sedation, restraint, sensory deprivation for PSI kids, experimental \"power extinction\" therapies, and abuse by staff. Aurelian researchers had access through the 1980s, and some Juniper children vanished into Ichor research.\nParents were often pressured to sign custody away. Children were discharged at 18 with a Grade Card, no education, and no family.\nClosed in 1998 after a Harlan Ledger investigation and a class-action suit, which was settled under seal. Survivors (\"Juniper kids\") are a recognizable group in the 2000s and 2010s: damaged, tough, and many of them unregistered or criminal. Several Choir members are Juniper kids, and the Cantor's older brother died there.\nFor a character with an Early Kindling between 1964 and 1998, Juniper House is a real and terrifying possibility."
+ },
+ {
+  "id": 78,
+  "title": "Fort Lowell (Before the Sump)",
+  "kind": "world",
+  "keys": [
+   "Fort Lowell",
+   "Lowell",
+   "stockade",
+   "before the Sump",
+   "death row"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Fort Lowell]\nBefore the Sump opened in 1986, high-rank Graded convicts were held at Fort Lowell, an Army stockade in the Arizona desert converted to a federal facility in 1963.\nMethods: there was no Quell, so prisoners were kept under permanent barbiturate sedation, held in isolation cells lined with lead and steel, or chained in rooms where their specific power was useless (fire users in flooded cells, for example). Guards were authorized to shoot to kill. Executions of Graded were frequent until a 1979 Supreme Court ruling restricted them.\nIn the 1970s and '80s, many Graded prisoners died of \"sedation complications.\" Prison riots in 1974 and 1981 were ended by military Graded.\nAfter 1986, Fort Lowell was closed and its surviving inmates transferred to the Sump. The ruins are rumored to contain unmarked graves, which is a story Flatline, Equal Ground, and the Harlan Ledger have all chased."
+ },
+ {
+  "id": 79,
+  "title": "The Saigon Burn",
+  "kind": "event",
+  "keys": [
+   "Saigon Burn",
+   "Saigon",
+   "Vietnam",
+   "Vietnam War",
+   "Nam"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Saigon Burn (1971)]\nDuring a US operation outside Saigon, an S-Rank KIN soldier codenamed SUNDOWN (Sgt. Raymond Kell, 24) was pushed through 72 hours of continuous combat use on Army orders. He Flared. The firestorm burned for two days and killed about 40,000 people, most of them Vietnamese civilians, along with 1,100 US personnel. Kell died at the center.\nAftermath: footage leaked in 1972, the antiwar movement exploded, and Graded veterans faced hatred on returning home (\"burners\"). The incident forced the Halden Accords (1974) and launched Strain science.\nVietnam-era Graded veterans in the '70s and '80s are often homeless, addicted, or institutionalized, and many are bitter about being treated as weapons and then as monsters. Some became the first vigilantes. Some became the first villains."
+ },
+ {
+  "id": 80,
+  "title": "The Blackout of '77",
+  "kind": "event",
+  "keys": [
+   "Blackout of '77",
+   "Blackout of 77",
+   "blackout",
+   "1977 blackout"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Blackout of '77]\nJuly 1977: a heatwave strains the grid, and a C-Rank KIN (electric) Heat Sink worker named Dennis Albright Flares at a Con Edison substation in Queens. New York goes dark for 25 hours. The looting and arson that follow become the first large anti-Graded riot: mobs drag suspected Graded out of their homes, and three Graded are lynched in the Bronx.\nIn Port Harlan, the blackout spreads only to the Riverside grid, but fear of \"another '77\" follows Graded electricians and Heat Sinks for decades.\nResults: the 1978 Grade Card Act passes partly in response, as the public demands to be able to \"see\" who is Graded."
+ },
+ {
+  "id": 81,
+  "title": "The Ferris Hit and Graded Sports",
+  "kind": "event",
+  "keys": [
+   "Ferris Hit",
+   "Ferris",
+   "sports",
+   "NFL",
+   "football",
+   "Olympics",
+   "Enhanced Games",
+   "Graded Fighting League",
+   "GFL",
+   "athlete",
+   "athletes",
+   "boxing"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Graded and Sports]\nTHE FERRIS HIT (1973): linebacker Tommy Ferris, a secretly Kindled COR, tackles a running back and kills him instantly on Monday Night Football. Ferris is convicted of manslaughter. Testing begins, and by 1976 all major US pro sports ban Graded athletes. Baseline athletes found to have hidden a Kindling are stripped of their titles.\nENHANCED GAMES (since 1984): a Las Vegas rival to the Olympics with rank divisions (D through A). Violent, rich, and full of corporate sponsorships. Several deaths per Games.\nGRADED FIGHTING LEAGUE (since 1993): pay-per-view combat with rank and category divisions, Quell referees from 2003, and a Highgrade celebrity scene. The Pit in Riverside is its illegal underground cousin.\nGraded kids in school are banned from contact sports. Many end up in boxing gyms, the GFL, or the street."
+ },
+ {
+  "id": 82,
+  "title": "The Psi Panic",
+  "kind": "event",
+  "keys": [
+   "Psi Panic",
+   "daycare",
+   "mind control panic",
+   "1983 panic",
+   "witch hunt"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Psi Panic (1982-1986)]\nA moral panic in which accusations spread that PSI Graded were mind-controlling children in daycares, schools, and churches. It was fed by talk shows, televangelists, and \"recovered memory\" therapists. More than 200 trials followed and dozens of PSI Graded were convicted, nearly all of them later exonerated. At least 14 were killed by vigilantes.\nResults: the Bureau begins voluntary \"PSI bands\" (crude inhibitor headsets) in 1985, the ancestor of the 2019 Hush Band Law. A generation of PSI Graded learned to hide what they were.\nFor characters living in the early '80s: being PSI means suspicion everywhere, from neighbors to teachers to cops. Anyone with a grudge can accuse you."
+ },
+ {
+  "id": 83,
+  "title": "Operation Eagle Claw",
+  "kind": "event",
+  "keys": [
+   "Eagle Claw",
+   "Operation Eagle Claw",
+   "Iran",
+   "hostage crisis",
+   "Tehran",
+   "Desert One"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Operation Eagle Claw (1980)]\nThe 1979-81 Iran hostage crisis: 52 Americans are held in Tehran. In April 1980, the military's rescue plan relies on a B-Rank SPA teleporter, Sgt. Luis Ocampo, to carry assault teams from Desert One straight into the embassy compound in relays.\nOn the fourth jump, Ocampo Flares from Strain. The spatial tear kills him and eight servicemen, destroys a helicopter and a transport aircraft, and the mission collapses. The hostages are released in January 1981, on Reagan's inauguration day.\nResults: the Pentagon creates its first Strain limits for Graded soldiers. SPA Graded are thought of as unreliable in combat throughout the '80s. This is the origin of Project Ironwood's later Strain protocols."
+ },
+ {
+  "id": 84,
+  "title": "Chernobyl and Graphite",
+  "kind": "event",
+  "keys": [
+   "Chernobyl",
+   "Liquidators",
+   "Liquidator",
+   "Graphite",
+   "Pyotr Zhukov",
+   "Soviet",
+   "Soviets",
+   "USSR",
+   "Soviet Union",
+   "KGB"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Chernobyl and the Soviet Program]\nSOVIET GRADED PROGRAM: the USSR conscripted every Graded of C-Rank and above from 1952 onward; by 1985 it had about 4,000 in its \"Directorate S.\" Brutal training, high death rates, and a few genuine heroes.\nCHERNOBYL (1986): after the reactor explodes, 31 Graded Liquidators (MAT, KIN, and BIO) are sent into the reactor hall to contain the core with their powers. 29 die of radiation within weeks. The Soviet state hides their role until 1990.\nGRAPHITE: Pyotr Zhukov, a MAT Liquidator, survives by fusing the reactor's graphite into his own body. The exposure pushes him into a Breakthrough to SS. He is now Russia's SS-Rank: grey-skinned, radioactive, nearly silent, aging slowly. He was 31 in 1986.\n1991: the USSR collapses and Directorate S scatters (the \"Loose Graded\" crisis). Former Soviet Graded flood the global mercenary market through the 1990s."
+ },
+ {
+  "id": 85,
+  "title": "Black Monday and the Wall Street Jinx",
+  "kind": "event",
+  "keys": [
+   "Black Monday",
+   "Wall Street Jinx",
+   "Wall Street",
+   "stock market",
+   "stock market crash",
+   "1987 crash"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Black Monday (1987)]\nOctober 19, 1987: the Dow loses 22% in one day. Within a week, the press finds a scapegoat: Gordon Pettibone, a B-Rank CAU (probability) trader at a mid-tier firm who had been shorting the market for months. \"THE WALL STREET JINX\" runs on every front page.\nNo investigation ever proves he caused the crash; economists blame program trading. But Pettibone is convicted of securities fraud for concealing his rank. He serves 9 years and dies in 2004.\nResults: the 1988 Market Integrity Act bans CAU Graded from trading floors and requires Graded disclosure for licensed brokers. For years afterward, any bad luck in finance is blamed on \"jinxes.\""
+ },
+ {
+  "id": 86,
+  "title": "The Gulf War and Paragon",
+  "kind": "event",
+  "keys": [
+   "Gulf War",
+   "Kuwait",
+   "Desert Storm",
+   "Iraq",
+   "Paragon",
+   "Highway of Death"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Gulf War (1990-91)]\nThe first war broadcast live with Graded in action. CNN and Spotlight crews film Aurelian Defense heroes and Army Graded clearing Iraqi positions. Graded enlistment triples. Aurelian Defense Solutions is born on the back of the contracts.\nPARAGON (Gil Haverkamp, 1951-1991): the Pinnacle's founding leader, A-V COR (flight, strength, durability), and America's hero for eight years. He dies in Kuwait in February 1991, killed by a coordinated Iraqi Graded ambush, during a mission Aurelian scheduled for the cameras. His funeral is the most-watched broadcast of the year, and Aurelian sells memorial merchandise within a week.\nPrivate truth: Paragon was synthetic (one of Aurelian's first Ichor successes, in 1975), and he was openly drinking and burning out by 1990. Aurelian's internal memos called the Kuwait mission a \"legacy opportunity.\"\nGulf War Graded veterans return with Strain injuries and \"Gulf Syndrome.\" The VA denies their claims for years."
+ },
+ {
+  "id": 87,
+  "title": "The Foundry Riots and Calvin Merritt",
+  "kind": "event",
+  "keys": [
+   "Foundry Riots",
+   "riots",
+   "riot",
+   "Calvin Merritt",
+   "Merritt",
+   "1992 riots",
+   "Merritt verdict"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Foundry Riots (1992)]\nMarch 1991: Calvin Merritt, 26, a D-Rank COR bike courier with a Utility license, is pulled over in Port Harlan. Four PHPD officers beat him for nine minutes while he stays on the ground without using his power. A neighbor films it on a camcorder.\nApril 1992: an all-baseline jury in Kesler Heights acquits the officers (\"reasonable fear of an Enhanced suspect\"). The Old Foundry erupts. Three days of riots follow: 31 dead, and $300M in damage. Graded rioters fight National Guard troops, Pinnacle heroes are deployed against residents, and Graded-owned and baseline-owned businesses alike burn.\nAftermath: Merritt pleads on TV for calm. The officers are later convicted on federal charges. The riots shape the Old Foundry for a generation and give birth to the Graded rights movement that becomes Equal Ground. Many '70s-born Graded in Port Harlan were teenagers or young adults in the streets those three days."
+ },
+ {
+  "id": 88,
+  "title": "The Hollow Creek Siege",
+  "kind": "event",
+  "keys": [
+   "Hollow Creek",
+   "Hollow Creek Siege",
+   "siege",
+   "standoff",
+   "Brother Amos",
+   "compound"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Hollow Creek Siege (1993)]\nHollow Creek, Texas: a religious community called the Children of the Upward Light, led by \"Brother Amos\" (Amos Kerrigan, a B-Rank PSI empath who told followers his power was divine).\nFebruary 1993: a Bureau raid over weapons and unregistered Graded goes wrong. Four agents and six members die. Then a 51-day standoff: Bureau Sniffers report that Amos is using his empathy on everyone inside, and negotiators complain of \"feeling his despair\" through the walls. On day 51, during a gas assault, the compound burns. 76 die, including 25 children. Who started the fire is still disputed.\nAftermath: Congressional hearings and a surge in anti-government militia movements. The Ascension Church (founded in 1997) honors the Hollow Creek dead as \"the first martyrs,\" and Flatline's founders cite it as proof the Bureau can't handle the Graded."
+ },
+ {
+  "id": 89,
+  "title": "The Ghostline Trial",
+  "kind": "event",
+  "keys": [
+   "Ghostline",
+   "Ghostline Trial",
+   "trial of the century",
+   "Ray Dorsey"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Ghostline Trial (1995)]\nRay Dorsey, \"Ghostline,\" a B-IV SPA (phasing) member of the Pinnacle since 1983 and a beloved national star, is charged with murdering his ex-wife, Laura Dorsey (a baseline), and her friend in their locked Kesler Heights home. The prosecution: only someone who can phase through walls could have done it. The defense: other SPA Graded exist, the Bureau's Sniffer evidence was mishandled, and the police hated Graded.\nA 9-month televised trial; Aurelian quietly funds his defense. October 1995: acquittal. Baseline America is furious; many Graded celebrate, seeing a verdict against police bias. Aurelian drops him from the Pinnacle within a month anyway.\nHe lives quietly in the Ashgrove hills, 70 years old by 2026, and still insists he's innocent. The question \"did Ghostline do it\" still splits families at dinner tables."
+ },
+ {
+  "id": 90,
+  "title": "The Chicago Flare and Y2K",
+  "kind": "event",
+  "keys": [
+   "Chicago Flare",
+   "Chicago",
+   "Y2K",
+   "millennium bug",
+   "Overcast"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: 1999]\nTHE CHICAGO FLARE (June 1999): OVERCAST (Dana Whitlow, 31), an S-Rank KIN (storm and pressure) hero under a city contract, is pushed by her sponsor through back-to-back events and a tornado-season emergency. Her Strain hits 100% during a public rally in the Loop. The Flare levels six blocks and kills 2,300, including Overcast. Strain science becomes front-page news overnight: every network airs \"Strain explained\" specials, and Congress funds the research that leads to Quell (2003).\nY2K: fear that computers will fail at midnight on January 1, 2000. Corporations and the government hire TEC Graded at enormous fees to audit code. Nothing happens. TEC Graded claim credit; baselines call it a scam. Either way, the TEC Graded get rich."
+ },
+ {
+  "id": 91,
+  "title": "The Pinnacle Through the Years",
+  "kind": "era",
+  "keys": [
+   "former members",
+   "original Pinnacle",
+   "Pinnacle history",
+   "Lady Volt",
+   "Mirage",
+   "Tidewater",
+   "Longshot",
+   "Paragon"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Pinnacle Lineups]\n1983 founding lineup: PARAGON (A-V COR, leader, died 1991) · LADY VOLT (Ruth Ann Kowalski, B-III KIN electric; retired 1994; 79 in 2026, in a Florida retirement home with Inversion symptoms) · MIRAGE (Norvell Price, B-IV PSI illusion; quit in 1986 during the Psi Panic, now a reclusive painter) · TIDEWATER (Carla Mendes, A-III MAT water; Faded out in 2001; now an Aurelian board member) · LONGSHOT (Jim Barlow, C-V PER marksman; killed in 1988, officially in action, though rumor says Flatline's precursors did it) · GHOSTLINE (Ray Dorsey, B-IV SPA; dropped in 1995).\n1990s: after Paragon's death, Tidewater leads; new members cycle through faster as the Pinnacle becomes a TV product. Bulwark joins in 1998.\n2000s-2020s: Meridian (2006), Echo (2011), Cecile (2018), Jackknife (2020), and Gridlock (2024) join. Over the years, 14 former members have died: 5 in action, 4 by Flare or Strain, 3 by suicide, and 2 of \"unknown\" causes."
+ },
+ {
+  "id": 92,
+  "title": "Port Harlan Through the Decades",
+  "kind": "era",
+  "keys": [
+   "old Port Harlan",
+   "Port Harlan history",
+   "back in the day",
+   "the old days",
+   "the mills",
+   "steel mills"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Port Harlan by Decade]\n1970s: a declining port and steel town. Aurelian's 1972 move brings money to downtown, which is still called the \"Exchange District\" (renamed the Spire after 1994). Riverside has union docks and the mob. The Old Foundry is still a working-class steel neighborhood, mostly baseline. Kesler Heights is new postwar suburbs.\n1980s: the mills close (1979-83). Graded families, priced and pushed out of everywhere else, move into the Foundry's empty tenements. Crack and Burn arrive; Pinnacle billboards go up downtown; Ashgrove grows rich.\n1990s: the Foundry Riots (1992). Aurelian Tower is built (1994). The Exchange District becomes \"the Spire,\" and gentrification starts pushing poorer residents toward Riverside. Kesler Heights booms with white-flight and baseline-flight families. The Choir starts as a small Riverside crew.\n2000s-2020s: Quell policing, then Rush. The Low Kings form (2011), the Spire turns luxury, and the Foundry stays poor and proud."
+ },
+ {
+  "id": 93,
+  "title": "World Overview",
+  "kind": "region",
+  "keys": [
+   "world",
+   "international",
+   "abroad",
+   "overseas",
+   "foreign",
+   "travel",
+   "passport",
+   "visa",
+   "emigrate",
+   "emigrated",
+   "immigrant",
+   "immigration",
+   "refugee",
+   "refugees",
+   "border",
+   "borders"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The World]\nThe Halden scale (F to X, Grades I to V, the ten Categories) has been the international standard since 1974. Each country runs its own registry, its own card, and its own rules.\nModels: USA, corporate celebrity heroes. France and the EU, state-employed Graded, privacy laws, rank secrecy. Nigeria, Nollywood fame, private security, and weak state control. China, conscription. Russia, state ownership and organized crime. Japan and South Korea, idol agencies and ranking exams. Brazil and Mexico, Graded in militias and cartels. Gulf states, imported foreign Graded on exploitative contracts.\nDistribution: Graded are spread roughly evenly by population, but the strongest are pulled toward rich countries. Africa, South Asia, and Latin America lose many B- and A-Ranks every year to recruiters from the US, Gulf, and Europe: the \"rank drain.\"\nTravel: B-Rank and above need a Halden travel endorsement; S and above need approval from both governments. SPA Graded are barred from most international flights. Refugee Graded are a political flashpoint everywhere."
+ },
+ {
+  "id": 94,
+  "title": "The Halden Commission",
+  "kind": "world",
+  "keys": [
+   "Halden Commission",
+   "Commission",
+   "United Nations",
+   "UN",
+   "Strategic Registry",
+   "Halden inspectors",
+   "Halden inspector"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Halden Commission]\nA UN body created by the 1974 Halden Accords and headquartered in Geneva. It keeps the Strategic Registry (every S-Rank and above on Earth, with location tracking), sends inspectors to verify that no country is building a Graded army beyond treaty limits, and guards Halcyon's facility with a rotating international S-Rank detail.\nPowerless in practice. The big powers ignore it when convenient, poor countries resent its inspections, and its inspectors are bribed, threatened, or killed. Still, an S-Rank who drops off the Registry triggers alarms in every capital, and Halden inspectors have real authority at borders.\nCommission staff are often Graded from small neutral countries (Ireland, Costa Rica, Botswana, New Zealand), and their badge is a pale blue ring with the letters F to X around it."
+ },
+ {
+  "id": 95,
+  "title": "Interpol Enhanced Crimes Unit",
+  "kind": "world",
+  "keys": [
+   "Interpol",
+   "Enhanced Crimes Unit",
+   "ECU",
+   "extradition",
+   "extradited",
+   "red notice",
+   "Lyon"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Interpol ECU]\nInterpol's Enhanced Crimes Unit, based in Lyon, France, since 1979. It coordinates the hunt for Graded who cross borders: mercenaries, smugglers, terrorists, and S-Ranks who go missing from the Registry. It issues \"violet notices\" for wanted Graded (a variant of the red notice) and keeps the world's largest database of known powers, rank histories, and Strain signatures.\nECU agents have no arrest powers of their own. They work through local police, which in some countries means through people the target has already paid. Its Sniffers and PER analysts are among the best in the world.\nMost-wanted list in 2026: Proxy (stateless SS PSI); \"Mistral\" (a French A-Rank SPA smuggler); and the unknown leadership of the Tontine."
+ },
+ {
+  "id": 96,
+  "title": "The Tontine",
+  "kind": "world",
+  "keys": [
+   "Tontine",
+   "the Tontine",
+   "tontine"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Tontine]\nA transnational criminal network that started in the 1970s among West African and French migrant savings circles (tontines) in Paris and Marseille. It grew into a financial and logistics syndicate moving money, people, and Graded between West Africa, France, and the Gulf.\nBusiness: laundering mercenary payments; smuggling Graded across borders (SPA couriers, forged Halden endorsements); brokering West African B- and A-Ranks to Gulf employers and European private security; and moving Rush from Marseille into the Sahel and back.\nStructure: no single boss. A council of \"treasurers\" in Lagos, Abidjan, Dakar, Paris, Marseille, and Dubai, each of whom pays into a shared pot and draws from it in turn, as in a real tontine. Betraying the circle means the circle stops paying, and then someone comes to collect.\nIts people are polite, well dressed, and patient. It has done business with the Choir in Port Harlan and with French intelligence."
+ },
+ {
+  "id": 97,
+  "title": "Nigeria",
+  "kind": "region",
+  "keys": [
+   "Nigeria",
+   "Nigerian",
+   "Nigerians",
+   "NEPC",
+   "naira",
+   "Abuja",
+   "Kano",
+   "Port Harcourt",
+   "Ibadan",
+   "Enugu",
+   "Nollywood",
+   "Pidgin"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Nigeria]\nRegistry: the National Enhanced Persons Commission (NEPC), founded 1963. Card: the green-and-white \"NEPC card.\" Registration is mandatory but enforcement is patchy; an estimated 30% of Nigerian Graded are unregistered, and an NEPC card can be bought, lost, or \"settled.\"\nPopulation: about 45,000 registered Graded, the most in Africa. Nigeria's SS-Rank is HARMATTAN (Ifeyinwa Obiorah, 58, KIN, dust and wind; can black out the sky over a whole state). She is a national icon with a complicated relationship with every government since 1990, and she lives in Abuja under a Halden detail.\nGraded life: Nollywood loves Graded stars, and B-Rank actors play themselves in hit films. Wealthy families, oil companies, banks, and politicians hire Graded bodyguards. Police have the Special Enhanced Response Squad (SERS), notorious for extortion and brutality; the #EndSERS protests of 2020 ended in the Lekki shootings. Prosperity megachurches feature BIO \"miracle healers,\" some real, many not. The Graded rank drain to the US, UK, and Gulf is huge.\nSlang: Graded are \"powerman\" or \"powerwoman\"; Duds are \"spark-spark\"; baselines are \"ordinary people.\"",
+  "nameSeeds": {
+   "first": [
+    "Olumide",
+    "Folasade",
+    "Bisola",
+    "Morenike",
+    "Kayode",
+    "Temitope",
+    "Ayodele",
+    "Chukwuemeka",
+    "Ifeoma",
+    "Obinna",
+    "Nkiruka",
+    "Chidinma",
+    "Ikenna",
+    "Uchenna",
+    "Adaugo",
+    "Musa",
+    "Hauwa",
+    "Aminu",
+    "Garba",
+    "Hadiza",
+    "Yakubu",
+    "Rukayat",
+    "Babajide",
+    "Damilola",
+    "Somtochukwu",
+    "Efosa",
+    "Osaruyi",
+    "Ibinabo",
+    "Tamunosaki",
+    "Ebiere"
+   ],
+   "last": [
+    "Akinwale",
+    "Oyeleke",
+    "Ogunbiyi",
+    "Balogun",
+    "Adewuyi",
+    "Olaniyan",
+    "Nwachukwu",
+    "Obiora",
+    "Igwe",
+    "Anozie",
+    "Ezeugwu",
+    "Danjuma",
+    "Abubakar",
+    "Shehu",
+    "Idris",
+    "Ikpeba",
+    "Osagie",
+    "Iyamu",
+    "Briggs",
+    "Amadi",
+    "Fashanu",
+    "Onwuachi"
+   ]
+  }
+ },
+ {
+  "id": 98,
+  "title": "Nigeria History",
+  "kind": "region",
+  "keys": [
+   "Biafra",
+   "Biafran",
+   "Nigerian Civil War",
+   "Nigerian history",
+   "independence",
+   "1960 independence",
+   "military government",
+   "coup",
+   "coups"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Nigeria Through the Decades]\n- 1960: Independence. The British colonial \"Native Enhanced Register,\" which conscripted Graded into colonial police and mines, is abolished; the NEPC follows in 1963.\n- 1967-70: The Nigerian Civil War. Both the federal army and Biafra field Graded units. Biafra's few Graded are famous for running supplies through the blockade (SPA couriers) and for the healers who worked themselves to death in the famine. The war's Graded veterans go unacknowledged for decades.\n- 1970s: The oil boom. Oil companies hire Graded for pipelines, rigs, and security. Lagos explodes in size. Afrobeat-era nightlife features Graded performers.\n- 1980s-1990s: Military governments use Graded enforcers against journalists and protesters. Harmattan Kindles in 1984 and is ranked SS in 1990; she refuses to serve the junta, and is placed under house arrest until 1998.\n- 1999: Return to civilian rule. Nollywood booms through the 2000s with Graded hero films on VHS and VCD.\n- 2010s-2020s: Insurgency in the north, with Graded fighters on several sides. Yaba's tech scene makes TEC Graded rich. #EndSERS (2020).\nMoney: naira. 1980s: ₦1 roughly matched $1. 2026: about ₦1,500 per dollar; a Lagos mainland room ₦300k-600k a year; a D-Rank security guard ₦150k-250k a month."
+ },
+ {
+  "id": 99,
+  "title": "Lagos",
+  "kind": "region",
+  "keys": [
+   "Lagos",
+   "Lagosian",
+   "Eko",
+   "Victoria Island",
+   "Ikoyi",
+   "Lekki",
+   "Yaba",
+   "Surulere",
+   "Ajegunle",
+   "Makoko",
+   "Balogun",
+   "Third Mainland Bridge",
+   "Oshodi",
+   "Ikeja",
+   "danfo",
+   "okada",
+   "go-slow"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Lagos]\nAfrica's biggest city, about 22 million people and roughly 9,000 registered Graded (and many more unregistered). Loud, fast, broke and rich at the same time, and running on hustle.\nDistricts:\n- VICTORIA ISLAND and IKOYI: glass towers, embassies, oil money, Graded celebrities and their bodyguards, Ọ̀ṣọ́ Security's headquarters.\n- LEKKI: new-money estates on reclaimed land; the Lekki toll gate, site of the 2020 shootings.\n- LAGOS ISLAND and BALOGUN MARKET: the commercial heart. Graded porters, MAT traders \"fixing\" goods, pickpockets with E-Rank tricks.\n- YABA: universities and the tech hub. TEC Graded, hacker crews, startup money.\n- SURULERE and IKEJA: the middle-class mainland, with Nollywood studios and the NEPC Lagos office.\n- AJEGUNLE and OSHODI: crowded, poor, tough. Area boys and motor-park agberos with Graded muscle.\n- MAKOKO: a fishing community on stilts in the lagoon, home to many Duds and unregistered Graded, under constant threat of demolition.\nGetting around: the go-slow (traffic) is endless. Danfo buses, okadas, the Third Mainland Bridge. SPA couriers charge a fortune to skip the traffic.\nPower cuts are constant (\"NEPA took light\"); KIN electric Graded can earn more powering generators than in any other job."
+ },
+ {
+  "id": 100,
+  "title": "Lagos Factions and People",
+  "kind": "region",
+  "keys": [
+   "Ọ̀ṣọ́",
+   "Oso Security",
+   "Ọ̀ṣọ́ Security",
+   "Thunderbird",
+   "area boys",
+   "area boy",
+   "agbero",
+   "agberos",
+   "motor park",
+   "Living Fire",
+   "Living Fire Ministries",
+   "Pastor Ezenwa",
+   "Tajudeen",
+   "Iron Taju",
+   "The Compound",
+   "Hadiza Bello-Kurfi",
+   "SERS"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Lagos Powers]\nỌ̀ṢỌ́ SECURITY: the biggest private Graded security firm in West Africa. It guards banks, oil executives, politicians, and Nollywood stars, and runs its own rapid-response units, because \"police no dey come.\" Its face is THUNDERBIRD (Kelechi Umeh, 33, B-III KIN electric), a Nollywood star who plays heroes on screen and mostly guards weddings in real life. Owner: Chief Adeolu Fadipe (64, baseline), politically connected and ruthless.\nTHE MOTOR PARK UNION: controls the bus parks and the street-level \"settlement\" economy. Mainland boss: ALHAJI TAJUDEEN \"IRON TAJU\" OGUNLESI (51, C-IV COR durability), smiling, generous, and dangerous. Runs area boys, protection, and votes.\nLIVING FIRE MINISTRIES: a megachurch in Ikeja led by PASTOR EMEKA EZENWA (47, D-Rank BIO, a weak but genuine healer who stages miracles far bigger than his power). Huge congregation, private jet, ties to the Tontine.\nTHE COMPOUND: a Yaba collective of TEC Graded hackers. Some run startups, some run fraud, most do both.\nNEPC LAGOS: Director HADIZA BELLO-KURFI (49, baseline), incorruptible and outgunned.\nSERS (police Enhanced Response): checkpoints, extortion, and \"settlement.\" Avoided by everyone."
+ },
+ {
+  "id": 101,
+  "title": "Ghana",
+  "kind": "region",
+  "keys": [
+   "Ghana",
+   "Ghanaian",
+   "Ghanaians",
+   "Accra",
+   "Kumasi",
+   "cedi",
+   "cedis",
+   "Tema",
+   "African Personality Corps"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Ghana]\nRegistry: the Ghana Enhanced Persons Registry (1958), the first in independent Africa. Card: red, gold, and green with a black star.\nHistory: after independence in 1957, Ghana's government founded the African Personality Corps (1960-66), a Pan-African program inviting Graded from across the continent to train in Accra and serve liberation movements. It was disbanded after the 1966 coup, and its veterans scattered across Africa, some into politics and some into mercenary work. Graded Kumasi goldsmiths (MAT) are famous.\nToday: a stable democracy with relatively liberal Graded laws, no public rank display, and strong anti-discrimination courts. Accra is a hub for Graded tech, music, and returning diaspora Graded escaping US and UK rank discrimination. It's also a Tontine transit point.\nAccra: Osu (nightlife), Jamestown (old fishing quarter, boxing gyms full of Graded kids), Airport City (money), Makola Market.",
+  "nameSeeds": {
+   "first": [
+    "Kwabena",
+    "Kwesi",
+    "Efua",
+    "Adwoa",
+    "Yaw",
+    "Abena",
+    "Akosua",
+    "Kojo",
+    "Afia",
+    "Ekow",
+    "Esi",
+    "Nana Ama",
+    "Yaa",
+    "Kwaku",
+    "Akua"
+   ],
+   "last": [
+    "Mensah",
+    "Asante",
+    "Owusu",
+    "Boateng",
+    "Ofori",
+    "Antwi",
+    "Appiah",
+    "Agyeman",
+    "Darko",
+    "Quaye",
+    "Tetteh",
+    "Nkansah",
+    "Amoako",
+    "Sarpong"
+   ]
+  }
+ },
+ {
+  "id": 102,
+  "title": "Senegal and Francophone West Africa",
+  "kind": "region",
+  "keys": [
+   "Senegal",
+   "Senegalese",
+   "Dakar",
+   "Côte d'Ivoire",
+   "Ivory Coast",
+   "Ivorian",
+   "Abidjan",
+   "Mali",
+   "Malian",
+   "Bamako",
+   "Burkina Faso",
+   "Ouagadougou",
+   "Guinea",
+   "Conakry",
+   "Togo",
+   "Benin",
+   "Niger",
+   "Sahel",
+   "CFA",
+   "francophone",
+   "Françafrique"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Francophone West Africa]\nMost countries kept French-style law after independence: Graded registries modeled on France's, rank secrecy on paper, and close ties with French security services.\nFRANÇAFRIQUE: France has kept deploying Graded in its former colonies: as \"advisers,\" as presidential guards, and in military operations in the Sahel (2013-2022). Many West Africans resent French Graded on their soil, and anti-French protests in Bamako, Ouagadougou, and Niamey target them.\nSENEGAL: stable and proud. Dakar is a hub for music, wrestling (lutte, with a famous Graded division), fishing, and migration. Graded wrestlers are national celebrities.\nCÔTE D'IVOIRE: civil wars in 2002-2007 and 2010-2011, with Graded fighters on both sides. Abidjan is booming, Plateau's towers are full of business, and Yopougon's nightlife is full of Graded performers.\nTHE SAHEL: insurgencies, coups (2020-2023), and Graded fighters from every side, including foreign mercenaries.\nMoney: CFA franc.",
+  "nameSeeds": {
+   "first": [
+    "Moussa",
+    "Fatou",
+    "Aminata",
+    "Cheikh",
+    "Ousmane",
+    "Mariama",
+    "Ibrahima",
+    "Ndèye",
+    "Awa",
+    "Mamadou",
+    "Khady",
+    "Babacar",
+    "Seynabou",
+    "Abdoulaye",
+    "Coumba",
+    "Lamine",
+    "Adjoua",
+    "Konan",
+    "Yao",
+    "Affoué"
+   ],
+   "last": [
+    "Diop",
+    "Ndiaye",
+    "Fall",
+    "Sow",
+    "Ba",
+    "Diallo",
+    "Sy",
+    "Gueye",
+    "Mbaye",
+    "Faye",
+    "Sarr",
+    "Cissé",
+    "Thiam",
+    "Diouf",
+    "Ndour",
+    "Koné",
+    "Ouattara",
+    "Kouassi",
+    "Traoré",
+    "Coulibaly"
+   ]
+  }
+ },
+ {
+  "id": 103,
+  "title": "Liberia and Sierra Leone Wars",
+  "kind": "region",
+  "keys": [
+   "Liberia",
+   "Liberian",
+   "Monrovia",
+   "Sierra Leone",
+   "Freetown",
+   "blood diamonds",
+   "ECOMOG",
+   "child soldiers"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: The Mano River Wars (1989-2003)]\nThe civil wars in Liberia and Sierra Leone were among the worst Graded conflicts on Earth. Warlords forcibly recruited Kindled teenagers, kept them fighting with crude Ichor-cut stimulants (a precursor of Rush), and used MAT Graded to work the diamond fields. ECOMOG, the West African peacekeeping force led by Nigeria, sent its own Graded units in; some were heroes, some were as bad as the warlords.\nAftermath: thousands of former Graded child fighters, many unregistered and many with permanent Strain damage, grew up without schooling, family, or treatment. Some are now community leaders, some mercenaries, some in the Tontine. Truth commissions documented it all, and almost nobody was punished.\nHandle this history with weight: survivors are real people in-story, not set dressing."
+ },
+ {
+  "id": 104,
+  "title": "France",
+  "kind": "region",
+  "keys": [
+   "France",
+   "French",
+   "Frenchman",
+   "Frenchwoman",
+   "DGPA",
+   "CAA",
+   "Corps des Agents Augmentés",
+   "secret du rang",
+   "rank secrecy",
+   "euro",
+   "euros",
+   "franc",
+   "francs",
+   "Lyon",
+   "Toulouse",
+   "Lille",
+   "Bordeaux",
+   "Nice",
+   "Préfecture"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: France]\nRegistry: the Direction Générale des Personnes Augmentées (DGPA), founded 1959, part of the Interior Ministry. Card: the \"carte de classification,\" kept private.\nLE SECRET DU RANG (1981): asking anyone their rank is illegal, for employers, landlords, police without a warrant, and private individuals in a commercial setting. No public rank display. In theory, France doesn't see rank. In practice, everyone guesses, and discrimination is quieter but real, especially for Graded from the banlieues and from immigrant families.\nHEROES ARE CIVIL SERVANTS: there are no corporate heroes, since the EU bans hero branding. Licensed Graded join the Corps des Agents Augmentés (CAA), with a salary, a pension, ranks, paperwork, and a union. CAA heroes go on strike, famously in 1995 and 2019, and Paris burns a little more each time. Police have augmented units (BRI-A in Paris).\nLA LÉGION: the Foreign Legion's 1er Régiment Étranger Augmenté takes Graded from anywhere, no questions asked, and grants French citizenship after service. Many West African, Eastern European, and Latin American Graded have come to France this way.\nPolitics: the far-right Front Humain campaigns on \"baseline France first.\" Population: about 14,000 registered Graded; no SS-Rank; 9 S-Ranks.",
+  "nameSeeds": {
+   "first": [
+    "Gwenaëlle",
+    "Thibault",
+    "Clémence",
+    "Anouk",
+    "Baptiste",
+    "Solène",
+    "Maëlys",
+    "Yannick",
+    "Margaux",
+    "Florian",
+    "Océane",
+    "Rachid",
+    "Karima",
+    "Nadir",
+    "Samia",
+    "Mehdi",
+    "Leïla",
+    "Didier",
+    "Josiane",
+    "Gérard",
+    "Aïssata",
+    "Kévin",
+    "Sandrine",
+    "Stéphane",
+    "Ludivine",
+    "Corentin",
+    "Mamadou",
+    "Fatoumata"
+   ],
+   "last": [
+    "Le Floch",
+    "Brassac",
+    "Lefebvre",
+    "Garnier",
+    "Faure",
+    "Gauthier",
+    "Bensaïd",
+    "Haddad",
+    "Benali",
+    "Cherifi",
+    "Diakhaté",
+    "Kouyaté",
+    "Nguyen",
+    "Da Silva",
+    "Ferreira",
+    "Morin",
+    "Poulain",
+    "Leclerc",
+    "Baudry",
+    "Tessier",
+    "Kerjean",
+    "Bouzid",
+    "Sissoko"
+   ]
+  }
+ },
+ {
+  "id": 105,
+  "title": "France History",
+  "kind": "region",
+  "keys": [
+   "Algeria",
+   "Algerian",
+   "Algerian War",
+   "Battle of Algiers",
+   "May 68",
+   "May '68",
+   "Mai 68",
+   "1968 protests",
+   "Mitterrand era",
+   "French history",
+   "banlieue riots"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: France Through the Decades]\n- 1954-62: The Algerian War. France deploys Graded paratroopers, and PSI interrogators are used in the Battle of Algiers (1957), part of the torture scandal that haunts France for decades. Algerian Graded fight for independence; many families who came to France afterward carry that history.\n- 1959: The DGPA is founded.\n- MAY '68: Students and workers paralyze France. Graded students hold the barricades in the Latin Quarter, and a young KIN student's \"wall of fire\" photo becomes iconic. Graded rights become a cause of the French left.\n- 1981: Le secret du rang becomes law.\n- 1980s-90s: Banlieue estates fill with immigrant families, Graded and baseline. The CAA strike of 1995 shuts the country down alongside the general strikes. France wins the 1998 World Cup with an all-baseline team, under rules that ban Graded players.\n- 2002: The franc becomes the euro.\n- 2005: The banlieue riots. Augmented units patrol the cités; Graded youth form crews like the Sans-Rang.\n- 2010s-2020s: Sahel operations, the rise of Front Humain, CAA strikes in 2019, and the Paris 2024 Olympics, which exclude Graded (and set off protests across the banlieues)."
+ },
+ {
+  "id": 106,
+  "title": "Paris",
+  "kind": "region",
+  "keys": [
+   "Paris",
+   "Parisian",
+   "Parisians",
+   "Seine-Saint-Denis",
+   "the 93",
+   "banlieue",
+   "banlieues",
+   "cité",
+   "cités",
+   "Saint-Denis",
+   "Clichy-sous-Bois",
+   "Belleville",
+   "Barbès",
+   "Pigalle",
+   "La Défense",
+   "Le Marais",
+   "catacombs",
+   "Gare du Nord",
+   "périphérique",
+   "métro",
+   "RER"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Paris]\nAbout 12 million in the metro area and 3,800 registered Graded.\n- CENTRAL PARIS (Le Marais, the Latin Quarter, Saint-Germain): rich, beautiful, and policed. The Graded here are civil servants, academics, and the discreet rich who never mention their rank.\n- LA DÉFENSE: the business district. Corporate security firms legally employ Graded as \"agents de sécurité,\" a loophole around the hero-branding ban.\n- BELLEVILLE and BARBÈS: working-class, multicultural, North and West African, Chinese, and Graded-friendly. Underground Graded bars, illegal rank-reveal nights, Tontine savings circles in back rooms.\n- PIGALLE: nightlife and sex work; Graded performers and bouncers.\n- THE CATACOMBS: 300 km of tunnels under the city, used by Graded smugglers, raves, cults, and anyone who wants to avoid the BRI-A.\n- SEINE-SAINT-DENIS (\"the 93\"): tower-block cités (Clichy-sous-Bois, Saint-Denis, Bobigny). Young, poor, heavily policed, with a high rate of unregistered Graded. Home of the Sans-Rang.\nThe périphérique ring road is the line between Paris and everything else, and everyone knows which side they're from."
+ },
+ {
+  "id": 107,
+  "title": "Paris Factions and People",
+  "kind": "region",
+  "keys": [
+   "Sans-Rang",
+   "BRI-A",
+   "Odile Brassac",
+   "Brassac",
+   "Bastille",
+   "Gwenaëlle Le Floch",
+   "Front Humain",
+   "Mistral",
+   "Le Fantôme",
+   "Moussa Diakhaté",
+   "Thierry Valadier"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Paris Powers]\nBRI-A: the Paris police's augmented intervention brigade. Chief: COMMISSAIRE ODILE BRASSAC (55, B-V SPA, local gravity; the officer who makes riot shields bend). Cold, by-the-book, and privately disgusted with what her brigade does in the banlieues.\nTHE CAA: the hero civil service. Its most famous agent and union leader is BASTILLE (Gwenaëlle Le Floch, 44, A-III COR, a Breton dockworker's daughter). She will strike, march, and punch a minister on camera, and the public loves her for it.\nTHE SANS-RANG: a loose network of banlieue youth who refuse registration or refuse to reveal their rank. Some are activists, some are a gang, most are both. They have no leader on paper; in practice everyone listens to LE FANTÔME DE BARBÈS (Moussa Diakhaté, 29, B-IV SPA, phasing), a vigilante the police have never managed to hold.\nFRONT HUMAIN: the far-right \"baseline France first\" party, polling at 25%.\nDGPA: Director THIERRY VALADIER (58, baseline), a smooth technocrat who believes in rank secrecy and also keeps secret files on every Graded in the country.\nWanted: MISTRAL (identity unknown, A-Rank SPA), a smuggler who moves people and goods between Marseille, Paris, and North Africa for the Tontine."
+ },
+ {
+  "id": 108,
+  "title": "Marseille",
+  "kind": "region",
+  "keys": [
+   "Marseille",
+   "Marseillais",
+   "Vieux-Port",
+   "Quartiers Nord",
+   "Le Panier",
+   "Calanques",
+   "Corsican",
+   "milieu"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Marseille]\nFrance's great port city, with about 1.8 million people and 1,600 registered Graded. Sun, mistral wind, football, fish soup, and the drug trade.\n- VIEUX-PORT and LE PANIER: the old harbor and the oldest quarter, tourist cafés over smugglers' cellars.\n- THE QUARTIERS NORD: poor northern estates where the drug points (\"points de deal\") run day and night. Gangs fight over them with Graded enforcers, and the body count makes national news every summer.\n- THE PORT: containers from North Africa, Asia, and West Africa. Rush comes in here and goes out to Paris, Spain, and the Sahel.\n- THE CALANQUES: cliffs and coves where Graded smugglers land boats at night.\nThe old Corsican-Marseille underworld (the milieu) has used Graded since the 1950s; the French Connection heroin trade of the 1960s-70s used SPA couriers. Today the milieu, the Quartiers Nord gangs, and the Tontine share the city uneasily. Marseille's police augmented unit is underfunded and outgunned, and everyone knows it."
+ },
+ {
+  "id": 109,
+  "title": "United Kingdom",
+  "kind": "region",
+  "keys": [
+   "UK",
+   "United Kingdom",
+   "Britain",
+   "British",
+   "England",
+   "English",
+   "London",
+   "Londoner",
+   "Manchester",
+   "Birmingham",
+   "Glasgow",
+   "Scotland",
+   "Wales",
+   "Northern Ireland",
+   "pounds",
+   "quid",
+   "Home Office",
+   "the Met"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: United Kingdom]\nRegistry: the Home Office Enhanced Persons Directorate (1950). Card: a plain grey \"EP card\" with the rank shown as a number (1 for F up to 7 for S), never a color. \"What number are you?\" is a deeply rude question asked constantly.\nClass and rank: the British class system absorbed rank. Graded from posh families go to Oxford and into the civil service; working-class Graded go into the army, the Met's SO-E augmented unit, or crime. Tabloids are obsessed with Graded scandals. A royal cousin's Kindling in 1986 was hushed up for years.\nHistory: Graded in the Falklands (1982); the Troubles in Northern Ireland, with Graded on several sides; football hooligan firms with Graded members in the '80s; a booming London Graded club scene in the '90s.\nLondon: the City (money and private Graded security), Peckham and Brixton (multicultural, a big West African Graded diaspora), Canary Wharf, council estates in the outer boroughs.",
+  "nameSeeds": {
+   "first": [
+    "Callum",
+    "Siobhan",
+    "Gethin",
+    "Bronwen",
+    "Declan",
+    "Niamh",
+    "Rhys",
+    "Tamsin",
+    "Oluwatobi",
+    "Priya",
+    "Hamish",
+    "Morag",
+    "Kieran",
+    "Bethan",
+    "Femi",
+    "Saoirse"
+   ],
+   "last": [
+    "Pemberton",
+    "Featherstone",
+    "Oyelowo",
+    "Haworth",
+    "McAllister",
+    "Pritchard",
+    "Gallagher",
+    "Okoro",
+    "Bhatt",
+    "Whitworth",
+    "Llewellyn",
+    "Fairbairn"
+   ]
+  }
+ },
+ {
+  "id": 110,
+  "title": "Germany and Central Europe",
+  "kind": "region",
+  "keys": [
+   "Germany",
+   "German",
+   "Germans",
+   "Berlin",
+   "Munich",
+   "Hamburg",
+   "Frankfurt",
+   "Stasi",
+   "Abteilung P",
+   "East Germany",
+   "Poland",
+   "Polish",
+   "Warsaw",
+   "Prague",
+   "Vienna"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Germany and Central Europe]\nGERMANY: the strictest privacy laws in Europe. The Bundesamt für Erweiterte Personen (BEP) holds rank data under heavy protection; using someone's rank against them is a crime. The Bundeswehr may not deploy Graded abroad except under UN mandate. Graded work mostly as engineers, rescuers, and police (GSG-E).\nHistory: the Nazi regime ended in 1945, before the first Kindling, but fear of \"selection\" shapes German Graded law to this day. East Germany's Stasi ran ABTEILUNG P, a Graded secret-police unit whose files (opened in 1992) showed decades of PSI surveillance; its refusal to act in 1989 helped bring down the Wall. Berlin's 1990s techno scene was full of Graded DJs and illegal clubs in abandoned bunkers.\nPOLAND and the former Eastern Bloc: Soviet-era Graded programs left veterans and files everywhere. Since 2004, many Eastern European Graded have moved west for work, and their rank-based wages are a political argument in every election.\nMoney: Deutsche Mark until 2002, then the euro."
+ },
+ {
+  "id": 111,
+  "title": "Russia and the Former USSR",
+  "kind": "region",
+  "keys": [
+   "Russia",
+   "Russian",
+   "Russians",
+   "Moscow",
+   "Saint Petersburg",
+   "St. Petersburg",
+   "rubles",
+   "Bratva",
+   "Chechnya",
+   "Ukraine",
+   "Ukrainian",
+   "Kyiv",
+   "Belarus",
+   "Kazakhstan",
+   "Directorate S"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Russia]\nRegistry: the Federal Service for Enhanced Persons (FSEL), successor to the Soviet Directorate S. Every Graded of C-Rank and above must serve the state for five years, in the army, the security services, or \"penal battalions\" for those convicted of crimes.\n1990s: when the USSR collapsed, thousands of Graded were left unpaid and armed. They became bodyguards, enforcers, and Bratva \"brothers,\" and the Loose Graded crisis gave Moscow's '90s their reputation. Graded oligarch bodyguards are still a status symbol.\nGRAPHITE (Pyotr Zhukov), Russia's SS-Rank since Chernobyl, lives in a guarded zone near Moscow and appears only at state occasions. Russia lost its second SS, Proxy, in 2017, which is a source of enormous embarrassment.\nWars: Graded units fought in Afghanistan (1979-89), Chechnya (1994-96, 1999-2009), and Ukraine (2014 onward), where Graded fight on both sides and Halden inspectors are routinely ignored."
+ },
+ {
+  "id": 112,
+  "title": "China",
+  "kind": "region",
+  "keys": [
+   "China",
+   "Chinese",
+   "Beijing",
+   "Shanghai",
+   "Shenzhen",
+   "Guangzhou",
+   "Hong Kong",
+   "yuan",
+   "renminbi",
+   "Tianjian",
+   "PLA"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: China]\nRegistry: the Ministry of Enhanced Affairs, with nationwide testing at birth, 12, and 15. Every Graded of B-Rank and above is conscripted for at least 10 years: the military, state industry, or state security. Rank is recorded in every citizen's social file.\nTIANJIAN GROUP: the state-owned conglomerate that employs most Graded outside the military, in construction (MAT), the power grid (KIN), logistics (SPA), and surveillance (PER, TEC). China's megaprojects of the 1990s-2010s were built partly by Graded labor brigades.\nChina has two SS-Ranks, both entirely state-controlled: KUNLUN (MAT, mountains and earthquakes) and TIDEWALL (KIN, water and pressure). Neither has appeared in public since 2015.\nGraded life: a stable state career with good pay and no freedom. Low-rank Graded are often pushed into factory or rural work. Hong Kong had its own registry until 1997, and a looser one afterward until 2020."
+ },
+ {
+  "id": 113,
+  "title": "Japan and South Korea",
+  "kind": "region",
+  "keys": [
+   "Japan",
+   "Japanese",
+   "Tokyo",
+   "Osaka",
+   "Kyoto",
+   "yen",
+   "yakuza",
+   "South Korea",
+   "Korean",
+   "Seoul",
+   "Busan",
+   "won",
+   "chaebol",
+   "juku",
+   "hagwon"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Japan and South Korea]\nJAPAN: Graded talent agencies run heroes like idols, with strict image rules, dating bans, managed fan clubs, handshake events, and burnout. Rank-exam cram schools (juku) prepare marker-positive kids for Assessment. Yakuza families recruited Graded heavily in the bubble era of the 1980s. Many Duds become hikikomori. The 1995 Kobe earthquake made Graded rescuers national heroes. Registry: the Enhanced Persons Agency (1954).\nSOUTH KOREA: the most rank-obsessed country on Earth. The annual Graded suneung assessment can decide a teenager's entire future; hagwon cram schools run until midnight. Chaebol conglomerates sponsor hero teams. All Graded men serve two years in the military's augmented units, and women can volunteer. K-drama and K-pop have Graded stars, and hiding your rank in the entertainment industry is common. Registry: the Ministry of Enhanced Persons (1961), shaped by the Korean War, in which Graded fought on both sides."
+ },
+ {
+  "id": 114,
+  "title": "India and South Asia",
+  "kind": "region",
+  "keys": [
+   "India",
+   "Indian",
+   "Indians",
+   "Mumbai",
+   "Delhi",
+   "New Delhi",
+   "Bangalore",
+   "Bengaluru",
+   "Kolkata",
+   "Chennai",
+   "rupees",
+   "Bollywood",
+   "Pakistan",
+   "Pakistani",
+   "Bangladesh",
+   "Partition",
+   "Sahyadri"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: India and South Asia]\n1947, the same year as the Halcyon Event, was the year of Partition. The first Graded in South Asia Kindled in the middle of that violence, and their stories are still told on both sides of the border.\nINDIA: the National Enhanced Persons Bureau (1952) runs a mixed system: public-sector jobs, the army, and a huge private sector. Bollywood has made Graded heroes a film genre since the 1970s. Rank, caste, class, and religion overlap in complicated ways, and Graded from marginalized communities face prejudice on both counts; high rank can also break old barriers. India's SS-Rank is SAHYADRI (Aruna Kulkarni, 49, MAT, mountains and stone), who rebuilt Gujarat after the 2001 earthquake. Rank drain to the Gulf, UK, and US is massive, and IT companies hire TEC Graded in Bengaluru.\nPAKISTAN and BANGLADESH: their own registries since 1948 and 1972. India and Pakistan's Graded border units are a constant source of tension, and Halden inspectors watch them closely.\nMumbai: Bandra (film money), Dharavi (enterprise, poverty, Graded workshops), Colaba, and the train network where SPA Graded are banned from the carriages."
+ },
+ {
+  "id": 115,
+  "title": "Brazil and Latin America",
+  "kind": "region",
+  "keys": [
+   "Brazil",
+   "Brazilian",
+   "Rio",
+   "Rio de Janeiro",
+   "São Paulo",
+   "favela",
+   "favelas",
+   "reais",
+   "Pororoca",
+   "milícia",
+   "Mexico",
+   "Mexican",
+   "Mexico City",
+   "cartel",
+   "cartels",
+   "sicario",
+   "Colombia",
+   "Colombian",
+   "Medellín",
+   "Bogotá",
+   "Argentina",
+   "Buenos Aires",
+   "Venezuela",
+   "Cuba",
+   "Havana",
+   "pesos"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Latin America]\nBRAZIL: the military dictatorship (1964-85) used Graded in its repression, and democracy brought a truth commission and little justice. Favelas are contested by gangs and milícias (militias of off-duty police), both full of Graded. Carnival features Graded samba schools. Brazil's SS-Rank is POROROCA (Jefferson Amaral da Cunha, 61, MAT, water; named after the Amazon's tidal bore), a beloved former footballer who Kindled at 30, forcing his retirement from the game. São Paulo and Rio have huge private security industries.\nMEXICO: the cartels field more Graded than some armies, as sicarios, smugglers, and tunnel diggers (MAT). The government's Graded units are infiltrated. Mexico City has a vibrant Graded arts and lucha libre scene (the Graded lucha league is one of the most-watched sports in the country).\nCOLOMBIA: the Medellín and Cali cartels of the '80s and '90s used Graded hitmen and bodyguards; peace in 2016 left many former Graded guerrillas without a place.\nCUBA: a state Graded program with famous doctors and healers sent abroad on medical missions."
+ },
+ {
+  "id": 116,
+  "title": "Middle East and North Africa",
+  "kind": "region",
+  "keys": [
+   "Egypt",
+   "Egyptian",
+   "Cairo",
+   "Morocco",
+   "Moroccan",
+   "Casablanca",
+   "Algiers",
+   "Tunisia",
+   "Tunis",
+   "Dubai",
+   "UAE",
+   "Emirates",
+   "Saudi Arabia",
+   "Saudi",
+   "Qatar",
+   "Doha",
+   "Gulf",
+   "kafala",
+   "Iran",
+   "Iranian",
+   "Turkey",
+   "Turkish",
+   "Istanbul",
+   "Lebanon",
+   "Beirut"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: Middle East and North Africa]\nTHE GULF: the UAE, Saudi Arabia, and Qatar are short on homegrown Graded and buy foreign ones: West African, South Asian, and Eastern European Graded work security, construction, cooling (KIN), and desalination (MAT) on sponsorship contracts where employers hold their passports. Wages are high and conditions can be brutal. Dubai's towers were partly raised by Graded labor; Graded bodyguards are a status symbol for the rich.\nNORTH AFRICA: Algeria's Graded fought France for independence (1954-62). Morocco, Algeria, and Tunisia have strict registries and close (often uneasy) ties to France. Many families in the Paris banlieues and Marseille have roots here, and the smuggling routes run both ways across the Mediterranean.\nEGYPT: the Arab Spring of 2011 saw Graded protesters in Tahrir Square; the security state that followed keeps tight control of Graded.\nTURKEY and IRAN: regional powers with conscripted Graded corps and their own S-Ranks under Halden watch."
+ },
+ {
+  "id": 117,
+  "title": "East and Southern Africa",
+  "kind": "region",
+  "keys": [
+   "South Africa",
+   "South African",
+   "Johannesburg",
+   "Joburg",
+   "Cape Town",
+   "Soweto",
+   "apartheid",
+   "rand",
+   "Kenya",
+   "Kenyan",
+   "Nairobi",
+   "Mombasa",
+   "Ethiopia",
+   "Addis Ababa",
+   "Uganda",
+   "Kampala",
+   "Tanzania",
+   "Zimbabwe",
+   "Harare"
+  ],
+  "secondaryKeys": [],
+  "content": "[GRADED: East and Southern Africa]\nSOUTH AFRICA: under apartheid, the \"Enhanced Persons Registration Act\" of 1952 layered rank onto racial classification: Black Graded were conscripted into mine labor or banned outright, while white Graded served the security forces. Graded fought in the liberation struggle, from the townships to exile training camps, and the 1976 Soweto uprising included Graded students. After 1994, a Truth and Reconciliation process heard Graded testimony from both sides. Today Johannesburg has a booming Graded private security industry (the largest in the world per capita), a Graded mining scene, and deep inequality.\nKENYA: Nairobi is East Africa's tech and media hub. Graded are banned from athletics, so every Kenyan distance champion is suspected of hiding a Kindling. The Graded matatu (minibus) crews are famous for speed.\nETHIOPIA: a proud Graded military tradition; Addis Ababa hosts the African Union's Graded affairs office.\nThe rank drain hits the whole region hard: much of its trained Graded talent ends up in the Gulf or Europe."
+ }
+]

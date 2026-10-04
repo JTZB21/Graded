@@ -1,0 +1,486 @@
+<title>GRADED World Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a Bureau classification dossier. Single column of numbered form sections, each an infographic panel; rank colors come straight from the Grade Card bands. Deliberately single dark theme. */
+:root{
+  color-scheme: dark;
+  --ink:#101215; --panel:#171a1f; --panel-2:#1e2229; --rule:#2c313a;
+  --paper:#e8e4da; --muted:#9a9a93; --faint:#6b6d6c;
+  --gold:#c9a43b; --alarm:#c8443a;
+  --r-f:#8a8a86; --r-e:#b9b9b2; --r-d:#3f9a5a; --r-c:#3b78c9; --r-b:#8a55c9; --r-a:#c83e3e; --r-s:#0b0b0c; --r-ss:#e8e4da;
+  --display:"Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body:"Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--body);font-size:16px;line-height:1.6;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:.01em;text-wrap:balance;margin:0;line-height:1.05}
+h2{font-size:clamp(30px,5vw,44px);text-transform:uppercase}
+h3{font-size:22px;text-transform:uppercase}
+p{margin:0}
+.mono{font-family:var(--mono)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:68ch}
+section{padding-block:56px;border-top:1px solid var(--rule);display:grid;gap:28px}
+.sec-head{display:grid;gap:10px}
+.form-no{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.12em}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;align-items:center;padding-block:48px 56px}
+.hero h1{font-size:clamp(72px,13vw,148px);font-weight:900;letter-spacing:.06em;line-height:.9}
+.hero .tag{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.1em}
+.hero .thesis{font-size:clamp(20px,2.4vw,26px);line-height:1.35;max-width:30ch;margin-top:18px}
+.cover{border:1px solid var(--rule);display:block;width:100%;max-width:100%;aspect-ratio:2/3;object-fit:cover}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:28px}
+.stat{background:var(--panel);padding:14px 14px 12px}
+.stat b{display:block;font-family:var(--display);font-size:34px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--muted);line-height:1.35;display:block;margin-top:6px}
+
+.ladder{display:grid;gap:6px}
+.rank{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:center;background:var(--panel);padding:12px 16px 12px 0}
+.chip{height:100%;min-height:58px;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:30px;color:#fff}
+.rank .name{display:grid;gap:4px;min-width:0}
+.rank .name strong{font-family:var(--display);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.bar{height:8px;background:var(--panel-2);position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;display:block}
+.count{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rank .what{font-size:14.5px;color:var(--paper);line-height:1.45}
+.rank .what em{font-style:normal;color:var(--muted);display:block;font-size:13px;margin-top:3px}
+.note{font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+.grades{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.grade{background:var(--panel);padding:16px;display:grid;gap:10px;align-content:start}
+.grade .gn{font-family:var(--display);font-size:40px;font-weight:900;line-height:1;color:var(--gold)}
+.grade strong{font-family:var(--display);text-transform:uppercase;font-size:18px;letter-spacing:.03em}
+.grade p{font-size:14px;color:var(--muted);line-height:1.45}
+.grade .time{font-family:var(--mono);font-size:11.5px;color:var(--paper);border-top:1px solid var(--rule);padding-top:8px}
+.reach{display:grid;gap:10px;background:var(--panel);padding:20px}
+.reach-row{display:grid;grid-template-columns:72px minmax(0,1fr) 120px;gap:14px;align-items:center}
+.reach-row .lbl{font-family:var(--mono);font-size:13px}
+.reach-track{height:22px;position:relative;background:var(--panel-2)}
+.reach-track .ceil{position:absolute;inset:0 auto 0 0;border:1px dashed var(--faint)}
+.reach-track .fill{position:absolute;inset:3px auto 3px 3px}
+.reach-row .val{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
+
+.anatomy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:center}
+.card{background:var(--paper);color:#17181b;padding:18px 20px;display:grid;gap:12px;max-width:440px;width:100%}
+.card .top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+.card .body{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:center}
+.card .photo{aspect-ratio:3/4;background:#c9c5ba;display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:#6c6a63}
+.card .lines{display:grid;gap:4px;font-family:var(--mono);font-size:12px}
+.card .band{background:var(--r-b);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;font-family:var(--display);font-weight:900;font-size:30px;letter-spacing:.08em}
+.card .band small{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.1em}
+.parts{display:grid;gap:12px}
+.part{display:grid;grid-template-columns:88px minmax(0,1fr);gap:14px;align-items:baseline;border-bottom:1px solid var(--rule);padding-bottom:12px}
+.part b{font-family:var(--display);font-size:30px;font-weight:900;color:var(--gold);line-height:1}
+.part p{font-size:14.5px;color:var(--muted)}
+.part p strong{color:var(--paper);font-weight:600}
+
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.cat{background:var(--panel);padding:16px;display:grid;gap:8px;align-content:start}
+.cat .code{display:flex;justify-content:space-between;align-items:baseline}
+.cat .code b{font-family:var(--display);font-size:28px;font-weight:900;letter-spacing:.04em}
+.cat .code span{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.cat strong{font-size:14px;font-weight:600}
+.cat p{font-size:13.5px;color:var(--muted);line-height:1.45}
+.cat .share{height:4px;background:var(--panel-2)}
+.cat .share i{display:block;height:100%;background:var(--gold)}
+
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.panel{background:var(--panel);padding:20px;display:grid;gap:14px;align-content:start}
+.multi{display:grid;gap:8px}
+.multi-row{display:grid;grid-template-columns:86px minmax(0,1fr) 48px;gap:12px;align-items:center;font-size:14px}
+.multi-row .t{height:14px;background:var(--panel-2)}
+.multi-row .t i{display:block;height:100%;background:var(--paper)}
+.multi-row span:last-child{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+ul.rules{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px;color:var(--muted)}
+ul.rules strong{color:var(--paper);font-weight:600}
+
+.strain{display:grid;gap:10px}
+.gauge{display:grid;grid-template-columns:40fr 30fr 20fr 10fr;height:34px}
+.gauge div{display:flex;align-items:center;padding-inline:10px;font-family:var(--mono);font-size:12px;color:#101215;font-weight:500}
+.gauge-scale{display:grid;grid-template-columns:40fr 30fr 20fr 10fr;font-family:var(--mono);font-size:11px;color:var(--faint)}
+.gauge-legend{display:grid;grid-template-columns:40fr 30fr 20fr 10fr;gap:10px}
+.gauge-legend p{font-size:13.5px;color:var(--muted);line-height:1.45}
+.gauge-legend p strong{display:block;color:var(--paper);font-weight:600;font-size:14px}
+
+.life{display:grid;gap:14px}
+.life-track{position:relative;height:118px;background:var(--panel);overflow:hidden}
+.stage{position:absolute;top:44px;height:58px;padding:8px 10px;border-left:2px solid var(--ink);display:grid;align-content:start;gap:2px;background:var(--panel-2)}
+.stage b{font-family:var(--display);text-transform:uppercase;font-size:16px;letter-spacing:.03em;line-height:1.1}
+.stage span{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.kindle{position:absolute;top:12px;height:24px;background:color-mix(in srgb,var(--gold) 26%,transparent);border:1px solid var(--gold);display:flex;align-items:center;padding-inline:8px;font-family:var(--mono);font-size:11px;color:var(--gold);white-space:nowrap}
+.life-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.life-notes .panel p{font-size:14px;color:var(--muted)}
+
+.social{display:grid;gap:6px}
+.tier{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px;background:var(--panel);align-items:stretch}
+.tier .who{padding:14px 16px;display:grid;gap:2px;align-content:center}
+.tier .who b{font-family:var(--display);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.tier .who span{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.tier p{padding:14px 16px 14px 0;font-size:14.5px;color:var(--muted);align-self:center}
+.tier p strong{color:var(--paper);font-weight:600}
+
+.lic{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.lic .panel strong{font-family:var(--display);font-size:20px;text-transform:uppercase}
+.lic .panel p{font-size:14px;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.facts .panel p{font-size:14px;color:var(--muted)}
+.facts .panel strong{font-family:var(--display);font-size:20px;text-transform:uppercase}
+
+.factions{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.faction{background:var(--panel);padding:16px 18px;display:grid;gap:6px;align-content:start;border-top:3px solid var(--rule)}
+.faction .kind{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.faction strong{font-family:var(--display);font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.faction p{font-size:14px;color:var(--muted);line-height:1.5}
+.faction .who{font-family:var(--mono);font-size:12px;color:var(--paper)}
+
+.districts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.district{background:var(--panel);padding:14px 16px;display:grid;gap:4px}
+.district strong{font-family:var(--display);font-size:20px;text-transform:uppercase}
+.district p{font-size:13.5px;color:var(--muted)}
+
+.timeline{display:grid;gap:0;position:relative}
+.tl-row{display:grid;grid-template-columns:76px 18px minmax(0,1fr);gap:12px;align-items:start}
+.tl-row .yr{font-family:var(--mono);font-size:14px;font-weight:500;text-align:right;padding-top:2px;font-variant-numeric:tabular-nums}
+.tl-row .dot{position:relative;align-self:stretch}
+.tl-row .dot::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:1px;background:var(--rule)}
+.tl-row .dot::after{content:"";position:absolute;left:4px;top:8px;width:9px;height:9px;background:var(--ink);border:1px solid var(--muted)}
+.tl-row.big .dot::after{background:var(--alarm);border-color:var(--alarm)}
+.tl-row p{font-size:14.5px;color:var(--muted);padding-bottom:16px}
+.tl-row p strong{color:var(--paper);font-weight:600}
+.decade{font-family:var(--display);font-size:22px;text-transform:uppercase;color:var(--gold);padding:14px 0 10px 106px}
+
+.play{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+pre.panelcode{margin:0;background:var(--panel);padding:18px;font-family:var(--mono);font-size:13px;line-height:1.7;overflow-x:auto;color:var(--paper)}
+.cmds{display:grid;gap:8px}
+.cmd{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;background:var(--panel);padding:12px 14px;align-items:baseline}
+.cmd code{font-family:var(--mono);font-size:13px;color:var(--gold)}
+.cmd span{font-size:14px;color:var(--muted)}
+footer{border-top:1px solid var(--rule);padding-top:20px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+@media (max-width:860px){
+  .hero,.anatomy,.two,.play{grid-template-columns:minmax(0,1fr)}
+  .cover{max-width:360px}
+  .grades{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lic{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts,.life-notes{grid-template-columns:minmax(0,1fr)}
+  .gauge-legend{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .rank{grid-template-columns:52px minmax(0,1fr)}
+  .rank .what{grid-column:2}
+  .tier{grid-template-columns:minmax(0,1fr)}
+  .tier p{padding:0 16px 14px}
+  .life-track{height:auto;display:grid;gap:4px;padding:10px}
+  .life-track .stage,.life-track .kindle{position:static;width:auto!important;height:auto}
+}
+@media (max-width:520px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grades{grid-template-columns:minmax(0,1fr)}
+  .lic{grid-template-columns:minmax(0,1fr)}
+  .reach-row{grid-template-columns:56px minmax(0,1fr)}
+  .reach-row .val{grid-column:2;text-align:left}
+  .part{grid-template-columns:64px minmax(0,1fr)}
+  .decade{padding-left:0}
+  .tl-row{grid-template-columns:52px 18px minmax(0,1fr)}
+  .cmd{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:no-preference){
+  .bar i,.share i,.multi-row .t i{transform-origin:left;animation:grow .9s ease-out both}
+  @keyframes grow{from{transform:scaleX(.001)}to{transform:scaleX(1)}}
+}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <p class="tag">FBEA CLASSIFICATION REFERENCE · PORT HARLAN FIELD OFFICE</p>
+    <h1>GRADED</h1>
+    <p class="thesis">One in five thousand people has powers. Every one of them is tested, ranked, and carded, and the rank decides almost everything else.</p>
+    <div class="stats">
+      <div class="stat"><b>1947</b><span>First documented Graded: the Halcyon Event</span></div>
+      <div class="stat"><b>1.6M</b><span>Graded worldwide, out of 8 billion people</span></div>
+      <div class="stat"><b>10</b><span>Ranks, from useless (F) to universal (X)</span></div>
+      <div class="stat"><b>5</b><span>Most powers anyone has ever had at once</span></div>
+    </div>
+  </div>
+  <img class="cover" src="data:image/jpeg;base64,{{COVER}}" alt="Cover art: a bloodied purple B-Rank Grade Card in a rain puddle, a hooded figure with crackling hands walking toward a burning dock under a giant golden hero billboard">
+</header>
+
+<section id="ranks">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-1 · RANK</span>
+    <h2>Rank: how much power</h2>
+    <p class="lede">Rank is the raw ceiling of a person's power. It's assessed by the Bureau, printed in color on the Grade Card, and almost never changes. Bars show how many people hold each rank worldwide.</p>
+  </div>
+  <div class="ladder">
+    <div class="rank"><div class="chip" style="background:var(--r-f)">F</div><div class="name"><strong>Null · "Duds"</strong><div class="bar"><i style="width:100%;background:var(--r-f)"></i></div><span class="count">~500,000</span></div><p class="what">Cosmetic or useless. Change your eye color, always know where north is.<em>All of the paperwork, none of the respect.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--r-e);color:#26272a">E</div><div class="name"><strong>Trivial</strong><div class="bar"><i style="width:98.7%;background:var(--r-e)"></i></div><span class="count">~420,000</span></div><p class="what">Party tricks. Light a cigarette with a finger, float a coin.<em>Also called Duds. A punchline on sitcoms.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--r-d)">D</div><div class="name"><strong>Minor · "Lowgrade"</strong><div class="bar"><i style="width:97.1%;background:var(--r-d)"></i></div><span class="count">~340,000</span></div><p class="what">Peak-human or one useful niche. A trained person with the right tool can match it.<em>Blue-collar Graded: construction, demolition, couriers.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--r-c)">C</div><div class="name"><strong>Moderate · "Midgrade"</strong><div class="bar"><i style="width:93.6%;background:var(--r-c)"></i></div><span class="count">~210,000</span></div><p class="what">Clearly superhuman. Beats several armed people.<em>Street heroes, special police, gang enforcers.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--r-b)">B</div><div class="name"><strong>Major · "Highgrade"</strong><div class="bar"><i style="width:87.2%;background:var(--r-b)"></i></div><span class="count">~95,000</span></div><p class="what">A danger to a squad or a building.<em>City hero contracts. Felonies now mean the Sump.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--r-a)">A</div><div class="name"><strong>Severe</strong><div class="bar"><i style="width:76.7%;background:var(--r-a)"></i></div><span class="count">~24,000</span></div><p class="what">Military-grade. Can wreck a city block.<em>Corporate stars and warlords, earning millions a year.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--r-s);border:1px solid var(--gold);color:var(--gold)">S</div><div class="name"><strong>Strategic</strong><div class="bar"><i style="width:43.7%;background:var(--gold)"></i></div><span class="count">~310</span></div><p class="what">Can devastate a city. Treated like a weapon of mass destruction.<em>Owned by the state, tracked by treaty, never free.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--r-ss);color:#101215">SS</div><div class="name"><strong>Cataclysmic</strong><div class="bar"><i style="width:17.6%;background:var(--r-ss)"></i></div><span class="count">9 confirmed</span></div><p class="what">National or continental scale.<em>Living nuclear deterrents. Governments negotiate with them.</em></p></div>
+    <div class="rank"><div class="chip" style="background:var(--panel-2);border:1px solid var(--paper)">Ω</div><div class="name"><strong>Omega · Planetary</strong><div class="bar"><i style="width:8.4%;background:var(--paper)"></i></div><span class="count">2 confirmed</span></div><p class="what">Halcyon, in a coma in Geneva, and the Tenant, who lives in its own pocket dimension.<em>Treated like weather, not like opponents.</em></p></div>
+    <div class="rank"><div class="chip" style="background:transparent;border:1px dashed var(--muted);color:var(--muted)">X</div><div class="name"><strong>Unbounded · Universal</strong><div class="bar" style="border:1px dashed var(--rule);background:transparent"></div><span class="count">0 confirmed</span></div><p class="what">Theoretical. Would rewrite physics.<em>Rumor: Project Lantern, Ohio, 2009.</em></p></div>
+  </div>
+  <p class="note">Bar lengths use a log scale, so the rarest ranks stay visible. On a linear scale, S-Rank would be about 1/1600th of F.</p>
+</section>
+
+<section id="grades">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-2 · GRADE</span>
+    <h2>Grade: how well you use it</h2>
+    <p class="lede">Grade measures control, from I to V. Rank sets the ceiling; Grade sets how much of it you can actually reach, how precisely, and at what cost. It rises with training, use, danger, and time, and starts slipping with the Fade.</p>
+  </div>
+  <div class="grades">
+    <div class="grade"><span class="gn">I</span><strong>Raw</strong><p>Misfires under stress. Imprecise. Burns Strain fast. Most new Kindlings start here.</p><span class="time">Starting point</span></div>
+    <div class="grade"><span class="gn">II</span><strong>Functional</strong><p>Reliable basics. Can hold a Utility job without hurting anyone.</p><span class="time">I → II: months</span></div>
+    <div class="grade"><span class="gn">III</span><strong>Proficient</strong><p>Precise and combat-ready. Can improvise. Most licensed heroes.</p><span class="time">II → III: 1–3 years</span></div>
+    <div class="grade"><span class="gn">IV</span><strong>Expert</strong><p>About half the Strain of Grade II. Creative, with multiple techniques.</p><span class="time">III → IV: 3–6 years</span></div>
+    <div class="grade"><span class="gn">V</span><strong>Master</strong><p>Finds uses nobody knew the power had. Only about 5% ever get here.</p><span class="time">IV → V: a decade or more</span></div>
+  </div>
+  <div class="reach">
+    <p class="eyebrow">Why a B-IV beats an A-I</p>
+    <div class="reach-row"><span class="lbl">A-I</span><div class="reach-track"><div class="ceil" style="width:86%"></div><div class="fill" style="width:30%;background:var(--r-a)"></div></div><span class="val">huge ceiling, ~35% reached</span></div>
+    <div class="reach-row"><span class="lbl">B-IV</span><div class="reach-track"><div class="ceil" style="width:62%"></div><div class="fill" style="width:52%;background:var(--r-b)"></div></div><span class="val">lower ceiling, ~85% reached</span></div>
+    <div class="reach-row"><span class="lbl">C-V</span><div class="reach-track"><div class="ceil" style="width:42%"></div><div class="fill" style="width:40%;background:var(--r-c)"></div></div><span class="val">small ceiling, all of it</span></div>
+    <p class="note">Dashed box: the Rank ceiling. Filled bar: what the person can actually use. Illustrative, not to exact scale.</p>
+  </div>
+</section>
+
+<section id="card">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-3 · GRADE CARD</span>
+    <h2>Reading a Grade Card</h2>
+    <p class="lede">Every registered Graded carries one by law (since 1978). Police can demand it at any time, and bars, landlords, and dating apps ask for it openly. The official notation reads Rank, then Grade, then Category.</p>
+  </div>
+  <div class="anatomy">
+    <div class="card" aria-label="Example Grade Card">
+      <div class="top"><span>FEDERAL BUREAU OF ENHANCED AFFAIRS</span><span>EP-3</span></div>
+      <div class="body">
+        <div class="photo">PHOTO</div>
+        <div class="lines"><span>NAME: ________________</span><span>BUREAU NO. 07-4471-2291</span><span>CATEGORY: KIN</span><span>GRADE: III</span><span>LICENSE: UTILITY</span></div>
+      </div>
+      <div class="band"><span>B</span><small>MAJOR · PURPLE BAND</small></div>
+    </div>
+    <div class="parts">
+      <div class="part"><b>B</b><p><strong>Rank.</strong> The raw ceiling, also shown as the card's color band. This is what people see first and judge you by.</p></div>
+      <div class="part"><b>III</b><p><strong>Grade.</strong> Control and mastery. Professionals care about this more than the public does.</p></div>
+      <div class="part"><b>KIN</b><p><strong>Category.</strong> What kind of power: here, Kinetic (energy and force).</p></div>
+      <div class="part"><b class="mono" style="font-size:18px">B-III KIN</b><p><strong>Full notation.</strong> How Bureau files, recruiters, and criminals describe you.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="categories">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-4 · CATEGORY</span>
+    <h2>Ten kinds of power</h2>
+    <p class="lede">Every power has limits and costs, because the world runs on real physics. The bar under each one shows its share of all Graded.</p>
+  </div>
+  <div class="cats">
+    <div class="cat"><div class="code"><b>COR</b><span>31%</span></div><strong>Corporeal: your own body</strong><p>Strength, durability, speed, healing. Strength without durability snaps your own tendons.</p><div class="share"><i style="width:100%"></i></div></div>
+    <div class="cat"><div class="code"><b>KIN</b><span>22%</span></div><strong>Kinetic: energy and force</strong><p>Fire, electricity, light, sound, telekinesis. Fire users still choke on smoke.</p><div class="share"><i style="width:71%"></i></div></div>
+    <div class="cat"><div class="code"><b>MAT</b><span>11%</span></div><strong>Material: matter</strong><p>Earth, metal, water, density. Pull the rebar and the building falls on you.</p><div class="share"><i style="width:35%"></i></div></div>
+    <div class="cat"><div class="code"><b>PSI</b><span>9%</span></div><strong>Psionic: minds</strong><p>Telepathy, compulsion, illusion. The most feared category; B-Rank and above wear Hush Bands.</p><div class="share"><i style="width:29%"></i></div></div>
+    <div class="cat"><div class="code"><b>BIO</b><span>8%</span></div><strong>Biological: other bodies</strong><p>Healing, disease, shapeshifting. Healing always borrows from someone.</p><div class="share"><i style="width:26%"></i></div></div>
+    <div class="cat"><div class="code"><b>PER</b><span>6%</span></div><strong>Perceptive: information</strong><p>X-ray sight, danger sense, Sniffers who can sense other Graded. Information overload is the danger.</p><div class="share"><i style="width:19%"></i></div></div>
+    <div class="cat"><div class="code"><b>SPA</b><span>5%</span></div><strong>Spatial: position</strong><p>Teleportation, portals, gravity. Jump blind and you land inside a wall.</p><div class="share"><i style="width:16%"></i></div></div>
+    <div class="cat"><div class="code"><b>TEC</b><span>4%</span></div><strong>Technopathic: machines</strong><p>Electronics and networks. Strong encryption still slows them down.</p><div class="share"><i style="width:13%"></i></div></div>
+    <div class="cat"><div class="code"><b>ANO</b><span>4%</span></div><strong>Anomalous: fits nowhere</strong><p>Strange powers with odd rules the user may not fully know for years.</p><div class="share"><i style="width:13%"></i></div></div>
+    <div class="cat"><div class="code"><b>CAU</b><span>&lt;1%</span></div><strong>Causal: probability and time</strong><p>Luck, time, reality. The rarest, with the highest ceiling. Good luck takes it from someone else.</p><div class="share"><i style="width:3%"></i></div></div>
+  </div>
+</section>
+
+<section id="multi">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-5 · COST</span>
+    <h2>More powers, same body</h2>
+  </div>
+  <div class="two">
+    <div class="panel">
+      <p class="eyebrow">How many powers Graded have</p>
+      <div class="multi">
+        <div class="multi-row"><span>One</span><div class="t"><i style="width:100%"></i></div><span>80%</span></div>
+        <div class="multi-row"><span>Dual</span><div class="t"><i style="width:16.3%"></i></div><span>13%</span></div>
+        <div class="multi-row"><span>Triad</span><div class="t"><i style="width:6.3%"></i></div><span>5%</span></div>
+        <div class="multi-row"><span>Quad</span><div class="t"><i style="width:1.3%"></i></div><span>1%</span></div>
+        <div class="multi-row"><span>Quintet</span><div class="t"><i style="width:.4%"></i></div><span>41 ever</span></div>
+      </div>
+      <ul class="rules">
+        <li><strong>One shared Strain pool.</strong> Five powers drain the same reserve as one.</li>
+        <li><strong>Extra powers are weaker,</strong> usually 1–3 ranks below the main one.</li>
+        <li><strong>Rank = your strongest single power.</strong> Powers never add up to a higher rank.</li>
+        <li><strong>No Quintet has ever ranked above A.</strong> A B-IV specialist usually beats a C-II Quintet.</li>
+      </ul>
+    </div>
+    <div class="panel strain">
+      <p class="eyebrow">Strain: the cost of every use</p>
+      <div class="gauge" role="img" aria-label="Strain gauge from 0 to 100 percent with four zones">
+        <div style="background:#4f8f63">SAFE</div><div style="background:#c9a43b">SYMPTOMS</div><div style="background:#c8743a">DANGER</div><div style="background:var(--alarm);color:#fff">FLARE</div>
+      </div>
+      <div class="gauge-scale"><span>0%</span><span>40%</span><span>70%</span><span>90%</span></div>
+      <div class="gauge-legend">
+        <p><strong>0–40%</strong>Normal. Recovers 10–20% an hour with food and rest.</p>
+        <p><strong>41–70%</strong>Nosebleeds, migraines, tremors, ravenous hunger.</p>
+        <p><strong>71–90%</strong>Blackouts, organ stress, misfires.</p>
+        <p><strong>91%+</strong>Burnout (powers gone for weeks) or a Flare that can kill everyone nearby.</p>
+      </div>
+      <p class="note">The Graded burn 2–5× normal calories. Decades of high Strain cost about 6 years of life.</p>
+    </div>
+  </div>
+</section>
+
+<section id="aging">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-6 · LIFE CYCLE</span>
+    <h2>Aging changes everything</h2>
+    <p class="lede">Powers follow the body's arc. In this world, getting older changes your power, your career, your family, and how people see you.</p>
+  </div>
+  <div class="life">
+    <div class="life-track">
+      <div class="kindle" style="left:15%;width:12.5%">Kindling window 12–21</div>
+      <div class="stage" style="left:0;width:15%"><b>Latent</b><span>0–11</span></div>
+      <div class="stage" style="left:15%;width:7.5%"><b>Teen</b><span>12–17</span></div>
+      <div class="stage" style="left:22.5%;width:16.25%"><b>Rising</b><span>18–30</span></div>
+      <div class="stage" style="left:38.75%;width:17.5%"><b>Prime</b><span>31–44</span></div>
+      <div class="stage" style="left:56.25%;width:18.75%"><b>Waning</b><span>45–59 · the Fade</span></div>
+      <div class="stage" style="left:75%;width:25%"><b>Twilight</b><span>60+ · going dark</span></div>
+    </div>
+    <div class="life-notes">
+      <div class="panel"><strong class="eyebrow" style="color:var(--gold)">The Kindling</strong><p>85% of powers appear between 12 and 21, often triggered by fear, injury, or grief. You have 72 hours to report to the Bureau for Assessment.</p></div>
+      <div class="panel"><strong class="eyebrow" style="color:var(--gold)">The Fade</strong><p>From about 45, body and energy powers weaken; mind and perception powers often grow subtler. Corporate heroes are quietly retired after 40.</p></div>
+      <div class="panel"><strong class="eyebrow" style="color:var(--gold)">Going dark</strong><p>About 40% lose their powers after 60. About 3% suffer Inversion, where the power turns against the body. Children of a Graded parent: 1 in 40 Kindle.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="society">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-7 · STANDING</span>
+    <h2>Where you stand</h2>
+    <p class="lede">Rank decides your job, your rent, your dating pool, how police treat you, and your sentence. Graded rank each other ruthlessly, and baselines resent all of them.</p>
+  </div>
+  <div class="social">
+    <div class="tier"><div class="who" style="border-left:6px solid var(--gold)"><b>Strategics</b><span>S · SS · Ω</span></div><p><strong>National assets.</strong> Rich, guarded, tracked by transponder, and unable to travel freely. Feared even by other Graded.</p></div>
+    <div class="tier"><div class="who" style="border-left:6px solid var(--r-a)"><b>Highgrades</b><span>A · B</span></div><p><strong>Celebrities and contractors.</strong> Exclusive clubs, sponsorships, practical immunity from minor laws. "Bottom-B" is an insult among them.</p></div>
+    <div class="tier"><div class="who" style="border-left:6px solid var(--r-c)"><b>Mid / Lowgrades</b><span>C · D</span></div><p><strong>The working class of the powered world.</strong> Utility jobs, cops, street heroes, gang muscle. Many live in the Old Foundry.</p></div>
+    <div class="tier"><div class="who" style="border-left:6px solid var(--r-f)"><b>Duds</b><span>E · F</span></div><p><strong>All of the registration, none of the perks.</strong> Mocked by Graded and baselines alike. Some find that a "useless" power is priceless in the right job.</p></div>
+    <div class="tier"><div class="who" style="border-left:6px solid var(--paper)"><b>Baselines</b><span>99.98% of people</span></div><p><strong>Worship, envy, fear, and hate the Graded, often all at once.</strong> Graded call them "blanks"; they call Graded "freaks" and "juicers."</p></div>
+  </div>
+</section>
+
+<section id="law">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-8 · LAW</span>
+    <h2>Licenses and the law</h2>
+    <p class="lede">Registration is mandatory, and staying unregistered is a felony. Using powers in public requires a license, and sentences grow with your rank.</p>
+  </div>
+  <div class="lic">
+    <div class="panel"><strong>Civilian</strong><p>The default. No public power use. Courts rarely accept self-defense from a Graded.</p></div>
+    <div class="panel"><strong>Utility</strong><p>Power use for one job: construction, firefighting, medicine, security.</p></div>
+    <div class="panel"><strong>Vigilance</strong><p>Hero work. Needs B-Rank (or C-III+), insurance, and a sponsor who owns your image.</p></div>
+    <div class="panel"><strong>Strategic</strong><p>S-Rank and above. Military service, an approved contract, or a guarded compound.</p></div>
+  </div>
+  <div class="facts">
+    <div class="panel"><strong>The Bureau</strong><p>The Federal Bureau of Enhanced Affairs (1962). Registers, assesses, licenses, and hunts. Its armed wing is Containment.</p></div>
+    <div class="panel"><strong>Quell</strong><p>A power suppressant (since 2003). Shuts powers off for 4–72 hours. Painful, addictive, and weak against A-Rank and above.</p></div>
+    <div class="panel"><strong>The Sump</strong><p>A supermax 400 m under Nevada for B-Rank and above. Quell every 72 hours, no daylight, known only by rank and number.</p></div>
+  </div>
+</section>
+
+<section id="factions">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-9 · KNOWN ORGANIZATIONS</span>
+    <h2>Who runs Port Harlan</h2>
+  </div>
+  <div class="factions">
+    <div class="faction" style="border-top-color:var(--gold)"><span class="kind">Corporation</span><strong>Aurelian Group</strong><p>A $900B conglomerate that owns America's heroes and secretly makes Ichor, a serum that forces powers (30% of test subjects die).</p><span class="who">CEO Margit Lindahl</span></div>
+    <div class="faction" style="border-top-color:var(--gold)"><span class="kind">Hero team</span><strong>The Pinnacle</strong><p>Six corporate heroes. Spotless on TV; cover-ups, addiction, and a 2023 massacre behind the scenes.</p><span class="who">Meridian · Bulwark · Echo · Gridlock · Saint Cecile · Jackknife</span></div>
+    <div class="faction" style="border-top-color:var(--r-c)"><span class="kind">Government</span><strong>The Bureau</strong><p>Underfunded where it matters, compromised by Aurelian money, and the most hacked database in America.</p><span class="who">Deputy Director Anson Pike · Dr. Hana Okabe</span></div>
+    <div class="faction" style="border-top-color:var(--alarm)"><span class="kind">Militant baselines</span><strong>Flatline</strong><p>Hunt and kill Graded with Quell rounds and tungsten bullets. Designated terrorists in 2024.</p><span class="who">Ansel Brandvold</span></div>
+    <div class="faction" style="border-top-color:var(--r-b)"><span class="kind">Syndicate</span><strong>The Choir</strong><p>Rush (a street drug made from Ichor), mercenaries, fake Grade Cards, smuggling. Always pays its debts, and always collects.</p><span class="who">The Cantor, Vivian Sallow</span></div>
+    <div class="faction" style="border-top-color:var(--r-d)"><span class="kind">Street crew</span><strong>Low Kings</strong><p>A Riverside crew of lowgrades and Duds. Soup kitchen and chop shop in one building. Never sell Rush.</p><span class="who">Dez Uwaifo</span></div>
+    <div class="faction" style="border-top-color:var(--r-e)"><span class="kind">Civil rights</span><strong>Equal Ground</strong><p>Fights to abolish Grade Cards, the Sump, and rank-based sentencing. Secretly part-funded by Aurelian.</p><span class="who">Imani Brooks, F-Rank attorney</span></div>
+    <div class="faction" style="border-top-color:var(--r-ss)"><span class="kind">Religion</span><strong>Ascension Church</strong><p>Preaches that higher Rank means greater holiness. Feeds its faithful into Ichor trials.</p><span class="who">Prophet Lyle Danforth</span></div>
+  </div>
+</section>
+
+<section id="city">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-10 · JURISDICTION</span>
+    <h2>Port Harlan</h2>
+    <p class="lede">A grey East Coast port city of 3.1 million, with about 3,800 registered Graded and an estimated 600 unregistered. Hero fights cause about $400M in damage a year.</p>
+  </div>
+  <div class="districts">
+    <div class="district"><strong>The Spire</strong><p>Gold-glass downtown. Aurelian Tower, A-Rank-only clubs, cameras everywhere.</p></div>
+    <div class="district"><strong>Riverside Docks</strong><p>The port, the Rush trade, Low Kings turf, and the Pit fight club.</p></div>
+    <div class="district"><strong>Old Foundry</strong><p>"The Grades." A former steel district turned lowgrade ghetto. Poor and proud.</p></div>
+    <div class="district"><strong>Kesler Heights</strong><p>Baseline suburbs. Lawns, megachurches, quiet Flatline sympathy.</p></div>
+    <div class="district"><strong>Saint Bryce</strong><p>The university and the hospital, with its Strain Ward and an ER full of collateral damage.</p></div>
+    <div class="district"><strong>Federal Plaza</strong><p>The Bureau field office and Grading Center: Waiting Room C.</p></div>
+  </div>
+</section>
+
+<section id="history">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-11 · RECORD</span>
+    <h2>History, with a twist</h2>
+    <p class="lede">Real history happened here too, bent by powers. You can start the game in any year from 1947 and live through it.</p>
+  </div>
+  <div class="timeline">
+    <div class="decade">1940s–60s</div>
+    <div class="tl-row big"><span class="yr">1947</span><span class="dot"></span><p><strong>The Halcyon Event.</strong> A soldier survives an explosion and lifts the wreckage. He is the first Graded.</p></div>
+    <div class="tl-row"><span class="yr">1962</span><span class="dot"></span><p><strong>The Enhanced Persons Act.</strong> Registration becomes mandatory and the Bureau is founded.</p></div>
+    <div class="decade">1970s</div>
+    <div class="tl-row big"><span class="yr">1971</span><span class="dot"></span><p><strong>The Saigon Burn.</strong> An overworked S-Rank soldier Flares and kills about 40,000.</p></div>
+    <div class="tl-row"><span class="yr">1977</span><span class="dot"></span><p><strong>The Blackout of '77.</strong> A Flare at a substation darkens New York, followed by anti-Graded riots.</p></div>
+    <div class="tl-row"><span class="yr">1978</span><span class="dot"></span><p><strong>The Grade Card Act.</strong> Color-banded cards become mandatory.</p></div>
+    <div class="decade">1980s</div>
+    <div class="tl-row"><span class="yr">1980</span><span class="dot"></span><p><strong>Operation Eagle Claw.</strong> The hostage rescue fails when its teleporter Flares.</p></div>
+    <div class="tl-row"><span class="yr">1983</span><span class="dot"></span><p><strong>The Pinnacle is founded,</strong> the first corporate hero team. The Psi Panic hunts telepaths.</p></div>
+    <div class="tl-row big"><span class="yr">1986</span><span class="dot"></span><p><strong>Chernobyl.</strong> Graded Liquidators die containing the reactor; one survivor becomes an SS-Rank. The Sump opens.</p></div>
+    <div class="tl-row"><span class="yr">1989</span><span class="dot"></span><p><strong>The Berlin Wall falls</strong> after the Stasi's Graded unit refuses orders.</p></div>
+    <div class="decade">1990s</div>
+    <div class="tl-row big"><span class="yr">1991</span><span class="dot"></span><p><strong>The Gulf War.</strong> Paragon, the Pinnacle's leader, dies on live TV. The USSR's Graded scatter.</p></div>
+    <div class="tl-row"><span class="yr">1992</span><span class="dot"></span><p><strong>The Foundry Riots.</strong> Police are acquitted of beating a D-Rank courier, and the Old Foundry burns.</p></div>
+    <div class="tl-row"><span class="yr">1995</span><span class="dot"></span><p><strong>The Ghostline Trial.</strong> A Pinnacle hero is acquitted of murder, and the country splits.</p></div>
+    <div class="tl-row big"><span class="yr">1999</span><span class="dot"></span><p><strong>The Chicago Flare.</strong> 2,300 dead. Strain science goes mainstream.</p></div>
+    <div class="decade">2000s–now</div>
+    <div class="tl-row"><span class="yr">2003</span><span class="dot"></span><p><strong>Quell is approved,</strong> and policing changes overnight.</p></div>
+    <div class="tl-row"><span class="yr">2014</span><span class="dot"></span><p><strong>Rush hits the streets.</strong> Temporary powers for anyone, at the price of strokes and Flares.</p></div>
+    <div class="tl-row big"><span class="yr">2023</span><span class="dot"></span><p><strong>Halsey Street.</strong> A Pinnacle hero kills seven people, and it's covered up. Flatline kills a hero on a livestream.</p></div>
+    <div class="tl-row"><span class="yr">2026</span><span class="dot"></span><p><strong>Now.</strong> Rush epidemic, a corporate super-army bill in Congress, and rumors that Halcyon is waking.</p></div>
+  </div>
+</section>
+
+<section id="play">
+  <div class="sec-head">
+    <span class="form-no">FORM EP-12 · PROCEDURE</span>
+    <h2>How the game plays</h2>
+    <p class="lede">The Narrator runs the world and every NPC, and never speaks or decides for you. Be a hero, a villain, or neither. Real dice decide uncertain outcomes, and every NPC gets a fresh, uncommon name.</p>
+  </div>
+  <div class="play">
+    <pre class="panelcode">📅 Fri, 12 Apr 1991 · 23:40 | 📍 Riverside Docks
+👤 You · Age 16 (Kindling)
+⚡ C-I KIN · arc discharge
+❤️ Bruised | 🔥 Strain 55% | 💵 $38
+🪪 Civilian | ⚖️ Flagged
+⭐ Unknown | ☠️ Low | 🕶️ Low
+🎲 Fate 34 → partial success, cost</pre>
+    <div class="cmds">
+      <div class="cmd"><code>[sheet]</code><span>Your full character sheet: attributes, skills, powers, relationships.</span></div>
+      <div class="cmd"><code>[skip 2 years]</code><span>Time skip. You age, train, and the world moves on.</span></div>
+      <div class="cmd"><code>[news]</code><span>Port Harlan headlines for the current date.</span></div>
+      <div class="cmd"><code>[rank B]</code><span>Explains any rank or category.</span></div>
+      <div class="cmd"><code>roll everything</code><span>A fully random character at the creation screen.</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>GRADED · a superpowered life sim for SillyTavern · narrator card + 94-entry lorebook · Port Harlan, 1947–2026</footer>
+</div>

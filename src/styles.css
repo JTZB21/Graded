@@ -1,0 +1,24 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
+  background: #0d0f12;
+  color: #e8e4da;
+}
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+.cover {
+  width: 100%;
+  border-radius: 8px;
+}
+button {
+  font: inherit;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #7b5cc9;
+  background: #2a2140;
+  color: inherit;
+  cursor: pointer;
+}
