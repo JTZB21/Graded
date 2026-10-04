@@ -1,0 +1,11 @@
+.narrator-settings { line-height: 1.5; }
+.narrator-settings form { display: grid; gap: 8px; }
+.narrator-settings input, .narrator-settings select {
+  box-sizing: border-box; width: 100%; min-width: 0; padding: 10px;
+  font: inherit; color: inherit; background: #171a20; border: 1px solid #81788f; border-radius: 6px;
+}
+.narrator-settings form p { margin: 0 0 16px; color: #c3bdcc; }
+.settings-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.narrator-settings [role='alert'] { color: #ffb4b4; }
+.narrator-settings :focus-visible { outline: 2px solid #c5a4ff; outline-offset: 3px; }
+.narrator-settings button:disabled { opacity: .5; cursor: default; }

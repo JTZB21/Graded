@@ -10,5 +10,7 @@ Full plan with diagrams and decisions: https://claude.ai/code/artifact/780a087b-
 1. [x] **Lore import.** Card and lorebook converted into `src/data/` (118 entries, timeline events, narrator rules). Core rule tables in `src/engine/rules.ts` with tests.
 2. [ ] **Engine without AI.** Character creation with real rolls, character sheet, year-by-year time skips with aging, Grade growth, money and random events.
 3. [ ] **AI narrator.** Provider settings (NanoGPT, Claude), scene mode, lore matched by keywords, structured stat proposals validated by the engine.
+   - [x] Provider interface, NanoGPT/Claude implementations, and browser-stored keys/settings screen.
+   - [ ] Scene mode, lore matching, and engine-validated stat proposals.
 4. [ ] **Saves and legacy.** Save slots, autosave, yearly life log, continuing as a child or heir.
 5. [ ] **Polish.** Status panel and Grade Card UI, news feed, cover art and dossier styling.
