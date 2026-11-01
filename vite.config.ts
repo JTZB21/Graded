@@ -3,4 +3,6 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  // Relative asset paths so the built app also loads inside the Android wrapper.
+  base: './',
 });
