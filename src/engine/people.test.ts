@@ -90,3 +90,28 @@ describe('money for young children', () => {
     }
   });
 });
+
+describe('street kids', () => {
+  it('do not pay rent before 18', () => {
+    let s = createGame({ seed: 9, startYear: 2026, age: 11, background: 'street', powered: 'baseline' });
+    for (let i = 0; i < 5 && s.character.alive; i++) {
+      if (s.pending) s = choose(s, s.pending.options[0].id);
+      s = ageUp(s, 'school').state;
+    }
+    expect(s.character.money).toBeGreaterThan(-2000);
+  });
+});
+
+describe('mini game skill', () => {
+  it('a better score wins more fights', () => {
+    const wins = [0, 0];
+    for (let seed = 1; seed <= 80; seed++) {
+      [0, 1].forEach((skill) => {
+        const s = fresh(seed, 22, { health: 100, money: 0 });
+        const after = act(s, 'fight', skill);
+        if (after.character.money > 0) wins[skill]++;
+      });
+    }
+    expect(wins[1]).toBeGreaterThan(wins[0]);
+  });
+});

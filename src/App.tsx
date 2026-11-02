@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { GameState } from './engine/types';
+import { autosave, clearAutosave, loadAutosave, loadSlot, slotInfo, SLOTS } from './save';
 import { CreateScreen } from './ui/CreateScreen';
 import { PlayScreen } from './ui/PlayScreen';
 
 export default function App() {
-  const [game, setGame] = useState<GameState | null>(null);
+  const [game, setGame] = useState<GameState | null>(() => loadAutosave());
+
+  // Save after every move, so closing the app never loses progress.
+  useEffect(() => {
+    if (game) autosave(game);
+  }, [game]);
+
+  const saved = SLOTS.map((n) => ({ n, info: slotInfo(n) })).filter((x) => x.info);
 
   return (
     <main className={game ? 'with-nav' : ''}>
@@ -14,7 +22,21 @@ export default function App() {
           <p className="tagline">One in five thousand people has powers. The world ranks every one of them, then decides what they're worth.</p>
         </header>
       )}
-      {game ? <PlayScreen state={game} onChange={setGame} onNew={() => setGame(null)} /> : <CreateScreen onStart={setGame} />}
+      {!game && saved.length > 0 && (
+        <section className="card">
+          <p className="eyebrow">Continue a saved life</p>
+          <div className="option-list">
+            {saved.map(({ n, info }) => (
+              <button key={n} className="pill" onClick={() => setGame(loadSlot(n))}>Slot {n}: {info!.summary}</button>
+            ))}
+          </div>
+        </section>
+      )}
+      {game ? (
+        <PlayScreen state={game} onChange={setGame} onNew={() => { clearAutosave(); setGame(null); }} />
+      ) : (
+        <CreateScreen onStart={setGame} />
+      )}
     </main>
   );
 }

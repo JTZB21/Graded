@@ -108,7 +108,8 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       if (c.job?.id === 'regional-hero' || c.job?.id === 'national-hero') {
         if (rng.chance(0.5)) changeRep(c, 'fame', 1);
       }
-      if (!c.livesWithFamily) {
+      // Minors on their own (street kids) get by in squats and shelters; bills start at 18.
+      if (!c.livesWithFamily && age >= 18) {
         c.money -= dollars(RENT[c.district] + livingCost(c.graded), s.date.year);
         if (c.money < -dollars(RENT[c.district] * 3, s.date.year) && c.district !== 'Old Foundry') {
           c.district = 'Old Foundry';

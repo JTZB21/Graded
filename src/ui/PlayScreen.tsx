@@ -1,21 +1,24 @@
 import { Icon, type IconName } from './Icon';
 import { useMemo, useState } from 'react';
-import { act, ACTION_GROUPS, availableActions, ENERGY, energyOf, type ActionGroup, type ActionView } from '../engine/actions';
+import { act, ACTION_GROUPS, availableActions, ENERGY, energyOf, MINIGAMES, type ActionGroup, type ActionView } from '../engine/actions';
+import { interact } from '../engine/people';
+import { anySlots, deleteSlot, exportCode, importCode, loadSlot, saveSlot, slotInfo, SLOTS, type Slot } from '../save';
+import { MiniGame } from './MiniGames';
+import { PeopleTab } from './PeopleTab';
 import { choose } from '../engine/decisions';
 import { CATEGORIES, RANK_INFO, strainBand } from '../engine/rules';
 import { changes, formatDate, sheetRows } from '../engine/sheet';
 import { ageOf, notation, stageOf } from '../engine/state';
-import { advance, availableFocuses, FOCUS_LABELS } from '../engine/time';
+import { ageUp, availableFocuses, FOCUS_LABELS, monthsToBirthday } from '../engine/time';
 import type { Focus, GameState, LogEntry } from '../engine/types';
 
-type Tab = 'home' | 'act' | 'log' | 'self' | 'more';
+type Tab = 'home' | 'act' | 'people' | 'log' | 'self' | 'more';
 type Result = { lines: string[]; changes: string[] };
-
-const SKIPS: [string, number][] = [['6 months', 6], ['1 year', 12], ['5 years', 60]];
 
 const TABS: { id: Tab; label: string; icon: IconName }[] = [
   { id: 'home', label: 'Home', icon: 'home' },
   { id: 'act', label: 'Act', icon: 'bolt' },
+  { id: 'people', label: 'People', icon: 'people' },
   { id: 'log', label: 'Log', icon: 'log' },
   { id: 'self', label: 'Character', icon: 'id' },
   { id: 'more', label: 'More', icon: 'more' },
@@ -25,7 +28,7 @@ const TABS: { id: Tab; label: string; icon: IconName }[] = [
 const ACTION_ICONS: Record<string, IconName> = {
   gym: 'body', study: 'book', rest: 'rest', clinic: 'clinic', healer: 'spark', practice: 'target', push: 'bolt', 'show-off': 'camera',
   patrol: 'shield', 'odd-job': 'tools', 'job-hunt': 'briefcase', raise: 'trend', quit: 'door', family: 'home', 'night-out': 'glass',
-  volunteer: 'people', move: 'box', steal: 'hand', fight: 'fight', 'crew-job': 'mask', hustle: 'dice',
+  volunteer: 'people', 'make-friend': 'people', move: 'box', steal: 'hand', fight: 'fight', 'crew-job': 'mask', hustle: 'dice',
 };
 const GROUP_META: Record<ActionGroup, { icon: IconName; dot: string }> = {
   'Body and mind': { icon: 'body', dot: 'var(--c-body)' },
@@ -49,6 +52,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
 
 export function PlayScreen({ state, onChange, onNew }: { state: GameState; onChange: (s: GameState) => void; onNew: () => void }) {
   const [tab, setTab] = useState<Tab>('home');
+  const [playing, setPlaying] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
   const focuses = availableFocuses(state);
@@ -60,14 +64,14 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
   const resultOf = (next: GameState): Result => ({ lines: next.log.slice(state.log.length).map((e) => e.text), changes: changes(state, next) });
 
-  function skip(months: number) {
-    const r = advance(state, months, focus);
+  function skip() {
+    const r = ageUp(state, focus);
     onChange(r.state);
     setResult(null);
     if (r.stoppedBy === 'event' || r.stoppedBy === 'kindling') {
-      setNotice(`The skip stopped after ${r.monthsPassed} month${r.monthsPassed === 1 ? '' : 's'}.`);
+      setNotice(`Something came up ${r.monthsPassed} month${r.monthsPassed === 1 ? '' : 's'} in. Age up again to finish the year.`);
     } else setNotice(null);
-    setTab('home');
+    go('home');
   }
 
   function decide(optionId: string) {
@@ -77,12 +81,26 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
     setNotice(null);
   }
 
-  function doAction(id: string) {
-    const next = act(state, id);
+  function doAction(id: string, skill?: number) {
+    if (skill === undefined && MINIGAMES[id]) {
+      setPlaying(id);
+      return;
+    }
+    setPlaying(null);
+    const next = act(state, id, skill);
     onChange(next);
     setResult(resultOf(next));
     setNotice(null);
   }
+
+  function doInteract(personId: string, id: string) {
+    const next = interact(state, personId, id);
+    onChange(next);
+    setResult(resultOf(next));
+    setNotice(null);
+  }
+
+  const monthsLeft = monthsToBirthday(state);
 
   function go(next: Tab, anchor?: string) {
     setTab(next);
@@ -123,33 +141,27 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
           <ProfileCard state={state} energy={energy} />
           {decision}
           {resultCard}
-          {c.alive && !state.pending && (
-            <section className="card time">
-              <label className="field">
-                <span>Focus</span>
-                <select value={focus} onChange={(e) => setChosen(e.target.value as Focus)}>
-                  {focuses.map((f) => <option key={f} value={f}>{FOCUS_LABELS[f]}</option>)}
-                </select>
-              </label>
-              <button className="age-up" onClick={() => skip(1)}>Next month <span aria-hidden>»</span></button>
-              <div className="skip-row">
-                {SKIPS.map(([label, m]) => <button key={label} className="pill small" onClick={() => skip(m)}>{label}</button>)}
-              </div>
-              {notice && <p className="warn">{notice}</p>}
-              {actions.length > 0 && (
-                <button className="link" onClick={() => go('act')}>
-                  {energy > 0 ? `${energy} energy left this month · see what you can do ›` : 'Out of energy this month'}
-                </button>
-              )}
-            </section>
-          )}
+          {notice && !state.pending && <p className="warn page-note">{notice}</p>}
           {!c.alive && (
             <section className="card">
-              <p className="warn">{c.name} has died. Legacy play (continuing as a child or heir) arrives with saves.</p>
+              <p className="warn">{c.name} has died. Legacy play (continuing as a child or heir) comes in a later update.</p>
               <button className="age-up" onClick={onNew}>Start a new life</button>
             </section>
           )}
-          <LogCard entries={state.log.slice(-6).reverse()} title="Latest" onMore={() => go('log')} />
+          <LogCard entries={state.log.slice(-15).reverse()} title="Life log" onMore={() => go('log')} />
+          {c.alive && !state.pending && (
+            <div className="age-dock">
+              <label className="dock-focus">
+                <span className="sr-only">Focus for this year</span>
+                <select value={focus} onChange={(e) => setChosen(e.target.value as Focus)} aria-label="Focus for this year">
+                  {focuses.map((f) => <option key={f} value={f}>{FOCUS_LABELS[f]}</option>)}
+                </select>
+              </label>
+              <button className="age-up" onClick={skip}>
+                Age up +1 year{monthsLeft < 12 ? <small> · {monthsLeft} mo</small> : null}
+              </button>
+            </div>
+          )}
         </>
       )}
 
@@ -160,9 +172,23 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
         </>
       )}
 
+      {tab === 'people' && (
+        <>
+          {resultCard}
+          <PeopleTab
+            state={state}
+            friendAction={actions.find((a) => a.id === 'make-friend')}
+            onMakeFriend={() => doAction('make-friend')}
+            onInteract={doInteract}
+          />
+        </>
+      )}
       {tab === 'log' && <LogTab log={state.log} />}
       {tab === 'self' && <SelfTab state={state} />}
-      {tab === 'more' && <MoreTab onNew={onNew} />}
+      {tab === 'more' && <MoreTab state={state} onLoad={(g) => { onChange(g); setResult(null); setNotice(null); go('home'); }} onNew={onNew} />}
+      {playing && MINIGAMES[playing] && (
+        <MiniGame kind={MINIGAMES[playing]} onDone={(score) => doAction(playing, score)} onCancel={() => setPlaying(null)} />
+      )}
 
       <nav className="bottom-nav" aria-label="Sections">
         {TABS.map((t) => (
@@ -295,10 +321,10 @@ function ActTab({ actions, energy, alive, pending, onAct }: { actions: ActionVie
   return (
     <>
       <div className="page-head">
-        <h2>This month</h2>
-        <p className="muted">Each action costs energy. Energy refills when time moves.</p>
+        <h2>This year</h2>
+        <p className="muted">Each action costs energy. Energy refills when you age up. Actions marked with a game let you play for better odds.</p>
       </div>
-      {energy === 0 && actions.length > 0 && <p className="warn page-note">You are out of energy for this month. Skip ahead from Home to keep going.</p>}
+      {energy === 0 && actions.length > 0 && <p className="warn page-note">You are out of energy for this year. Age up from Home to keep going.</p>}
       {ACTION_GROUPS.map((g) => {
         const list = actions.filter((a) => a.group === g);
         if (!list.length) return null;
@@ -310,7 +336,7 @@ function ActTab({ actions, energy, alive, pending, onAct }: { actions: ActionVie
                 <button key={a.id} className="tile" disabled={!!a.disabled} title={a.disabled} onClick={() => onAct(a.id)}>
                   <span className="tile-icon" aria-hidden><Icon name={ACTION_ICONS[a.id] ?? GROUP_META[g].icon} /></span>
                   <span className="tile-label">{a.label}</span>
-                  <small>{a.cost} energy{a.price ? ` · ${compactMoney(a.price)}` : ''}</small>
+                  <small>{a.cost} energy{a.price ? ` · ${compactMoney(a.price)}` : ''}{MINIGAMES[a.id] ? ' · game' : ''}</small>
                   {a.disabled && <small className="why">{a.disabled}</small>}
                 </button>
               ))}
@@ -381,17 +407,85 @@ function SelfTab({ state }: { state: GameState }) {
   );
 }
 
-function MoreTab({ onNew }: { onNew: () => void }) {
+function MoreTab({ state, onLoad, onNew }: { state: GameState; onLoad: (g: GameState) => void; onNew: () => void }) {
+  const [, refresh] = useState(0);
+  const [code, setCode] = useState('');
+  const [msg, setMsg] = useState<string | null>(null);
+
+  function save(n: Slot) {
+    if (slotInfo(n) && !confirm(`Overwrite slot ${n}?`)) return;
+    setMsg(saveSlot(n, state) ? `Saved to slot ${n}.` : 'Could not save. Storage may be full or blocked.');
+    refresh((x) => x + 1);
+  }
+  function load(n: Slot) {
+    const g = loadSlot(n);
+    if (!g) return setMsg('That save could not be read.');
+    if (confirm(`Load slot ${n}? Unsaved progress in this life is lost.`)) onLoad(g);
+  }
+  function remove(n: Slot) {
+    if (!confirm(`Delete slot ${n}?`)) return;
+    deleteSlot(n);
+    refresh((x) => x + 1);
+  }
+  async function copy() {
+    const text = exportCode(state);
+    try {
+      await navigator.clipboard.writeText(text);
+      setMsg('Save code copied. Paste it into a note to keep it safe.');
+    } catch {
+      setCode(text);
+      setMsg('Copy failed, so the code is in the box below. Select it and copy it by hand.');
+    }
+  }
+  function paste() {
+    const g = importCode(code);
+    if (!g) return setMsg('That is not a GRADED save code.');
+    if (confirm(`Load ${g.character.name}? Unsaved progress in this life is lost.`)) onLoad(g);
+  }
+
   return (
     <>
       <div className="page-head">
         <h2>More</h2>
-        <p className="muted">Manage this life.</p>
+        <p className="muted">Saves and this life. The game also saves itself after every move.</p>
       </div>
       <section className="card">
+        <h3>Save slots</h3>
+        <p className="hint">Saves stay on this device.</p>
+        <div className="slot-list">
+          {SLOTS.map((n) => {
+            const info = slotInfo(n);
+            return (
+              <div key={n} className="slot">
+                <div>
+                  <strong>Slot {n}</strong>
+                  <p className="muted">{info ? `${info.summary} · saved ${new Date(info.savedAt).toLocaleString()}` : 'Empty'}</p>
+                </div>
+                <div className="slot-buttons">
+                  <button className="pill small" onClick={() => save(n)}>Save</button>
+                  {info && <button className="pill small" onClick={() => load(n)}>Load</button>}
+                  {info && <button className="pill small" onClick={() => remove(n)} aria-label={`Delete slot ${n}`}>Delete</button>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {msg && <p className="warn" role="status">{msg}</p>}
+      </section>
+      <section className="card">
+        <h3>Back up or move a save</h3>
+        <p className="hint">Copy a save code to keep it somewhere safe, or paste one to load it (for example, from your PC to your phone).</p>
+        <button className="pill" onClick={copy}><Icon name="log" /> Copy save code</button>
+        <label className="field" style={{ marginTop: 12 }}>
+          <span>Paste a save code</span>
+          <textarea className="code-box" value={code} onChange={(e) => setCode(e.target.value)} rows={3} placeholder="GRADED1:..." />
+        </label>
+        <button className="pill" onClick={paste} disabled={!code.trim()} style={{ marginTop: 8 }}>Load from code</button>
+      </section>
+      <section className="card">
         <h3>Start a new life</h3>
-        <p className="hint">Starting over replaces your current character and their history.</p>
-        <button className="pill" onClick={() => { if (confirm('Start a new life? This one will be lost.')) onNew(); }}>
+        <p className="hint">Starting over replaces your current character. Save to a slot first to keep them{anySlots() ? '' : ' (you have no saves yet)'}.</p>
+        <button className="pill" onClick={() => { if (confirm('Start a new life? Unsaved progress in this one is lost.')) onNew(); }}>
           <Icon name="seed" /> New life
         </button>
       </section>

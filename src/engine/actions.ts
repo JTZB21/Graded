@@ -23,7 +23,16 @@ interface Ctx {
   age: number;
   year: number;
   imprisoned: boolean;
+  /** How well the player did in the action's mini game, 0-1. 0.5 is an average result (or no game played). */
+  skill: number;
 }
+
+/** Actions that come with a mini game. Its score nudges the odds; the engine still rolls the result. */
+export const MINIGAMES: Record<string, 'memory' | 'lockpick' | 'timing'> = {
+  study: 'memory',
+  steal: 'lockpick',
+  fight: 'timing',
+};
 
 interface ActionSpec {
   id: string;
@@ -117,7 +126,7 @@ export const ACTIONS: ActionSpec[] = [
     cost: 1,
     when: (x) => x.age >= 6,
     apply: (s, rng, x) => {
-      const up = improve(x.c, rng, 'mind', 0.07);
+      const up = improve(x.c, rng, 'mind', 0.07 * (0.5 + x.skill));
       if (x.imprisoned) say(s, rng, 'life', up ? 'act.study.prison-up' : 'act.study.prison');
       else say(s, rng, 'life', up ? 'act.study.up' : 'act.study');
     },
@@ -419,7 +428,7 @@ export const ACTIONS: ActionSpec[] = [
     when: (x) => free(x) && x.age >= 10,
     apply: (s, rng, x) => {
       const c = x.c;
-      if (rng.chance(Math.max(0.03, 0.14 - c.nerve * 0.008 + c.infamy / 1000))) {
+      if (rng.chance(Math.max(0.02, (0.14 - c.nerve * 0.008 + c.infamy / 1000) * (1.5 - x.skill)))) {
         changeRep(c, 'infamy', 1);
         if (x.age < 16) {
           say(s, rng, 'law', 'act.steal.caught-minor');
@@ -445,7 +454,7 @@ export const ACTIONS: ActionSpec[] = [
     apply: (s, rng, x) => {
       const c = x.c;
       if (powered(c)) addStrain(c, 20);
-      const you = c.body + c.nerve + (powered(c) ? (rankIdx(c) + 1) * 2 + gradeIdx(c) : 0) + rng.int(1, 10);
+      const you = c.body + c.nerve + (powered(c) ? (rankIdx(c) + 1) * 2 + gradeIdx(c) : 0) + rng.int(1, 10) + Math.round((x.skill - 0.5) * 6);
       // Promoters match you near your weight class, with a thumb on the scale.
       const them = c.body + c.nerve + (powered(c) ? (rankIdx(c) + 1) * 2 : 0) + rng.int(2, 10);
       if (you >= them) {
@@ -509,10 +518,10 @@ export const ACTIONS: ActionSpec[] = [
   },
 ];
 
-const ctxOf = (s: GameState): Ctx => {
+const ctxOf = (s: GameState, skill = 0.5): Ctx => {
   const c = s.character;
   const imprisoned = !!c.inPrisonUntil && c.inPrisonUntil.year * 12 + c.inPrisonUntil.month > s.date.year * 12 + s.date.month;
-  return { c, age: ageOf(s), year: s.date.year, imprisoned };
+  return { c, age: ageOf(s), year: s.date.year, imprisoned, skill: Math.max(0, Math.min(1, skill)) };
 };
 
 const priceOf = (spec: ActionSpec, x: Ctx) => (spec.price ? dollars(spec.price(x), x.year) : 0);
@@ -533,14 +542,17 @@ export function availableActions(s: GameState): ActionView[] {
   });
 }
 
-/** Takes an action this turn. Returns a new state; the input is never changed. */
-export function act(state: GameState, id: string): GameState {
+/**
+ * Takes an action this turn. Returns a new state; the input is never changed.
+ * `skill` is the mini game score (0-1) for actions in MINIGAMES; leave it out for an average result.
+ */
+export function act(state: GameState, id: string, skill = 0.5): GameState {
   const view = availableActions(state).find((a) => a.id === id);
   if (!view) throw new Error(`"${id}" is not available right now`);
   if (view.disabled) throw new Error(`"${id}": ${view.disabled}`);
   const s: GameState = structuredClone(state);
   const spec = ACTIONS.find((a) => a.id === id)!;
-  const x = ctxOf(s);
+  const x = ctxOf(s, skill);
   const rng = new Rng(s.rngState);
   s.energy = energyOf(s) - spec.cost;
   s.character.money -= view.price;

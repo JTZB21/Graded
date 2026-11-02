@@ -216,3 +216,66 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
   *, *::before, *::after { scroll-behavior: auto !important; }
 }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* Age up dock: pinned above the bottom bar on Home, so the log sits right under the stats. */
+main.with-nav:has(.age-dock) { padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
+.age-dock { position: fixed; left: 0; right: 0; bottom: calc(68px + env(safe-area-inset-bottom)); z-index: 9; max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 8px; padding: 8px 12px; background: rgba(239, 235, 227, 0.96); backdrop-filter: blur(8px); border-top: 1px solid var(--line); }
+.age-dock select { height: 100%; border-radius: 999px; font-size: 0.9rem; }
+.age-dock .age-up { padding: 12px 14px; font-size: 1.15rem; }
+.age-dock .age-up small { font-size: 0.75rem; font-style: normal; opacity: 0.8; }
+.bottom-nav { grid-template-columns: repeat(6, 1fr); gap: 2px; padding-left: 6px; padding-right: 6px; }
+.bottom-nav button { font-size: 0.68rem; }
+
+/* People */
+.people-list { padding: 6px 12px; }
+.person-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; width: 100%; padding: 12px 2px; background: none; border: 0; border-bottom: 1px solid var(--line); text-align: left; color: inherit; font: inherit; }
+.person-row:last-child { border-bottom: 0; }
+.person-row.gone { opacity: 0.55; }
+.person-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.person-text strong { font-family: var(--serif); overflow-wrap: anywhere; }
+.person-text small { color: var(--muted); }
+.person-text .bar { margin-top: 4px; }
+.bar span { display: block; height: 100%; border-radius: 6px; }
+.person-bond { display: flex; flex-direction: column; align-items: flex-end; font-weight: 700; font-size: 1.1rem; color: #a2475d; }
+.person-bond small { font-size: 0.7rem; font-weight: 600; color: var(--muted); }
+.page-note { margin: 10px 0 0; }
+.pill small.why { color: var(--warn); font-weight: 500; }
+.pill:disabled { opacity: 0.6; }
+
+/* Bottom sheet (person panel, mini games) */
+.sheet-backdrop { position: fixed; inset: 0; z-index: 30; background: rgba(30, 25, 15, 0.45); display: flex; align-items: flex-end; justify-content: center; }
+.sheet-panel { width: 100%; max-width: 640px; max-height: 88vh; overflow-y: auto; background: var(--card); border-radius: 22px 22px 0 0; padding: 20px 18px calc(20px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 6px; }
+.sheet-panel h2 { margin: 0; }
+.sheet-panel .link { align-self: flex-start; margin-top: 6px; }
+
+/* Saves */
+.slot-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.slot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.slot:last-child { border-bottom: 0; }
+.slot p { font-size: 0.85rem; }
+.slot-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.code-box { font: 0.8rem ui-monospace, monospace; color: var(--ink); background: var(--tile); border: 1px solid var(--edge); border-radius: 12px; padding: 10px; width: 100%; box-sizing: border-box; resize: vertical; }
+
+/* Mini games */
+.minigame { align-items: stretch; text-align: center; }
+.minigame .muted { margin-bottom: 8px; }
+.mg-status { font-weight: 700; margin: 6px 0; }
+.mg-score { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--accent); margin: 14px 0; }
+.mg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(280px, 100%); margin: 8px auto 12px; }
+.mg-cell { aspect-ratio: 1; border-radius: 16px; border: 1px solid var(--edge); background: var(--tile); }
+.mg-cell.lit { background: var(--c-mind); border-color: var(--c-mind); }
+.mg-track { position: relative; height: 34px; border-radius: 999px; background: #e8e3d8; margin: 14px 0; overflow: hidden; }
+.mg-zone { position: absolute; top: 0; height: 100%; background: var(--c-health); opacity: 0.7; }
+.mg-marker { position: absolute; top: -2px; width: 6px; height: 38px; margin-left: -3px; background: var(--ink); border-radius: 3px; }
+.mg-strike { height: 170px; margin: 10px 0; border-radius: 22px; border: 0; background: #d8d2c5; color: var(--ink); font-family: var(--serif); font-size: 2rem; font-weight: 700; touch-action: manipulation; }
+.mg-strike.go { background: var(--c-infamy); color: #fff; }
+
+/* Compact stat grid on Home, so the life log starts higher up the screen. */
+.profile .stat-grid.vitals, .profile .stat-grid.reputation { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.profile .stat-grid.attributes { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.profile .stat-grid .stat:last-child { grid-column: auto; }
+.profile .stat { padding: 8px 7px; }
+.profile .stat-label { font-size: 0.66rem; gap: 3px; white-space: nowrap; }
+.profile .stat-value { font-size: 1.05rem; margin: 4px 0 6px; }
+.profile .meter-caption { display: none; }
+.profile .eyebrow { margin: 12px 0 8px; }
