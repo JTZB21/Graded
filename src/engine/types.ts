@@ -82,6 +82,28 @@ export interface Character {
   raiseAskedYear?: number;
 
   alive: boolean;
+  /** Family and friends (see people.ts). Missing on saves from before the family system. */
+  people?: Person[];
+}
+
+export type Relation = 'mother' | 'father' | 'guardian' | 'sibling' | 'friend';
+
+export interface Person {
+  id: string;
+  name: string;
+  relation: Relation;
+  /** Birth year. A sibling born after the current year has not arrived yet. */
+  born: number;
+  /** How close you are, 0-100. */
+  bond: number;
+  alive: boolean;
+  /** Household wealth in 2026 dollars (parents and guardians). */
+  wealth?: number;
+  /** Times you have spent with them. */
+  moments: number;
+  /** Turn number and count of the last interactions, to limit them per turn. */
+  usedTurn?: number;
+  usedCount?: number;
 }
 
 export interface LogEntry {
@@ -112,4 +134,6 @@ export interface GameState {
   pending?: Decision | null;
   /** Energy left for actions this month (see actions.ts). Refills when time moves. Missing means full. */
   energy?: number;
+  /** Counts time skips (turns). Used to limit interactions per turn. */
+  turn?: number;
 }

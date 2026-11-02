@@ -1,5 +1,6 @@
 // Character creation, following the card's creation questions. Anything left out is rolled.
 
+import { makeFamily } from './people';
 import { dollars, eligibleJobs, hire, jobLicense } from './economy';
 import { kindle } from './powers';
 import { Rng, newSeed } from './random';
@@ -116,6 +117,10 @@ export function createGame(opts: CreationOptions = {}): GameState {
   if (background === 'foster system') changeAttr(c, 'nerve', 1);
   if (age >= 22 && (background === 'wealthy' || c.mind >= 7)) c.education = 'college';
   if (age >= 18) c.money = dollars(SAVINGS[background] * Math.min(1, 0.3 + (age - 18) / 20), startYear);
+
+  c.people = makeFamily(c, rng);
+  // Older characters may have lost parents already.
+  for (const p of c.people) if (p.relation !== 'sibling' && startYear - p.born > 80 && rng.chance(0.7)) p.alive = false;
 
   const s: GameState = { version: 1, rngState: rng.state, date: { year: startYear, month: 1 }, city: 'Port Harlan', character: c, log: [] };
   say(s, rng, 'life', 'start.intro', { background });

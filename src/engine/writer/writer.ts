@@ -89,8 +89,8 @@ const BANNED = new Set([
   'Rowan', 'Finn', 'Jax', 'Mira', 'Orion', 'Damien', 'Viktor', 'Liam', 'Ethan', 'Vale', 'Thorne', 'Hale', 'Voss',
   'Vance', 'Blackwood', 'Sterling', 'Cross', 'Steele', 'Reyes', 'Chen', 'Morrow', 'Kane', 'Ashford',
 ]);
-const FIRST_NAMES = narrator.defaultNameSeeds.first.filter((n) => !BANNED.has(n));
-const LAST_NAMES = narrator.defaultNameSeeds.last.filter((n) => !BANNED.has(n));
+export const FIRST_NAMES = narrator.defaultNameSeeds.first.filter((n) => !BANNED.has(n));
+export const LAST_NAMES = narrator.defaultNameSeeds.last.filter((n) => !BANNED.has(n));
 
 const rough = (d: District) => d === 'Old Foundry' || d === 'Riverside Docks';
 const rankIndex = (r: Rank) => RANKS.indexOf(r);

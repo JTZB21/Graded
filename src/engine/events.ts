@@ -89,9 +89,14 @@ export const EVENTS: LifeEvent[] = [
   {
     id: 'illness',
     weight: () => 1.5,
-    run: (s, rng) => {
+    run: (s, rng, ctx) => {
       hurt(s, rng.int(10, 25));
       const graded = s.character.graded;
+      // A child's bills go to the parents.
+      if (ctx.age < 18 && s.character.livesWithFamily) {
+        say(s, rng, 'event', 'event.illness.child');
+        return;
+      }
       const cost = pay(s, rng.int(400, 3000) * (graded ? 2 : 1));
       say(s, rng, 'event', graded ? 'event.illness.graded' : 'event.illness', { money: cost });
     },
@@ -109,8 +114,15 @@ export const EVENTS: LifeEvent[] = [
   },
   {
     id: 'windfall',
-    weight: () => 0.8,
-    run: (s, rng) => {
+    // Babies find nothing; kids find pocket money; adults find real money.
+    weight: (_c, ctx) => (ctx.age >= 6 ? 0.8 : 0),
+    run: (s, rng, ctx) => {
+      if (ctx.age < 16) {
+        const found = dollars(rng.int(5, 60), s.date.year);
+        s.character.money += found;
+        say(s, rng, 'money', 'money.windfall.kid', { money: found });
+        return;
+      }
       const gain = dollars(rng.int(200, 2500), s.date.year);
       s.character.money += gain;
       say(s, rng, 'money', 'money.windfall', { money: gain });
