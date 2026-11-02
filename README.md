@@ -16,3 +16,9 @@ npm run build      # typecheck and production build
 ## Status
 
 Milestones 1 to 3 are done: you can create a character in Port Harlan, live their life through time skips, and make the big choices when the game stops to ask. See [docs/PLAN.md](docs/PLAN.md) for the full plan and what comes next.
+
+## Android
+
+The app is wrapped with [Capacitor](https://capacitorjs.com/) (`android/`). Every push and pull request runs the **Android APK** GitHub Action, which builds a debug APK and attaches it to the run as the `GRADED-apk` artifact. The APK is signed with a fixed debug key (`android/app/debug.keystore`) so new builds install over old ones without losing saves.
+
+To rebuild locally with Android Studio: `npm run android:sync`, then open `android/` in Android Studio.

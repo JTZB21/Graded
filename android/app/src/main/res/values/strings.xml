@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GRADED</string>
+    <string name="title_activity_main">GRADED</string>
+    <string name="package_name">com.jtzb21.graded</string>
+    <string name="custom_url_scheme">com.jtzb21.graded</string>
+</resources>
