@@ -42,7 +42,7 @@ export function CreateScreen({ onStart }: { onStart: (s: GameState) => void }) {
   const strategic = powered === 'choose' && (rank === 'S' || rank === 'SS' || rank === 'Ω' || rank === 'X');
 
   return (
-    <section className="panel">
+    <section className="card create">
       <img className="cover" src="/cover.png" alt="" />
       <h2>Build your character</h2>
       <p className="hint">Anything left on "roll" is rolled for you. You start in Port Harlan.</p>
@@ -118,9 +118,9 @@ export function CreateScreen({ onStart }: { onStart: (s: GameState) => void }) {
         </label>
       </div>
       {strategic && <p className="warn">The world will treat you as a strategic asset from day one: owned, watched, and tracked by treaty.</p>}
-      <div className="actions">
-        <button onClick={start}>Begin</button>
-        <button className="secondary" onClick={() => onStart(createGame())}>Roll everything</button>
+      <div className="create-actions">
+        <button className="age-up" onClick={start}>Begin</button>
+        <button className="pill" onClick={() => onStart(createGame())}>Roll everything</button>
       </div>
     </section>
   );
