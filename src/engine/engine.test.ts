@@ -1,14 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { createGame } from './creation';
+import { choose } from './decisions';
 import { priceLevel } from './economy';
 import { ageOf } from './state';
 import { advance, availableFocuses } from './time';
 import type { Focus, GameState } from './types';
 
-/** Skips month by month until `months` pass, continuing through pauses (but not death). */
+/** Skips month by month until `months` pass, taking the first option at each decision (but not past death). */
 function live(s: GameState, months: number, focus: Focus): GameState {
   let left = months;
   while (left > 0 && s.character.alive) {
+    if (s.pending) s = choose(s, s.pending.options[0].id);
     const r = advance(s, left, focus);
     s = r.state;
     left -= r.monthsPassed;

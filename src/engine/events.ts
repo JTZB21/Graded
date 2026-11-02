@@ -1,15 +1,20 @@
 // Random life events, drawn with the World roll during time skips.
-// Weights depend on age, district, focus, Rank and reputation. `pause` events stop a skip for a decision.
+// Weights depend on age, year, district, focus, Rank, reputation and ties. The engine decides every
+// number here; the writer (./writer) turns each outcome into prose. Events that need the player
+// offer a decision (./decisions) and stop the skip.
 
+import { offer } from './decisions';
 import { dollars } from './economy';
 import { RANKS } from './rules';
 import type { Rng } from './random';
-import { changeAttr, changeRep, log } from './state';
+import { changeAttr, changeRep } from './state';
 import type { Character, District, Focus, GameState } from './types';
+import { say } from './writer/writer';
 
 export interface EventContext {
   age: number;
   focus: Focus;
+  year: number;
 }
 
 export interface LifeEvent {
@@ -22,6 +27,7 @@ const rough = (d: District) => d === 'Old Foundry' || d === 'Riverside Docks';
 const rankAtLeast = (c: Character, r: (typeof RANKS)[number]) =>
   c.graded && !c.powersGone && RANKS.indexOf(c.powers[0].rank) >= RANKS.indexOf(r);
 const lowRank = (c: Character) => c.graded && RANKS.indexOf(c.powers[0].rank) <= 1;
+const tied = (c: Character, group: string) => (c.ties ?? []).includes(group);
 
 function hurt(s: GameState, amount: number) {
   s.character.health = Math.max(0, s.character.health - amount);
@@ -39,44 +45,44 @@ export const EVENTS: LifeEvent[] = [
     run: (s, rng) => {
       if (rng.chance(0.3)) {
         hurt(s, rng.int(10, 30));
-        log(s, 'event', 'Two Highgrades take a disagreement through your block. A slab of facade catches you on the way down. The sponsor\'s statement calls it "minimal collateral."');
-      } else {
-        log(s, 'event', 'A hero fight shuts down your street for a day. The H-Line is out again, and the cleanup bill goes to the city.');
-      }
+        say(s, rng, 'event', 'event.hero-fight.hurt');
+      } else say(s, rng, 'event', 'event.hero-fight');
     },
   },
   {
     id: 'card-check',
-    weight: (c, ctx) => (c.graded && ctx.age >= 12 ? (rough(c.district) ? 3 : 1) : 0),
-    run: (s) => {
+    weight: (c, ctx) => (c.graded && ctx.age >= 12 && ctx.year >= 1962 ? (rough(c.district) ? 3 : 1) : 0),
+    run: (s, rng) => {
       const c = s.character;
       if (c.infamy >= 25) {
-        log(s, 'law', 'A card check turns into a night in a holding cell. Someone recognized your name.');
         changeRep(c, 'infamy', 2);
-      } else {
-        log(s, 'law', 'Police stop you for a card check on the way home. It takes forty minutes and they are not polite about it.');
-      }
+        say(s, rng, 'law', 'law.card-check.held');
+      } else say(s, rng, 'law', 'law.card-check');
     },
   },
   {
     id: 'rush-offer',
-    weight: (c, ctx) => (ctx.age >= 14 && rough(c.district) ? 2 : 0),
-    run: (s) => log(s, 'event', 'Someone on the corner offers you Rush. "Ten minutes of being an A-Rank," he says. You keep walking, this time.'),
+    // Rush from 2014; before that, Burn (the 1980s Strain amphetamine) fills the same corner.
+    weight: (c, ctx) => (ctx.age >= 14 && ctx.year >= 1980 && rough(c.district) ? 1 : 0),
+    run: (s, rng) => {
+      offer(s, rng, 'rush-offer', s.date.year >= 2014 ? 'event.rush-offer' : 'event.burn-offer');
+      return { pause: true };
+    },
   },
   {
     id: 'promotion',
     weight: (c, ctx) => (c.job && ctx.focus === 'work' ? 2 + c.mind / 3 : 0),
-    run: (s) => {
+    run: (s, rng) => {
       const job = s.character.job!;
       job.salary = Math.round((job.salary * 1.12) / 100) * 100;
-      log(s, 'money', `You get a raise. ${job.title} now pays $${job.salary.toLocaleString()} a year.`);
+      say(s, rng, 'money', 'money.promotion', { job: job.title, salary: job.salary });
     },
   },
   {
     id: 'laid-off',
     weight: (c) => (c.job && c.job.id !== 'strategic' ? 1 : 0),
-    run: (s) => {
-      log(s, 'money', `You are let go from your job as ${s.character.job!.title}. The letter mentions "restructuring."`);
+    run: (s, rng) => {
+      say(s, rng, 'money', 'money.laid-off', { job: s.character.job!.title });
       s.character.job = null;
     },
   },
@@ -85,19 +91,20 @@ export const EVENTS: LifeEvent[] = [
     weight: () => 1.5,
     run: (s, rng) => {
       hurt(s, rng.int(10, 25));
-      const surcharge = s.character.graded ? 2 : 1;
-      const cost = pay(s, rng.int(400, 3000) * surcharge);
-      log(s, 'event', `You get badly sick. Saint Bryce bills you $${cost.toLocaleString()}${surcharge > 1 ? ', Graded surcharge included' : ''}.`);
+      const graded = s.character.graded;
+      const cost = pay(s, rng.int(400, 3000) * (graded ? 2 : 1));
+      say(s, rng, 'event', graded ? 'event.illness.graded' : 'event.illness', { money: cost });
     },
   },
   {
     id: 'mugged',
-    weight: (c, ctx) => (ctx.age >= 14 && rough(c.district) && !rankAtLeast(c, 'C') ? 2 : 0),
+    // Nobody in Riverside robs a Low King.
+    weight: (c, ctx) => (ctx.age >= 14 && rough(c.district) && !rankAtLeast(c, 'C') && !tied(c, 'Low Kings') ? 2 : 0),
     run: (s, rng) => {
       const cost = Math.min(Math.max(0, s.character.money), dollars(rng.int(50, 400), s.date.year));
       s.character.money -= cost;
       hurt(s, rng.int(0, 10));
-      log(s, 'event', `You are mugged two blocks from home and lose $${cost.toLocaleString()}.`);
+      say(s, rng, 'event', 'event.mugged', { money: cost });
     },
   },
   {
@@ -106,18 +113,15 @@ export const EVENTS: LifeEvent[] = [
     run: (s, rng) => {
       const gain = dollars(rng.int(200, 2500), s.date.year);
       s.character.money += gain;
-      log(s, 'money', `A lucky break brings in $${gain.toLocaleString()}.`);
+      say(s, rng, 'money', 'money.windfall', { money: gain });
     },
   },
   {
     id: 'viral',
     weight: (c, ctx) => (ctx.age >= 13 ? (c.graded ? 1.5 : 0.5) : 0),
     run: (s, rng) => {
-      const by = rng.int(3, 10);
-      changeRep(s.character, 'fame', by);
-      log(s, 'event', s.character.graded
-        ? 'A clip of you using your power goes viral. GradeWatch commenters argue about your real Rank.'
-        : 'A video of you goes viral for a week. Strangers recognize you at the bodega.');
+      changeRep(s.character, 'fame', rng.int(3, 10));
+      say(s, rng, 'event', s.character.graded ? 'event.viral.graded' : 'event.viral');
     },
   },
   {
@@ -125,8 +129,7 @@ export const EVENTS: LifeEvent[] = [
     weight: (c, ctx) => (ctx.age >= 10 && ctx.age <= 18 && (lowRank(c) || (!c.graded && c.charm <= 4)) ? 2.5 : 0),
     run: (s, rng) => {
       const c = s.character;
-      if (lowRank(c)) log(s, 'event', '"Dud." It is written on your locker in marker. Everyone knows who did it; nobody says.');
-      else log(s, 'event', 'A Graded kid makes you their project for the semester. The school calls it "a conflict."');
+      say(s, rng, 'event', lowRank(c) ? 'event.bullied.dud' : 'event.bullied');
       if (rng.chance(0.4)) changeAttr(c, 'nerve', 1);
     },
   },
@@ -136,11 +139,11 @@ export const EVENTS: LifeEvent[] = [
     run: (s, rng) => {
       const c = s.character;
       if (c.graded && rng.chance(0.5)) {
-        log(s, 'law', 'A schoolyard fight goes wrong when your power slips. Expulsion hearing, a police report, and a note on your Bureau file.');
         changeRep(c, 'infamy', 3);
+        say(s, rng, 'law', 'law.school-fight.power');
       } else {
-        log(s, 'event', 'You get into a fight at school and come out of it with a split lip and a week of detention.');
         hurt(s, 5);
+        say(s, rng, 'event', 'event.school-fight');
       }
     },
   },
@@ -149,45 +152,66 @@ export const EVENTS: LifeEvent[] = [
     weight: (c, ctx) => (c.graded && !c.powersGone && ctx.focus === 'train' ? (c.grade === 'I' ? 3 : 1) : 0),
     run: (s, rng) => {
       hurt(s, rng.int(10, 30));
-      log(s, 'power', 'You push too hard in training. Nosebleed, then the floor. You wake up in Saint Bryce\'s Strain Ward on a cooling bed.');
+      say(s, rng, 'power', 'power.strain-episode');
     },
   },
   {
     id: 'aurelian-recruiter',
-    weight: (c, ctx) => (rankAtLeast(c, 'C') && ctx.age >= 16 && ctx.age <= 35 && c.record.length === 0 ? 1 + c.fame / 20 : 0),
-    run: (s) => {
-      log(s, 'event', 'An Aurelian Group talent scout leaves a card with your mother, then with you. "We\'d love to talk about your future." A sponsorship would mean a Vigilance License and a contract with an image clause.');
+    weight: (c, ctx) =>
+      rankAtLeast(c, 'C') && ctx.year >= 1972 && ctx.age >= 16 && ctx.age <= 35 && c.record.length === 0 && !tied(c, 'Aurelian')
+        ? 1 + c.fame / 20 + (tied(c, 'Ashgrove Academy') ? 2 : 0)
+        : 0,
+    run: (s, rng) => {
+      offer(s, rng, 'aurelian-recruiter');
       return { pause: true };
     },
   },
   {
     id: 'low-kings',
-    weight: (c, ctx) => (ctx.age >= 15 && rough(c.district) && (c.streetCred >= 5 || ctx.focus === 'crime') ? 1.5 : 0),
-    run: (s) => {
-      log(s, 'event', 'A Low Kings lieutenant buys you a coffee at Cal\'s. They could use someone like you on Mercer Street. They will want an answer.');
+    weight: (c, ctx) =>
+      ctx.year >= 2011 && ctx.age >= 15 && rough(c.district) && !tied(c, 'Low Kings') && !tied(c, 'the Choir') && (c.streetCred >= 5 || ctx.focus === 'crime') ? 1.5 : 0,
+    run: (s, rng) => {
+      offer(s, rng, 'low-kings');
+      return { pause: true };
+    },
+  },
+  {
+    id: 'choir-offer',
+    weight: (c, ctx) =>
+      ctx.year >= 1990 && ctx.age >= 16 && !tied(c, 'the Choir') && (rough(c.district) || ctx.focus === 'crime') ? (rankAtLeast(c, 'D') ? 1.2 : 0.6) : 0,
+    run: (s, rng) => {
+      offer(s, rng, 'choir-offer');
       return { pause: true };
     },
   },
   {
     id: 'flatline-threat',
     weight: (c) => (c.graded && c.fame >= 20 ? 1 : 0),
-    run: (s) => {
-      log(s, 'event', 'Flatline posts your home address on a forum, with your Grade Card photo and the word "next."');
+    run: (s, rng) => {
+      offer(s, rng, 'flatline-threat', s.date.year >= 2017 ? 'event.flatline-threat' : 'event.hate-threat');
+      return { pause: true };
+    },
+  },
+  {
+    id: 'ashgrove-offer',
+    weight: (c, ctx) => (ctx.year >= 1979 && ctx.age >= 13 && ctx.age <= 17 && rankAtLeast(c, 'C') && !tied(c, 'Ashgrove Academy') ? 2 : 0),
+    run: (s, rng) => {
+      offer(s, rng, 'ashgrove-offer');
       return { pause: true };
     },
   },
   {
     id: 'rent-hike',
     weight: (c) => (c.livesWithFamily ? 0 : 1),
-    run: (s) => {
+    run: (s, rng) => {
       const cost = pay(s, 600);
-      log(s, 'money', `Your landlord adds a "risk deposit" and a rent increase. It costs you $${cost.toLocaleString()} up front.`);
+      say(s, rng, 'money', 'money.rent-hike', { money: cost });
     },
   },
   {
     id: 'met-someone',
     weight: (_c, ctx) => (ctx.age >= 16 && ctx.age <= 60 ? 1 + (ctx.focus === 'family' ? 2 : 0) : 0),
-    run: (s) => log(s, 'life', 'You meet someone who makes you laugh. It might go somewhere.'),
+    run: (s, rng, ctx) => say(s, rng, 'life', 'life.met-someone', {}, ctx.focus),
   },
   {
     id: 'near-death',
@@ -195,14 +219,14 @@ export const EVENTS: LifeEvent[] = [
     run: (s, rng, ctx) => {
       const c = s.character;
       hurt(s, rng.int(40, 70));
-      log(s, 'event', 'You are caught in a Rush-fuelled shootout on Pier 9. You lose a lot of blood before the ambulance comes.');
+      offer(s, rng, 'near-death');
       // A Breakthrough: rare, almost always before 30, triggered by near-death, and it always costs something.
       if (c.graded && !c.powersGone && ctx.age < 30 && rng.chance(0.15)) {
         const i = RANKS.indexOf(c.powers[0].rank);
         if (i < RANKS.indexOf('S')) {
           c.powers[0].rank = RANKS[i + 1];
           changeAttr(c, 'body', -1);
-          log(s, 'power', `Breakthrough. Something tears open as you nearly die, and the Bureau reranks you ${c.powers[0].rank}-Rank. The scarring never fades and your body never quite recovers.`);
+          say(s, rng, 'power', 'power.breakthrough');
         }
       }
       return { pause: true };
@@ -212,3 +236,25 @@ export const EVENTS: LifeEvent[] = [
 
 /** About one notable event every six months. */
 export const EVENT_CHANCE = 0.17;
+
+// Texture: no numbers change, but the city keeps talking. Rolled separately so it never crowds out
+// the events above (and never shifts their balance).
+export const TEXTURE_EVENTS: LifeEvent[] = [
+  { id: 'city-news', weight: (_c, ctx) => (ctx.age >= 8 ? 1.5 : 0), run: (s, rng) => say(s, rng, 'world', 'world.news') },
+  { id: 'childhood', weight: (_c, ctx) => (ctx.age >= 4 && ctx.age <= 11 ? 4 : 0), run: (s, rng) => say(s, rng, 'life', 'life.childhood') },
+  { id: 'teen-life', weight: (_c, ctx) => (ctx.age >= 12 && ctx.age <= 17 ? 1.5 : 0), run: (s, rng) => say(s, rng, 'life', 'life.teen') },
+  { id: 'work-day', weight: (c) => (c.job ? 1.2 : 0), run: (s, rng) => say(s, rng, 'event', 'event.work', { job: s.character.job!.title }) },
+  {
+    id: 'prejudice',
+    weight: (c, ctx) => (c.graded && ctx.age >= 14 ? (c.district === 'Kesler Heights' ? 2 : 1) : 0),
+    run: (s, rng) => say(s, rng, 'event', 'event.prejudice'),
+  },
+  {
+    id: 'family-moment',
+    weight: (c, ctx) => (ctx.focus === 'family' ? 2 : c.livesWithFamily ? 0.8 : 0),
+    run: (s, rng, ctx) => say(s, rng, 'life', 'life.family', {}, ctx.focus),
+  },
+];
+
+/** About one texture line every eight months. */
+export const TEXTURE_CHANCE = 0.12;

@@ -39,3 +39,6 @@ button.secondary { background: transparent; border-color: var(--line); }
 .log-death { color: var(--warn); font-weight: 600; }
 @media (max-width: 520px) { .sheet div { grid-template-columns: 1fr; } }
 .cover { display: block; width: 100%; max-height: 280px; object-fit: cover; object-position: center 35%; border-radius: 6px; margin-bottom: 16px; }
+.muted { color: var(--muted); margin: 0 0 8px; }
+.decision { border-left: 3px solid var(--warn); padding-left: 12px; }
+.decision p { margin: 0 0 8px; line-height: 1.5; }

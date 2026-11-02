@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { choose } from '../engine/decisions';
 import { formatDate, sheetRows, statusPanel } from '../engine/sheet';
 import { advance, availableFocuses, FOCUS_LABELS } from '../engine/time';
 import type { Focus, GameState, LogEntry } from '../engine/types';
@@ -16,8 +17,13 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
     const r = advance(state, months, focus);
     onChange(r.state);
     if (r.stoppedBy === 'event' || r.stoppedBy === 'kindling') {
-      setNotice(`The skip stopped after ${r.monthsPassed} month${r.monthsPassed === 1 ? '' : 's'}: something needs your attention. Read the log, then decide your next focus.`);
+      setNotice(`The skip stopped after ${r.monthsPassed} month${r.monthsPassed === 1 ? '' : 's'}.`);
     } else setNotice(null);
+  }
+
+  function decide(optionId: string) {
+    onChange(choose(state, optionId));
+    setNotice(null);
   }
 
   // Newest year first; within a year, oldest first.
@@ -39,7 +45,15 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
       </section>
 
       <section className="panel">
-        {c.alive ? (
+        {c.alive && state.pending ? (
+          <div className="decision">
+            {notice && <p className="muted">{notice}</p>}
+            <p>{state.pending.text}</p>
+            <div className="actions">
+              {state.pending.options.map((o) => <button key={o.id} onClick={() => decide(o.id)}>{o.label}</button>)}
+            </div>
+          </div>
+        ) : c.alive ? (
           <>
             <label className="focus">
               Focus
