@@ -1,9 +1,10 @@
-// Actions: things the player does this month, between time skips. Each month gives a little
+// Actions: things the player does between turns (each Age up is a turn). Each turn gives a little
 // energy; every action spends some and may cost money. The engine decides every effect and roll
 // here; the writer (./writer) only describes the outcome.
 
 import { arrest, offer } from './decisions';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, RENT } from './economy';
+import { tryMakeFriend } from './people';
 import { ageRate, gainProgress } from './powers';
 import { Rng } from './random';
 import { GRADES, RANKS, type Rank } from './rules';
@@ -11,8 +12,8 @@ import { addMonths, ageOf, changeAttr, changeRep, type Attribute } from './state
 import type { Character, District, GameState } from './types';
 import { say } from './writer/writer';
 
-/** Energy per month. Time skips refill it. */
-export const ENERGY = 3;
+/** Energy per turn (one Age up, about a year). Moving time refills it. */
+export const ENERGY = 6;
 
 export type ActionGroup = 'Body and mind' | 'Powers' | 'Money' | 'People and places' | 'Underworld' | 'Inside';
 export const ACTION_GROUPS: ActionGroup[] = ['Body and mind', 'Powers', 'Money', 'People and places', 'Underworld', 'Inside'];
@@ -349,6 +350,18 @@ export const ACTIONS: ActionSpec[] = [
     },
   },
   {
+    id: 'make-friend',
+    label: 'Make a new friend',
+    group: 'People and places',
+    cost: 1,
+    when: (x) => free(x) && x.age >= 4,
+    apply: (s, rng) => {
+      const f = tryMakeFriend(s, rng);
+      if (f) say(s, rng, 'life', 'people.new-friend', { person: f.name, personFirst: f.name.split(' ')[0] });
+      else say(s, rng, 'life', 'people.new-friend.none');
+    },
+  },
+  {
     id: 'night-out',
     label: 'Go out tonight',
     group: 'People and places',
@@ -514,13 +527,13 @@ export function availableActions(s: GameState): ActionView[] {
   return ACTIONS.filter((a) => a.when(x)).map((a) => {
     const price = priceOf(a, x);
     const disabled = a.blocked?.(x)
-      ?? (energy < a.cost ? 'Not enough energy this month' : undefined)
+      ?? (energy < a.cost ? 'Not enough energy this year' : undefined)
       ?? (price > 0 && x.c.money < price ? 'Cannot afford it' : undefined);
     return { id: a.id, label: a.label, group: a.group, cost: a.cost, price, disabled };
   });
 }
 
-/** Takes an action this month. Returns a new state; the input is never changed. */
+/** Takes an action this turn. Returns a new state; the input is never changed. */
 export function act(state: GameState, id: string): GameState {
   const view = availableActions(state).find((a) => a.id === id);
   if (!view) throw new Error(`"${id}" is not available right now`);

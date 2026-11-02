@@ -6,6 +6,7 @@ import lore from '../data/lore.json';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, livingCost, prisonName, RENT, sentence } from './economy';
 import { offer } from './decisions';
 import { EVENT_CHANCE, EVENTS, TEXTURE_CHANCE, TEXTURE_EVENTS } from './events';
+import { peopleBirthday } from './people';
 import { birthdayChecks, kindle, practice } from './powers';
 import { Rng } from './random';
 import { addMonths, ageOf, before, changeAttr, changeRep, log } from './state';
@@ -77,6 +78,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
     if (s.date.month === c.born.month) {
       say(s, rng, 'life', 'life.birthday');
       birthdayChecks(s, rng);
+      peopleBirthday(s, rng);
       if (age === 18 && c.education === 'none' && focus !== 'crime') {
         c.education = 'high school';
         say(s, rng, 'life', 'life.graduate-high-school');
@@ -148,11 +150,25 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
   }
   if (passed >= 6 && c.money !== startMoney) {
     const delta = c.money - startMoney;
-    log(s, 'money', `Over ${passed} months your money ${delta >= 0 ? 'grew' : 'fell'} by $${Math.abs(delta).toLocaleString('en-US')}.`);
+    log(s, 'money', `${passed >= 12 ? 'This year' : `Over ${passed} months`} your money ${delta >= 0 ? 'grew' : 'fell'} by $${Math.abs(delta).toLocaleString('en-US')}.`);
   }
-  if (passed > 0) s.energy = ENERGY;
+  if (passed > 0) {
+    s.energy = ENERGY;
+    s.turn = (s.turn ?? 0) + 1;
+  }
   s.rngState = rng.state;
   return { state: s, monthsPassed: passed, stoppedBy };
+}
+
+/** Months until the next birthday (1-12). Age up always lands on a birthday. */
+export function monthsToBirthday(s: GameState): number {
+  const m = (s.character.born.month - s.date.month + 12) % 12;
+  return m === 0 ? 12 : m;
+}
+
+/** The game's only way to move time: live until the next birthday (stopping early for big events). */
+export function ageUp(state: GameState, focus: Focus): SkipResult {
+  return advance(state, monthsToBirthday(state), focus);
 }
 
 function applyFocus(s: GameState, rng: Rng, focus: Focus, age: number, tally: { crimeJobs: number; crimeTake: number }) {

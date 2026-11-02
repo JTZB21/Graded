@@ -20,8 +20,7 @@ describe('actions', () => {
     expect(energyOf(s)).toBe(ENERGY);
     s = act(s, 'study');
     expect(s.energy).toBe(ENERGY - 1);
-    s = act(s, 'study');
-    s = act(s, 'study');
+    for (let i = 1; i < ENERGY; i++) s = act(s, 'study');
     expect(availableActions(s).find((a) => a.id === 'study')?.disabled).toBeTruthy();
     expect(() => act(s, 'study')).toThrow();
     s = advance(s, 1, 'rest').state;

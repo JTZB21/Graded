@@ -481,10 +481,96 @@ export const TEMPLATES: Record<string, Variant[]> = {
     'An old debt gets paid back out of nowhere: ${money}.',
     'You find ${money} in an envelope in a library book. Nobody comes back for it.',
   ],
+  'money.windfall.kid': [
+    'You find ${money} folded small on the sidewalk outside the bodega. You keep it.',
+    'A grandparent presses ${money} into your hand and tells you not to tell anyone.',
+    'You find ${money} in the pocket of a coat from the church donation bin.',
+    'You sell your old toys on the stoop for a weekend and clear ${money}.',
+  ],
   'money.rent-hike': [
     'Your landlord adds a "risk deposit" and a rent increase. It costs you ${money} up front.',
     'The building changes owners. The new management company wants ${money} for "repairs" nobody makes.',
     v('Your landlord adds a "Graded occupancy fee" of ${money}. It is technically illegal and completely normal.', { graded: true }),
+  ],
+
+  // ---------- Family and friends (see people.ts) ----------
+  'people.talk': [
+    'You and {personFirst} talk for an hour about nothing much. Neither of you checks the time.',
+    '{PersonFirst} tells you a long story about a neighbour. You hear the ending twice.',
+    'You sit on the stoop with {personFirst} until the streetlights come on.',
+    v('{PersonFirst} asks what you want to be when you grow up. You give a different answer than last time.', { maxAge: 12 }),
+    v('{PersonFirst} asks whether anyone at school has Kindled yet. You list three rumours.', { minAge: 8, maxAge: 17 }),
+    v('{PersonFirst} asks about your power. You show them something small at the kitchen table.', { graded: true }),
+  ],
+  'people.argue': [
+    'A conversation with {personFirst} turns into an argument about money. Doors get closed harder than they need to be.',
+    'You and {personFirst} end up shouting about something from three years ago.',
+    '{PersonFirst} says one thing too many. You leave before dessert.',
+  ],
+  'people.call': [
+    'You call {personFirst}. The call runs forty minutes.',
+    '{PersonFirst} picks up on the second ring and talks the whole way through your walk home.',
+    'You leave {personFirst} a voicemail. They call back the same night.',
+  ],
+  'people.call.prison': [
+    'You spend your phone credit on {personFirst}. The line clicks every few minutes.',
+    '{PersonFirst} accepts the collect call. A recorded voice reminds you both the call is monitored.',
+  ],
+  'people.gift': [
+    'You buy {personFirst} something small from a shop in {district}. They put it somewhere visible.',
+    'You give {personFirst} a gift. They open it right there, in front of everyone.',
+    '{PersonFirst} unwraps your gift and keeps the wrapping paper too.',
+  ],
+  'people.dinner': [
+    'You take {personFirst} out to dinner in {district}. You split dessert.',
+    'Dinner with {personFirst} runs until the staff start stacking chairs.',
+    v('You take {personFirst} to a diner on the Docks where the waitress knows both your orders.', { districts: ['Riverside Docks'] }),
+    v('You take {personFirst} to a place in the Spire with no prices on the menu.', { districts: ['The Spire'] }),
+  ],
+  'people.visit': [
+    'You visit {personFirst}. They make coffee and tell you what the neighbours are up to.',
+    'You drop by {personFirst}\'s place unannounced. They are already setting a second plate.',
+    'You spend a Sunday at {personFirst}\'s. Someone fixes a shelf. Someone breaks a mug.',
+  ],
+  'people.give-money': [
+    'You give {personFirst} ${money}. They try to give it back twice.',
+    'You slip {personFirst} ${money} for the rent. Nobody says the number out loud.',
+  ],
+  'people.ask-money.yes': [
+    '{PersonFirst} gives you ${money} and tells you to spend it on something sensible.',
+    'You ask {personFirst} for money. ${money} appears from a drawer in the kitchen.',
+    v('{PersonFirst} hands you ${money} in coins and makes you count it.', { maxAge: 12 }),
+  ],
+  'people.ask-money.no': [
+    'You ask {personFirst} for money. The answer is no, with a speech attached.',
+    '{PersonFirst} says money does not grow on trees and turns the television back up.',
+    '{PersonFirst} says no and asks what happened to the last lot.',
+  ],
+  'people.new-friend': [
+    'You get talking to {person} and swap numbers before you leave.',
+    'You and {person} end up on the same side of an argument. By the end of the week you are friends.',
+    v('You and {person} trade lunch every day for a week. Now you are friends.', { maxAge: 13 }),
+    v('You meet {person} at a bar in {district}. They walk you to your bus.', { minAge: 18 }),
+  ],
+  'people.new-friend.none': [
+    'You try to make friends. Everyone is polite. Nobody calls.',
+    'You hang around the usual spots all week. People nod and move on.',
+  ],
+  'people.drift': [
+    'You and {person} stop calling each other. Nobody decides it; it just happens.',
+    '{Person} moves across town. The texts get shorter, then stop.',
+  ],
+  'people.sibling-born': [
+    'A new sibling arrives: {person}. The apartment gets louder.',
+    'Your family brings home a baby. They name it {person}.',
+  ],
+  'people.died.family': [
+    '{Person}, {rel}, dies at {age}. The funeral is small and runs long.',
+    '{Person} dies at {age}. You find out from a phone call at an hour when nobody calls.',
+  ],
+  'people.died.friend': [
+    'Your friend {person} dies at {age}. Their name is in the paper on a Tuesday.',
+    'You hear that {person} has died. The service is in a church in {district}.',
   ],
 
   // ---------- Law and prison ----------
@@ -556,6 +642,11 @@ export const TEMPLATES: Record<string, Variant[]> = {
   'event.illness': [
     'You get badly sick. Saint Bryce bills you ${money}.',
     'A fever turns into a week in bed and an ER visit. The bill from Saint Bryce: ${money}.',
+  ],
+  'event.illness.child': [
+    'You get badly sick. Your family pays the Saint Bryce bill and mentions it at dinner for a month.',
+    'A fever puts you in the ER overnight. The bill goes to your parents, who open it at the kitchen table.',
+    'You spend a week in bed with something going around school. Someone else pays for the antibiotics.',
   ],
   'event.illness.graded': [
     'You get badly sick. Saint Bryce bills you ${money}, Graded surcharge included.',
