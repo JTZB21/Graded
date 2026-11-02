@@ -8,6 +8,7 @@ import { PeopleTab } from './PeopleTab';
 import { choose } from '../engine/decisions';
 import { CATEGORIES, RANK_INFO, strainBand } from '../engine/rules';
 import { changes, formatDate, sheetRows } from '../engine/sheet';
+import { COLLEGES, schoolName } from '../engine/school';
 import { ageOf, notation, stageOf } from '../engine/state';
 import { ageUp, availableFocuses, FOCUS_LABELS, monthsToBirthday } from '../engine/time';
 import type { Focus, GameState, LogEntry } from '../engine/types';
@@ -29,9 +30,11 @@ const ACTION_ICONS: Record<string, IconName> = {
   gym: 'body', study: 'book', rest: 'rest', clinic: 'clinic', healer: 'spark', practice: 'target', push: 'bolt', 'show-off': 'camera',
   patrol: 'shield', 'odd-job': 'tools', 'job-hunt': 'briefcase', raise: 'trend', quit: 'door', family: 'home', 'night-out': 'glass',
   volunteer: 'people', 'make-friend': 'people', move: 'box', steal: 'hand', fight: 'fight', 'crew-job': 'mask', hustle: 'dice',
+  club: 'star', 'skip-class': 'door', enroll: 'book', 'drop-out': 'door', 'part-time': 'briefcase', 'buy-car': 'pin', roam: 'pin', date: 'health',
 };
 const GROUP_META: Record<ActionGroup, { icon: IconName; dot: string }> = {
   'Body and mind': { icon: 'body', dot: 'var(--c-body)' },
+  School: { icon: 'book', dot: 'var(--c-mind)' },
   Powers: { icon: 'bolt', dot: 'var(--c-mind)' },
   Money: { icon: 'money', dot: 'var(--c-money)' },
   'People and places': { icon: 'people', dot: 'var(--c-charm)' },
@@ -229,6 +232,12 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
   const legal = c.inPrisonUntil ? `Prison until ${formatDate(c.inPrisonUntil)}` : c.record.length ? `${c.record.length} conviction${c.record.length > 1 ? 's' : ''}` : 'Clean record';
   const power = c.graded ? `${notation(c)}${c.powersGone ? ' · gone dark' : ''}` : c.kindleAge !== null ? 'Baseline · marker+' : 'Baseline';
   const band = strainBand(c.strain);
+  const age = ageOf(state);
+  const school = c.college
+    ? `${COLLEGES[c.college.kind].name}${c.gpa !== undefined ? ` · GPA ${c.gpa.toFixed(1)}` : ''}`
+    : c.school && age >= 6 && age < 18 && c.education === 'none'
+      ? `${schoolName(c, age)}${c.gpa !== undefined ? ` · GPA ${c.gpa.toFixed(1)}` : ''}`
+      : null;
 
   return (
     <section className="card profile">
@@ -247,6 +256,7 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
       <div className="badge-row">
         <span className={`badge${c.graded ? ' power' : ''}`}><Icon name="bolt" /> {power}</span>
         {c.job && <span className="badge"><Icon name="briefcase" /> {c.job.title}</span>}
+        {school && <span className="badge"><Icon name="book" /> {school}</span>}
         {c.alive && <Energy energy={energy} />}
       </div>
 

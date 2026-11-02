@@ -5,8 +5,9 @@ import { ENERGY } from './actions';
 import lore from '../data/lore.json';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, livingCost, prisonName, RENT, sentence } from './economy';
 import { offer } from './decisions';
-import { EVENT_CHANCE, EVENTS, TEXTURE_CHANCE, TEXTURE_EVENTS } from './events';
-import { peopleBirthday } from './people';
+import { birthdayMilestone, EVENT_CHANCE, EVENTS, MUNDANE_CHANCE, MUNDANE_EVENTS, petYear, TEXTURE_CHANCE, TEXTURE_EVENTS } from './events';
+import { around, isLover, peopleBirthday } from './people';
+import { admits, collegeMonth, collegeYear, COLLEGES, enroll, expel, graduationPerks, marked, schoolName, schoolYear } from './school';
 import { birthdayChecks, kindle, practice } from './powers';
 import { Rng } from './random';
 import { addMonths, ageOf, before, changeAttr, changeRep, log } from './state';
@@ -79,9 +80,35 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       say(s, rng, 'life', 'life.birthday');
       birthdayChecks(s, rng);
       peopleBirthday(s, rng);
-      if (age === 18 && c.education === 'none' && focus !== 'crime') {
-        c.education = 'high school';
-        say(s, rng, 'life', 'life.graduate-high-school');
+      petYear(s, rng);
+      if (age >= 7 && age <= 18 && c.school && c.education === 'none' && !imprisonedNow(s)) schoolYear(s, rng, focus);
+      collegeYear(s, rng, focus);
+      if (age === 18 && c.education === 'none') {
+        const gpa = c.gpa ?? 2;
+        const school = schoolName(c, 17);
+        if (marked(c, 'plan:street') || gpa < 1 || (focus === 'crime' && gpa < 2)) {
+          say(s, rng, 'life', 'school.dropout', { school });
+        } else {
+          c.education = 'high school';
+          say(s, rng, 'life', 'life.graduate-high-school');
+          const perk = graduationPerks(c);
+          if (perk) say(s, rng, 'life', perk, { school });
+          // The plan made in senior year.
+          if (marked(c, 'plan:trade') && admits(s, 'trade')) {
+            enroll(s, 'trade');
+            say(s, rng, 'life', 'choice.enroll.trade', { school: COLLEGES.trade.name });
+          } else if (marked(c, 'plan:work') && !c.job) {
+            const jobs = eligibleJobs(c, age);
+            if (jobs.length) {
+              const spec = rng.pick(jobs.slice(-2));
+              c.job = hire(spec, s.date.year);
+              say(s, rng, 'money', 'money.hired', { job: c.job.title, salary: c.job.salary });
+            }
+          } else if (marked(c, 'plan:college') && !s.pending && !stoppedBy) {
+            offer(s, rng, 'enroll', 'event.enroll.letters');
+            stoppedBy = 'event';
+          }
+        }
       }
       if (age === 19 && c.livesWithFamily) {
         c.livesWithFamily = false;
@@ -93,6 +120,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
         offer(s, rng, 'kindling');
         stoppedBy = 'kindling';
       }
+      if (!imprisonedNow(s) && birthdayMilestone(s, rng, age) && !stoppedBy) stoppedBy = 'event';
     }
 
     const imprisoned = c.inPrisonUntil && before(s.date, c.inPrisonUntil);
@@ -100,9 +128,12 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       c.inPrisonUntil = null;
       say(s, rng, 'law', 'law.released');
     }
+    // Prison ends a place at college or at a parish school.
+    if (imprisoned && (c.college || (age < 18 && c.school === 'parochial-charter'))) expel(s, rng);
 
     if (!imprisoned) {
       applyFocus(s, rng, focus, age, tally);
+      collegeMonth(s, rng, focus);
       // Take-home pay after a flat 25% for tax.
       if (c.job) c.money += Math.round((c.job.salary * 0.75) / 12);
       if (c.job?.id === 'regional-hero' || c.job?.id === 'national-hero') {
@@ -110,7 +141,9 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       }
       // Minors on their own (street kids) get by in squats and shelters; bills start at 18.
       if (!c.livesWithFamily && age >= 18) {
-        c.money -= dollars(RENT[c.district] + livingCost(c.graded), s.date.year);
+        // A partner who lives with you pays their share of the rent.
+        const share = around(s, (p) => isLover(p) && !!p.livesWithYou).length ? 0.65 : 1;
+        c.money -= dollars(RENT[c.district] * share + livingCost(c.graded), s.date.year);
         if (c.money < -dollars(RENT[c.district] * 3, s.date.year) && c.district !== 'Old Foundry') {
           c.district = 'Old Foundry';
           say(s, rng, 'money', 'money.evicted');
@@ -122,9 +155,12 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
     c.health = Math.min(100, c.health + (focus === 'rest' ? 12 : 4));
     c.strain = focus === 'train' && c.graded && !c.powersGone ? 15 : 0;
 
-    const ctx = { age, focus, year: s.date.year };
+    const ctx = { age, focus, year: s.date.year, month: s.date.month };
     if (!imprisoned && !stoppedBy && rng.chance(EVENT_CHANCE)) {
       const ev = rng.weighted(EVENTS.map((e) => ({ item: e, weight: e.weight(c, ctx) })));
+      if (ev?.run(s, rng, ctx)?.pause) stoppedBy = 'event';
+    } else if (!imprisoned && !stoppedBy && rng.chance(MUNDANE_CHANCE)) {
+      const ev = rng.weighted(MUNDANE_EVENTS.map((e) => ({ item: e, weight: e.weight(c, ctx) })));
       if (ev?.run(s, rng, ctx)?.pause) stoppedBy = 'event';
     } else if (!imprisoned && !stoppedBy && rng.chance(TEXTURE_CHANCE)) {
       rng.weighted(TEXTURE_EVENTS.map((e) => ({ item: e, weight: e.weight(c, ctx) })))?.run(s, rng, ctx);
@@ -161,6 +197,8 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
   return { state: s, monthsPassed: passed, stoppedBy };
 }
 
+const imprisonedNow = (s: GameState) => !!s.character.inPrisonUntil && before(s.date, s.character.inPrisonUntil);
+
 /** Months until the next birthday (1-12). Age up always lands on a birthday. */
 export function monthsToBirthday(s: GameState): number {
   const m = (s.character.born.month - s.date.month + 12) % 12;
@@ -176,15 +214,8 @@ function applyFocus(s: GameState, rng: Rng, focus: Focus, age: number, tally: { 
   const c = s.character;
   switch (focus) {
     case 'school':
+      // Credit toward a degree comes from enrolling (see school.ts); studying alone sharpens the mind.
       if (rng.chance(0.02)) changeAttr(c, 'mind', 1);
-      if (age >= 18 && c.education !== 'college') {
-        c.collegeMonths++;
-        if (c.background !== 'wealthy') c.money -= dollars(900, s.date.year);
-        if (c.collegeMonths >= 36) {
-          c.education = 'college';
-          say(s, rng, 'life', 'life.graduate-college');
-        }
-      }
       break;
     case 'work':
       if (!c.job && age >= 16 && rng.chance(0.2 + c.charm * 0.03)) {

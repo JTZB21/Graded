@@ -1,6 +1,7 @@
 // Character creation, following the card's creation questions. Anything left out is rolled.
 
-import { makeFamily } from './people';
+import { addPerson, makeFamily, surname } from './people';
+import { firstSchool, startGpa } from './school';
 import { dollars, eligibleJobs, hire, jobLicense } from './economy';
 import { kindle } from './powers';
 import { Rng, newSeed } from './random';
@@ -123,6 +124,7 @@ export function createGame(opts: CreationOptions = {}): GameState {
   for (const p of c.people) if (p.relation !== 'sibling' && startYear - p.born > 80 && rng.chance(0.7)) p.alive = false;
 
   const s: GameState = { version: 1, rngState: rng.state, date: { year: startYear, month: 1 }, city: 'Port Harlan', character: c, log: [] };
+  startingLife(s, rng, age);
   say(s, rng, 'life', 'start.intro', { background });
 
   if (powered !== 'baseline') {
@@ -162,4 +164,30 @@ export function createGame(opts: CreationOptions = {}): GameState {
 
   s.rngState = rng.state;
   return s;
+}
+
+/**
+ * School, friends and a partner for a character who starts past childhood. Uses its own dice,
+ * seeded from the game's, so the rest of creation rolls exactly as before.
+ */
+function startingLife(s: GameState, game: Rng, age: number) {
+  const rng = new Rng((game.state ^ 0x5c4001) | 0);
+  const c = s.character;
+  if (age >= 6) {
+    c.school = firstSchool(c);
+    // Bright kids from ordinary homes test into the magnet school at 13.
+    if (age >= 13 && c.mind >= 6 && c.school !== 'elite-prep' && rng.chance(0.5)) c.school = 'stem-magnet';
+    c.gpa = startGpa(c);
+  }
+  // A street kid has someone who watches their back.
+  if (c.background === 'street' && age >= 6) addPerson(s, rng, 'friend', 75, Math.max(6, age + rng.int(-1, 2)));
+  if (age >= 10) for (let i = rng.int(0, 2); i > 0; i--) addPerson(s, rng, 'friend', rng.int(35, 65), Math.max(6, age + rng.int(-3, 3)));
+  if (age >= 24 && rng.chance(0.5)) {
+    const married = age >= 27 && rng.chance(0.55);
+    const p = addPerson(s, rng, married ? 'spouse' : 'partner', rng.int(55, 80), Math.max(18, age + rng.int(-5, 5)));
+    p.livesWithYou = married || rng.chance(0.4);
+    if (married && age >= 29) {
+      for (let i = rng.int(0, 2); i > 0; i--) addPerson(s, rng, 'child', rng.int(60, 85), rng.int(0, Math.min(17, age - 22)), surname(c));
+    }
+  }
 }

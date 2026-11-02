@@ -5,10 +5,18 @@ import { Icon, type IconName } from './Icon';
 
 const ICONS: Record<string, IconName> = {
   talk: 'chat', call: 'chat', gift: 'seed', dinner: 'glass', visit: 'home', 'give-money': 'money', 'ask-money': 'hand',
+  chores: 'tools', date: 'glass', 'move-in': 'home', propose: 'star', 'try-child': 'seed', play: 'star', mentor: 'book',
+  'break-up': 'door', reconcile: 'chat', confront: 'fight', 'make-peace': 'hand',
 };
 
-const bondWord = (b: number) => (b >= 85 ? 'Very close' : b >= 65 ? 'Close' : b >= 45 ? 'Friendly' : b >= 25 ? 'Distant' : 'Strained');
-const ORDER = ['mother', 'father', 'guardian', 'sibling', 'friend'];
+const bondWord = (p: Person) => {
+  if (p.estranged) return 'Not speaking';
+  const b = p.bond;
+  if (p.relation === 'rival') return b >= 50 ? 'Grudging respect' : b >= 25 ? 'Bad blood' : 'Enemies';
+  return b >= 85 ? 'Very close' : b >= 65 ? 'Close' : b >= 45 ? 'Friendly' : b >= 25 ? 'Distant' : 'Strained';
+};
+const ORDER = ['spouse', 'partner', 'child', 'mother', 'father', 'guardian', 'sibling', 'friend', 'protege', 'rival'];
+const tags = (p: Person) => [p.livesWithYou ? 'lives with you' : '', p.graded ? 'Graded' : ''].filter(Boolean).map((t) => ` · ${t}`).join('');
 const money = (n: number) => `$${n.toLocaleString('en-US')}`;
 
 export function PeopleTab({ state, friendAction, onMakeFriend, onInteract }: {
@@ -26,7 +34,7 @@ export function PeopleTab({ state, friendAction, onMakeFriend, onInteract }: {
     <>
       <div className="page-head">
         <h2>Family and friends</h2>
-        <p className="muted">Time together builds a bond. Leave people alone and it fades. Two visits per person each year.</p>
+        <p className="muted">Time together builds a bond. Leave people alone and it fades. Two things per person each year. Date from the Act tab to meet someone.</p>
       </div>
       {friendAction && (
         <button className="pill page-note" disabled={!!friendAction.disabled} onClick={onMakeFriend} title={friendAction.disabled}>
@@ -40,10 +48,10 @@ export function PeopleTab({ state, friendAction, onMakeFriend, onInteract }: {
             <span className="avatar small">{p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}</span>
             <span className="person-text">
               <strong>{p.name}</strong>
-              <small>{RELATION_LABELS[p.relation]} · {p.alive ? `age ${personAge(state, p)}` : 'died'}</small>
+              <small>{RELATION_LABELS[p.relation]} · {p.alive ? `age ${personAge(state, p)}` : 'died'}{p.alive ? tags(p) : ''}</small>
               {p.alive && <span className="bar" aria-hidden><span style={{ width: `${p.bond}%`, background: 'var(--c-charm)' }} /></span>}
             </span>
-            {p.alive && <span className="person-bond">{p.bond}<small>{bondWord(p.bond)}</small></span>}
+            {p.alive && <span className="person-bond">{p.bond}<small>{bondWord(p)}</small></span>}
           </button>
         ))}
       </section>
@@ -61,12 +69,12 @@ function PersonSheet({ state, p, onClose, onInteract }: { state: GameState; p: P
           <div className="avatar">{p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}</div>
           <div className="who">
             <h2>{p.name}</h2>
-            <p>{RELATION_LABELS[p.relation]} · age {personAge(state, p)}</p>
+            <p>{RELATION_LABELS[p.relation]} · age {personAge(state, p)}{tags(p)}</p>
             {p.wealth !== undefined && <p className="muted">Household wealth: {money(p.wealth)} (2026)</p>}
           </div>
         </div>
         <div className="stat" style={{ marginTop: 14 }}>
-          <div className="stat-label"><Icon name="health" /> Bond · {bondWord(p.bond)}</div>
+          <div className="stat-label"><Icon name="health" /> Bond · {bondWord(p)}</div>
           <div className="stat-value">{p.bond}/100</div>
           <div className="bar"><div style={{ width: `${p.bond}%`, background: 'var(--c-charm)' }} /></div>
         </div>

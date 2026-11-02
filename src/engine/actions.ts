@@ -4,7 +4,8 @@
 
 import { arrest, offer } from './decisions';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, RENT } from './economy';
-import { tryMakeFriend } from './people';
+import { addPerson, around, bondAll, isFamily, isLover, isParent, peopleOf, tryMakeFriend, vars as personVars } from './people';
+import { changeGpa, COLLEGES, mark, marked } from './school';
 import { ageRate, gainProgress } from './powers';
 import { Rng } from './random';
 import { GRADES, RANKS, type Rank } from './rules';
@@ -15,10 +16,11 @@ import { say } from './writer/writer';
 /** Energy per turn (one Age up, about a year). Moving time refills it. */
 export const ENERGY = 6;
 
-export type ActionGroup = 'Body and mind' | 'Powers' | 'Money' | 'People and places' | 'Underworld' | 'Inside';
-export const ACTION_GROUPS: ActionGroup[] = ['Body and mind', 'Powers', 'Money', 'People and places', 'Underworld', 'Inside'];
+export type ActionGroup = 'Body and mind' | 'School' | 'Powers' | 'Money' | 'People and places' | 'Underworld' | 'Inside';
+export const ACTION_GROUPS: ActionGroup[] = ['Body and mind', 'School', 'Powers', 'Money', 'People and places', 'Underworld', 'Inside'];
 
 interface Ctx {
+  s: GameState;
   c: Character;
   age: number;
   year: number;
@@ -69,6 +71,9 @@ const gradeIdx = (c: Character) => (c.grade ? GRADES.indexOf(c.grade) : 0);
 const hurt = (c: Character, by: number) => { c.health = Math.max(0, c.health - by); };
 const heal = (c: Character, by: number) => { c.health = Math.min(100, c.health + by); };
 const free = (x: Ctx) => !x.imprisoned;
+/** In school (6-17) or enrolled in college. */
+const student = (x: Ctx) => (x.age >= 6 && x.age < 18 && !!x.c.school && x.c.education === 'none') || !!x.c.college;
+const inSchool = (x: Ctx) => x.age >= 6 && x.age < 18 && !!x.c.school && x.c.education === 'none';
 
 /** A chance to raise an attribute; harder the higher it already is. */
 function improve(c: Character, rng: Rng, stat: Attribute, base: number) {
@@ -126,6 +131,8 @@ export const ACTIONS: ActionSpec[] = [
     cost: 1,
     when: (x) => x.age >= 6,
     apply: (s, rng, x) => {
+      // Homework counts toward grades for anyone in school or college.
+      if (student(x)) changeGpa(x.c, 0.04 + x.skill * 0.08);
       const up = improve(x.c, rng, 'mind', 0.07 * (0.5 + x.skill));
       if (x.imprisoned) say(s, rng, 'life', up ? 'act.study.prison-up' : 'act.study.prison');
       else say(s, rng, 'life', up ? 'act.study.up' : 'act.study');
@@ -170,6 +177,66 @@ export const ACTIONS: ActionSpec[] = [
     apply: (s, rng, x) => {
       x.c.health = 100;
       say(s, rng, 'life', 'act.healer');
+    },
+  },
+
+  // ---------- School ----------
+  {
+    id: 'club',
+    label: 'Join a club or team after school',
+    group: 'School',
+    cost: 1,
+    when: (x) => free(x) && inSchool(x) && x.age >= 8,
+    apply: (s, rng, x) => {
+      const stat = rng.chance(0.5) ? 'charm' : 'body';
+      const up = improve(x.c, rng, stat, 0.08);
+      heal(x.c, 2);
+      if (rng.chance(0.2)) {
+        const f = addPerson(s, rng, 'friend', 45, Math.max(6, x.age + rng.int(-1, 1)));
+        say(s, rng, 'life', 'act.club.friend', personVars(f));
+        return;
+      }
+      say(s, rng, 'life', up ? `act.club.up-${stat}` : 'act.club');
+    },
+  },
+  {
+    id: 'skip-class',
+    label: 'Cut class',
+    group: 'School',
+    cost: 1,
+    when: (x) => free(x) && inSchool(x) && x.age >= 12,
+    apply: (s, rng, x) => {
+      const c = x.c;
+      changeGpa(c, -0.15);
+      heal(c, 2);
+      if (rng.chance(0.25)) {
+        bondAll(s, isParent, -6);
+        say(s, rng, 'life', 'act.skip-class.caught');
+        return;
+      }
+      changeRep(c, 'streetCred', 2);
+      improve(c, rng, 'nerve', 0.05);
+      say(s, rng, 'life', 'act.skip-class');
+    },
+  },
+  {
+    id: 'enroll',
+    label: 'Apply to college or trade school',
+    group: 'School',
+    cost: 1,
+    when: (x) => free(x) && x.age >= 18 && !x.c.college && x.c.education !== 'college',
+    apply: (s, rng) => offer(s, rng, 'enroll', 'act.enroll.ask'),
+  },
+  {
+    id: 'drop-out',
+    label: 'Drop out of college',
+    group: 'School',
+    cost: 1,
+    when: (x) => !!x.c.college,
+    apply: (s, rng, x) => {
+      const school = COLLEGES[x.c.college!.kind].name;
+      x.c.college = null;
+      say(s, rng, 'life', 'act.drop-out', { school });
     },
   },
 
@@ -264,6 +331,34 @@ export const ACTIONS: ActionSpec[] = [
 
   // ---------- Money ----------
   {
+    id: 'part-time',
+    label: 'Work an after-school job',
+    group: 'Money',
+    cost: 2,
+    when: (x) => free(x) && x.age >= 14 && x.age < 18 && !x.c.job,
+    blocked: (x) => (x.c.health < 15 ? 'Too hurt' : undefined),
+    apply: (s, rng, x) => {
+      // A season of shifts.
+      const pay = dollars(rng.int(800, 1800), x.year);
+      x.c.money += pay;
+      if (inSchool(x) && rng.chance(0.3)) changeGpa(x.c, -0.1);
+      say(s, rng, 'money', 'act.part-time', { money: pay });
+    },
+  },
+  {
+    id: 'buy-car',
+    label: 'Buy a used car',
+    group: 'Money',
+    cost: 1,
+    price: () => 3000,
+    when: (x) => free(x) && x.age >= 17 && !x.c.car,
+    apply: (s, rng, x) => {
+      x.c.car = 'beater';
+      mark(x.c, 'drivers-license');
+      say(s, rng, 'money', 'act.buy-car', { money: dollars(3000, x.year) });
+    },
+  },
+  {
     id: 'odd-job',
     label: 'Pick up extra work',
     group: 'Money',
@@ -350,12 +445,49 @@ export const ACTIONS: ActionSpec[] = [
     apply: (s, rng, x) => {
       const c = x.c;
       heal(c, 3);
+      bondAll(s, (p) => isFamily(p) && p.relation !== 'child', rng.int(3, 6));
       const up = improve(c, rng, 'charm', 0.06);
       if (c.background === 'wealthy' && x.age >= 16 && rng.chance(0.25)) {
         const gift = dollars(rng.int(200, 1000), x.year);
         c.money += gift;
         say(s, rng, 'life', 'act.family.money', { money: gift });
       } else say(s, rng, 'life', up ? 'act.family.up' : 'act.family');
+    },
+  },
+  {
+    id: 'roam',
+    label: 'Roam the neighbourhood',
+    group: 'People and places',
+    cost: 1,
+    when: (x) => free(x) && x.age >= 6 && x.age <= 14,
+    apply: (s, rng, x) => {
+      const c = x.c;
+      const friend = around(s, (p) => p.relation === 'friend' && !p.estranged)[0];
+      // The corner store, with a friend who has an idea.
+      if (friend && x.age >= 8 && x.age <= 12 && !marked(c, 'm:dare') && rng.chance(0.3)) {
+        mark(c, 'm:dare');
+        offer(s, rng, 'corner-store-dare', 'event.corner-store-dare', {}, friend);
+        return;
+      }
+      improve(c, rng, 'nerve', 0.06);
+      if (rough(c.district) && rng.chance(0.15)) changeRep(c, 'streetCred', 2);
+      if (friend) friend.bond = Math.min(100, friend.bond + rng.int(2, 5));
+      say(s, rng, 'life', 'act.roam');
+    },
+  },
+  {
+    id: 'date',
+    label: 'Go on a date',
+    group: 'People and places',
+    cost: 1,
+    price: () => 50,
+    when: (x) => free(x) && x.age >= 16 && !peopleOf(x.s).some((p) => p.alive && isLover(p)),
+    apply: (s, rng, x) => {
+      const c = x.c;
+      if (rng.chance(Math.min(0.8, 0.2 + c.charm * 0.05 + (c.fame > 20 ? 0.1 : 0)))) {
+        const p = addPerson(s, rng, 'partner', rng.int(40, 55), Math.max(16, x.age + rng.int(-4, 4)));
+        say(s, rng, 'life', 'act.date.match', personVars(p));
+      } else say(s, rng, 'life', 'act.date.none');
     },
   },
   {
@@ -380,6 +512,7 @@ export const ACTIONS: ActionSpec[] = [
     apply: (s, rng, x) => {
       const c = x.c;
       improve(c, rng, 'charm', 0.05);
+      bondAll(s, (p) => p.relation === 'friend', rng.int(2, 5));
       if (c.graded && x.year >= 1978 && rng.chance(rough(c.district) ? 0.2 : 0.08)) {
         if (c.infamy >= 25) changeRep(c, 'infamy', 1);
         say(s, rng, 'law', c.infamy >= 25 ? 'law.card-check.held' : 'law.card-check');
@@ -521,7 +654,7 @@ export const ACTIONS: ActionSpec[] = [
 const ctxOf = (s: GameState, skill = 0.5): Ctx => {
   const c = s.character;
   const imprisoned = !!c.inPrisonUntil && c.inPrisonUntil.year * 12 + c.inPrisonUntil.month > s.date.year * 12 + s.date.month;
-  return { c, age: ageOf(s), year: s.date.year, imprisoned, skill: Math.max(0, Math.min(1, skill)) };
+  return { s, c, age: ageOf(s), year: s.date.year, imprisoned, skill: Math.max(0, Math.min(1, skill)) };
 };
 
 const priceOf = (spec: ActionSpec, x: Ctx) => (spec.price ? dollars(spec.price(x), x.year) : 0);

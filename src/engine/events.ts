@@ -5,16 +5,20 @@
 
 import { offer } from './decisions';
 import { dollars } from './economy';
+import { addPerson, around, bondAll, isFamily, isParent, vars as personVars } from './people';
 import { RANKS } from './rules';
 import type { Rng } from './random';
-import { changeAttr, changeRep } from './state';
-import type { Character, District, Focus, GameState } from './types';
+import { changeGpa, enrollSchool, mark, marked, schoolName } from './school';
+import { ageOf, changeAttr, changeRep } from './state';
+import type { Character, District, Focus, GameState, Person } from './types';
 import { say } from './writer/writer';
 
 export interface EventContext {
   age: number;
   focus: Focus;
   year: number;
+  /** 1-12 */
+  month: number;
 }
 
 export interface LifeEvent {
@@ -92,9 +96,9 @@ export const EVENTS: LifeEvent[] = [
     run: (s, rng, ctx) => {
       hurt(s, rng.int(10, 25));
       const graded = s.character.graded;
-      // A child's bills go to the parents.
-      if (ctx.age < 18 && s.character.livesWithFamily) {
-        say(s, rng, 'event', 'event.illness.child');
+      // A child's bills go to the parents; a kid on the street ends up at the free clinic.
+      if (ctx.age < 18) {
+        say(s, rng, 'event', s.character.livesWithFamily ? 'event.illness.child' : 'event.illness.street-kid');
         return;
       }
       const cost = pay(s, rng.int(400, 3000) * (graded ? 2 : 1));
@@ -270,3 +274,428 @@ export const TEXTURE_EVENTS: LifeEvent[] = [
 
 /** About one texture line every eight months. */
 export const TEXTURE_CHANCE = 0.12;
+
+// ---------- Growing up: one milestone on each birthday from 4 to 17 ----------
+// Some ages always bring the same moment (first day of school at 6, high
+// school placement at 13, the road test at 16, senior year at 17); the rest draw one moment from
+// the pool below that has not happened yet. Each happens once in a life.
+
+interface Milestone {
+  id: string;
+  ages: [number, number];
+  /** Fixed milestones always happen at their age; the rest are drawn. */
+  fixed?: boolean;
+  /** Offers a decision (skipped when another decision is already waiting). */
+  decision?: boolean;
+  when?: (s: GameState) => boolean;
+  run: (s: GameState, rng: Rng) => void;
+}
+
+const friendOf = (s: GameState) => around(s, (p) => p.relation === 'friend' && !p.estranged).sort((a, b) => b.bond - a.bond)[0];
+const near = (s: GameState, rng: Rng) => Math.max(4, ageOf(s) + rng.int(-1, 1));
+const heal = (s: GameState, by: number) => { s.character.health = Math.min(100, s.character.health + by); };
+
+export const MILESTONES: Milestone[] = [
+  {
+    id: 'first-day',
+    ages: [6, 6],
+    fixed: true,
+    run: (s, rng) => {
+      const c = s.character;
+      enrollSchool(c);
+      const school = schoolName(c, 6);
+      if (rng.chance(0.65)) {
+        const p = addPerson(s, rng, 'friend', 55, near(s, rng));
+        say(s, rng, 'life', 'milestone.first-day.friend', personVars(p, { school }));
+      } else {
+        const p = addPerson(s, rng, 'rival', 25, near(s, rng));
+        say(s, rng, 'life', 'milestone.first-day.rival', personVars(p, { school }));
+      }
+    },
+  },
+  {
+    id: 'track',
+    ages: [13, 13],
+    fixed: true,
+    decision: true,
+    when: (s) => s.character.school !== 'ashgrove-academy',
+    run: (s, rng) => offer(s, rng, 'school-track', 'event.school-track'),
+  },
+  {
+    id: 'road-test',
+    ages: [16, 16],
+    fixed: true,
+    run: (s, rng) => {
+      const c = s.character;
+      if (c.mind + c.nerve + rng.int(0, 3) < 10) {
+        say(s, rng, 'life', 'milestone.road-test.fail');
+        return;
+      }
+      mark(c, 'drivers-license');
+      if (c.background === 'wealthy') {
+        c.car = 'reliable';
+        say(s, rng, 'life', 'milestone.road-test.car-gift');
+      } else if (c.money >= dollars(1500, s.date.year)) {
+        const cost = dollars(1500, s.date.year);
+        c.money -= cost;
+        c.car = 'beater';
+        say(s, rng, 'money', 'milestone.road-test.beater', { money: cost });
+      } else say(s, rng, 'life', 'milestone.road-test.pass');
+    },
+  },
+  {
+    id: 'senior',
+    ages: [17, 17],
+    fixed: true,
+    decision: true,
+    when: (s) => s.character.education === 'none',
+    run: (s, rng) => offer(s, rng, 'senior-year', 'event.senior-year'),
+  },
+
+  // The pool.
+  {
+    id: 'temperament',
+    ages: [4, 5],
+    run: (s, rng) => {
+      const stat = rng.pick(['body', 'mind', 'charm', 'nerve'] as const);
+      changeAttr(s.character, stat, 1);
+      say(s, rng, 'life', `milestone.temperament.${stat}`);
+    },
+  },
+  {
+    id: 'summer',
+    ages: [7, 11],
+    run: (s, rng) => {
+      const c = s.character;
+      if (rough(c.district)) {
+        if (rng.chance(0.5)) { changeAttr(c, 'nerve', 1); say(s, rng, 'life', 'milestone.summer.street'); }
+        else { hurt(s, 3); say(s, rng, 'life', 'milestone.summer.scrape'); }
+      } else {
+        const stat = rng.chance(0.5) ? 'body' : 'charm';
+        changeAttr(c, stat, 1);
+        say(s, rng, 'life', `milestone.summer.camp-${stat}`);
+      }
+    },
+  },
+  {
+    id: 'science-fair',
+    ages: [8, 12],
+    run: (s, rng) => {
+      const c = s.character;
+      if (c.mind >= 5 || (c.gpa ?? 0) >= 3) {
+        changeAttr(c, 'mind', 1);
+        changeGpa(c, 0.2);
+        bondAll(s, isParent, 5);
+        say(s, rng, 'life', 'milestone.science-fair.ribbon');
+      } else say(s, rng, 'life', 'milestone.science-fair.volcano');
+    },
+  },
+  {
+    id: 'wipeout',
+    ages: [9, 12],
+    run: (s, rng) => {
+      const c = s.character;
+      if (c.body + rng.int(1, 6) >= 8) {
+        if (rng.chance(0.5)) changeAttr(c, 'body', 1);
+        else changeAttr(c, 'nerve', 1);
+        say(s, rng, 'life', 'milestone.wipeout.clean');
+      } else {
+        hurt(s, 6);
+        say(s, rng, 'life', 'milestone.wipeout.crash');
+      }
+    },
+  },
+  { id: 'bully', ages: [7, 11], decision: true, run: (s, rng) => offer(s, rng, 'schoolyard-bully', 'event.schoolyard-bully') },
+  {
+    id: 'dare',
+    ages: [8, 12],
+    decision: true,
+    when: (s) => !!friendOf(s),
+    run: (s, rng) => offer(s, rng, 'corner-store-dare', 'event.corner-store-dare', {}, friendOf(s)),
+  },
+  {
+    id: 'growth-spurt',
+    ages: [13, 15],
+    run: (s, rng) => {
+      const c = s.character;
+      const stat = rng.chance(0.5) ? 'body' : 'charm';
+      changeAttr(c, stat, 1);
+      say(s, rng, 'life', c.livesWithFamily && (c.background === 'working class' || c.background === 'foster system') ? 'milestone.growth.tight' : `milestone.growth.${stat}`);
+    },
+  },
+  {
+    id: 'hallways',
+    ages: [14, 17],
+    run: (s, rng) => {
+      const c = s.character;
+      const roll = c.charm + c.nerve + rng.int(-2, 3);
+      if (roll >= 11) {
+        const p = addPerson(s, rng, 'friend', 60, near(s, rng));
+        say(s, rng, 'life', 'milestone.hallways.friend', personVars(p));
+      } else if (roll >= 8) {
+        const p = addPerson(s, rng, 'rival', 20, near(s, rng));
+        say(s, rng, 'life', 'milestone.hallways.rival', personVars(p));
+      } else {
+        changeRep(c, 'streetCred', 2);
+        if (rng.chance(0.4)) changeAttr(c, 'nerve', 1);
+        say(s, rng, 'life', 'milestone.hallways.scene');
+      }
+    },
+  },
+  {
+    id: 'joyride',
+    ages: [15, 17],
+    decision: true,
+    when: (s) => !!friendOf(s),
+    run: (s, rng) => offer(s, rng, 'joyride', 'event.joyride', {}, friendOf(s)),
+  },
+  {
+    id: 'summer-job',
+    ages: [15, 17],
+    run: (s, rng) => {
+      const c = s.character;
+      const pay = dollars(rng.int(900, 2200), s.date.year);
+      c.money += pay;
+      if (rng.chance(0.4)) changeAttr(c, rng.chance(0.5) ? 'nerve' : 'body', 1);
+      say(s, rng, 'money', 'milestone.summer-job', { money: pay });
+    },
+  },
+];
+
+/** On each birthday from 4 to 17: one milestone (see MILESTONES). Returns true if it offered a decision. */
+export function birthdayMilestone(s: GameState, rng: Rng, age: number): boolean {
+  const c = s.character;
+  if (age < 4 || age > 17) return false;
+  const busy = !!s.pending;
+  const ok = (m: Milestone) => age >= m.ages[0] && age <= m.ages[1] && !marked(c, `m:${m.id}`) && (!m.decision || !busy) && (!m.when || m.when(s));
+  const fixed = MILESTONES.find((m) => m.fixed && ok(m));
+  // A teen who missed earlier moments (a late start) can still draw them while the age fits.
+  const pick = fixed ?? rng.weighted(MILESTONES.filter((m) => !m.fixed && ok(m)).map((m) => ({ item: m, weight: 1 })));
+  if (!pick) return false;
+  mark(c, `m:${pick.id}`);
+  pick.run(s, rng);
+  return !!s.pending && !busy;
+}
+
+/** A pet's year, on your birthday: upkeep, a little calm, and old age. */
+export function petYear(s: GameState, rng: Rng) {
+  const pet = s.character.pet;
+  if (!pet) return;
+  if (!s.character.livesWithFamily && ageOf(s) >= 18) s.character.money -= dollars(300, s.date.year);
+  heal(s, 3);
+  if (s.date.year - pet.since >= 10 && rng.chance(0.15)) {
+    s.character.pet = null;
+    say(s, rng, 'life', 'life.pet-died', { pet: pet.kind, petName: pet.name });
+  }
+}
+
+// ---------- Ordinary life: rolled on their own so they never crowd out the events above ----------
+
+const hasJob = (c: Character) => !!c.job;
+const once = (c: Character, id: string) => !marked(c, `e:${id}`);
+const offerOnce = (s: GameState, rng: Rng, id: string, who?: Person) => {
+  mark(s.character, `e:${id}`);
+  offer(s, rng, id, `event.${id}`, {}, who);
+  return { pause: true };
+};
+const familyOf = (s: GameState) => around(s, (p) => isFamily(p) && !p.estranged && p.relation !== 'child');
+
+export const MUNDANE_EVENTS: LifeEvent[] = [
+  {
+    id: 'transit-strike',
+    weight: (c, ctx) => (ctx.age >= 14 && !c.car && ctx.year >= 1960 ? 1 : 0),
+    run: (s, rng) => {
+      if (s.character.money > dollars(85, s.date.year) && rng.chance(0.6)) {
+        const cost = pay(s, 85);
+        say(s, rng, 'money', 'mundane.transit-strike.cab', { money: cost });
+      } else {
+        hurt(s, 2);
+        say(s, rng, 'life', 'mundane.transit-strike.walk');
+      }
+    },
+  },
+  {
+    id: 'pipe-burst',
+    weight: (c, ctx) => (!c.livesWithFamily && ctx.age >= 18 ? (rough(c.district) ? 1.5 : 0.7) : 0),
+    run: (s, rng) => {
+      if (s.character.money > 0) {
+        const cost = pay(s, 220);
+        say(s, rng, 'money', 'mundane.pipe-burst', { money: cost });
+      } else {
+        hurt(s, 3);
+        say(s, rng, 'life', 'mundane.pipe-burst.broke');
+      }
+    },
+  },
+  {
+    id: 'tax-refund',
+    weight: (c, ctx) => (ctx.age >= 19 && hasJob(c) ? 0.8 : 0),
+    run: (s, rng) => {
+      const gain = dollars(rng.int(380, 950), s.date.year);
+      s.character.money += gain;
+      say(s, rng, 'money', 'mundane.tax-refund', { money: gain });
+    },
+  },
+  {
+    id: 'jury-duty',
+    weight: (c, ctx) => (ctx.age >= 20 && c.record.length === 0 ? 0.6 : 0),
+    run: (s, rng) => {
+      const c = s.character;
+      const gain = dollars(120, s.date.year);
+      c.money += gain;
+      if (rng.chance(0.25)) changeAttr(c, 'mind', 1);
+      say(s, rng, 'life', 'mundane.jury-duty', { money: gain });
+    },
+  },
+  {
+    id: 'block-party',
+    weight: (_c, ctx) => (ctx.month === 7 || ctx.month === 8 ? 4 : 0),
+    run: (s, rng) => {
+      heal(s, 4);
+      if (rng.chance(0.2)) changeAttr(s.character, 'charm', 1);
+      say(s, rng, 'life', 'mundane.block-party');
+    },
+  },
+  {
+    id: 'workplace-audit',
+    weight: (c, ctx) => (hasJob(c) && ctx.age >= 21 ? 0.7 : 0),
+    run: (s, rng) => {
+      const c = s.character;
+      if (c.mind >= 6 || c.charm >= 6) {
+        const bonus = dollars(300, s.date.year);
+        c.money += bonus;
+        c.job!.salary += dollars(1800, s.date.year);
+        say(s, rng, 'money', 'mundane.audit.impressed', { money: bonus, job: c.job!.title, salary: c.job!.salary });
+      } else {
+        hurt(s, 3);
+        say(s, rng, 'money', 'mundane.audit', { job: c.job!.title });
+      }
+    },
+  },
+  {
+    id: 'amateur-league',
+    weight: (c, ctx) => (ctx.age >= 18 && ctx.age <= 45 && c.body >= 5 ? 0.6 : 0),
+    run: (s, rng) => {
+      if (rng.chance(0.3)) changeAttr(s.character, 'body', 1);
+      heal(s, 3);
+      const p = addPerson(s, rng, 'friend', 50, ageOf(s) + rng.int(-6, 6));
+      say(s, rng, 'life', 'mundane.league', personVars(p));
+    },
+  },
+  {
+    id: 'skimmer',
+    weight: (c, ctx) => (ctx.year >= 2002 && ctx.age >= 18 && c.money >= dollars(300, ctx.year) ? 0.5 : 0),
+    run: (s, rng) => {
+      pay(s, 180);
+      offer(s, rng, 'skimmer', 'event.skimmer', { money: dollars(180, s.date.year) });
+      return { pause: true };
+    },
+  },
+  {
+    id: 'dental',
+    weight: (_c, ctx) => (ctx.age >= 18 ? 0.6 : 0),
+    run: (s, rng) => { offer(s, rng, 'dental'); return { pause: true }; },
+  },
+  {
+    id: 'stray-pet',
+    weight: (c, ctx) => (ctx.age >= 8 && !c.pet ? 0.5 : 0),
+    run: (s, rng) => { offer(s, rng, 'stray-pet'); return { pause: true }; },
+  },
+  {
+    id: 'car-trouble',
+    weight: (c) => (c.car === 'beater' ? 1 : 0),
+    run: (s, rng) => { offer(s, rng, 'car-trouble'); return { pause: true }; },
+  },
+  {
+    id: 'union-drive',
+    weight: (c, ctx) => (hasJob(c) && rough(c.district) && ctx.year >= 1950 && once(c, 'union-drive') ? 0.8 : 0),
+    run: (s, rng) => offerOnce(s, rng, 'union-drive'),
+  },
+  {
+    id: 'family-shortfall',
+    weight: (c, ctx) =>
+      ctx.age >= 15 && (c.background === 'working class' || c.background === 'graded family' || c.background === 'foster system') ? 0.6 : 0,
+    run: (s, rng) => {
+      if (!familyOf(s).some(isParent)) return;
+      offer(s, rng, 'family-shortfall');
+      return { pause: true };
+    },
+  },
+  {
+    id: 'bail-call',
+    weight: (_c, ctx) => (ctx.age >= 16 ? 0.4 : 0),
+    run: (s, rng) => {
+      const who = around(s, (p) => (p.relation === 'friend' || p.relation === 'sibling') && !p.estranged && p.bond >= 40 && s.date.year - p.born >= 16)[0];
+      if (!who) return;
+      offer(s, rng, 'bail-call', 'event.bail-call', { money: dollars(500, s.date.year) }, who);
+      return { pause: true };
+    },
+  },
+  {
+    id: 'sibling-kindling',
+    weight: (c) => (c.background === 'graded family' ? 0.5 : 0.15),
+    run: (s, rng) => {
+      const who = around(s, (p) => p.relation === 'sibling' && !p.graded && s.date.year - p.born >= 10 && s.date.year - p.born <= 22)[0];
+      if (!who) return;
+      offer(s, rng, 'sibling-kindling', 'event.sibling-kindling', {}, who);
+      return { pause: true };
+    },
+  },
+  {
+    id: 'move-in',
+    weight: (c, ctx) => (ctx.age >= 20 && !c.livesWithFamily ? 0.8 : 0),
+    run: (s, rng) => {
+      const who = around(s, (p) => p.relation === 'partner' && !p.livesWithYou && p.bond >= 75)[0];
+      if (!who) return;
+      offer(s, rng, 'move-in', 'event.move-in', {}, who);
+      return { pause: true };
+    },
+  },
+  {
+    id: 'rival',
+    weight: (_c, ctx) => (ctx.age >= 12 ? 0.8 : 0),
+    run: (s, rng) => {
+      const who = around(s, (p) => p.relation === 'rival' && p.bond <= 35)[0];
+      if (!who) return;
+      offer(s, rng, 'rival', 'event.rival', {}, who);
+      return { pause: true };
+    },
+  },
+  {
+    id: 'first-lease',
+    weight: (c, ctx) => (ctx.age >= 18 && ctx.age <= 23 && !c.livesWithFamily && once(c, 'first-lease') ? 6 : 0),
+    run: (s, rng) => offerOnce(s, rng, 'first-lease'),
+  },
+  {
+    id: 'scapegoat',
+    weight: (c, ctx) => (ctx.age >= 21 && ctx.age <= 29 && hasJob(c) && once(c, 'scapegoat') ? 0.8 : 0),
+    run: (s, rng) => offerOnce(s, rng, 'scapegoat'),
+  },
+  {
+    id: 'aging-parent',
+    weight: (c, ctx) => (ctx.age >= 32 && ctx.age <= 48 && once(c, 'aging-parent') ? 1 : 0),
+    run: (s, rng) => {
+      const who = around(s, (p) => isParent(p) && !p.estranged && s.date.year - p.born >= 62)[0];
+      if (!who) return;
+      return offerOnce(s, rng, 'aging-parent', who);
+    },
+  },
+  {
+    id: 'midlife',
+    weight: (c, ctx) => (ctx.age >= 35 && ctx.age <= 49 && once(c, 'midlife') ? 1 : 0),
+    run: (s, rng) => offerOnce(s, rng, 'midlife'),
+  },
+  {
+    id: 'torch',
+    weight: (c, ctx) => (ctx.age >= 50 && ctx.age <= 68 && once(c, 'torch') ? 1 : 0),
+    run: (s, rng) => offerOnce(s, rng, 'torch'),
+  },
+  {
+    id: 'pension',
+    weight: (c, ctx) => (ctx.age >= 55 && hasJob(c) && c.job!.id !== 'senior-advisor' && once(c, 'pension') ? 1 : 0),
+    run: (s, rng) => offerOnce(s, rng, 'pension'),
+  },
+];
+
+/** About one ordinary-life event a year. */
+export const MUNDANE_CHANCE = 0.08;

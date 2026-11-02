@@ -1,6 +1,7 @@
 // The status panel and character sheet, in the card's format.
 
 import { CATEGORIES, RANK_INFO, strainBand } from './rules';
+import { COLLEGES, schoolName } from './school';
 import { ageOf, notation, stageOf } from './state';
 import type { GameState } from './types';
 
@@ -35,11 +36,22 @@ export function sheetRows(s: GameState): SheetRow[] {
   const rows: SheetRow[] = [
     { label: 'Born', value: `${formatDate(c.born)} · ${c.gender} · ${c.background} background` },
     { label: 'Attributes', value: `Body ${c.body} · Mind ${c.mind} · Charm ${c.charm} · Nerve ${c.nerve}` },
-    { label: 'Education', value: c.education },
+    { label: 'Education', value: [c.education, ...(c.credentials ?? [])].join(' · ') },
     { label: 'Job', value: c.job ? `${c.job.title} (${money(c.job.salary)}/yr)` : 'none' },
     { label: 'Home', value: c.livesWithFamily ? `with family in ${c.district}` : `renting in ${c.district}` },
     { label: 'Leaning', value: c.leaning },
   ];
+  const age = ageOf(s);
+  if (c.school && age >= 6) {
+    const where = schoolName(c, Math.min(age, 17));
+    rows.splice(3, 0, { label: c.education === 'none' && age < 18 ? 'School' : 'High school', value: `${where}${c.gpa !== undefined && (c.education === 'none' || c.college) ? ` · GPA ${c.gpa.toFixed(1)}` : ''}` });
+  }
+  if (c.college) {
+    const spec = COLLEGES[c.college.kind];
+    rows.splice(4, 0, { label: 'College', value: `${spec.name} · year ${Math.floor(c.college.months / 12) + 1} of ${Math.ceil(spec.months / 12)}${c.college.scholarship ? ' · scholarship' : ''}${c.gpa !== undefined ? ` · GPA ${c.gpa.toFixed(1)}` : ''}` });
+  }
+  if (c.pet) rows.push({ label: 'Pet', value: `${c.pet.name}, a ${c.pet.kind}` });
+  if (c.car) rows.push({ label: 'Car', value: c.car === 'beater' ? 'an old beater' : 'a reliable used car' });
   if (c.graded) {
     c.powers.forEach((p, i) =>
       rows.push({ label: i === 0 ? 'Primary power' : `Power ${i + 1}`, value: `${p.rank}-Rank ${RANK_INFO[p.rank].name}, ${p.category} (${CATEGORIES[p.category]})${p.description ? `: ${p.description}` : ''}` }),

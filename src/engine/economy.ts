@@ -52,11 +52,18 @@ interface JobSpec {
 
 const atLeast = (rank: Rank, min: Rank) => RANKS.indexOf(rank) >= RANKS.indexOf(min);
 const cleanRecord = (c: Character) => c.record.length === 0;
+const cert = (c: Character, name: string) => (c.credentials ?? []).includes(name);
 
 export const JOBS: JobSpec[] = [
   { id: 'retail', title: 'Retail clerk', salary2026: 31000, minAge: 16 },
   { id: 'warehouse', title: 'Warehouse worker', salary2026: 38000, minAge: 18, qualifies: (c) => c.body >= 4 },
   { id: 'office', title: 'Office worker', salary2026: 56000, minAge: 18, qualifies: (c) => c.mind >= 6 && c.education !== 'none' },
+  // Trades, two-year degrees and the old-school network (see school.ts).
+  { id: 'electrician', title: 'Union electrician', salary2026: 64000, minAge: 19, qualifies: (c) => cert(c, 'trade certificate') },
+  { id: 'machinist', title: 'Precision machinist', salary2026: 58000, minAge: 19, qualifies: (c) => cert(c, 'trade certificate') },
+  { id: 'paralegal', title: 'Paralegal', salary2026: 54000, minAge: 20, qualifies: (c) => c.mind >= 5 && (cert(c, 'associate degree') || c.education === 'college') },
+  { id: 'lab-tech', title: 'Lab technician', salary2026: 47000, minAge: 18, qualifies: (c) => c.education !== 'none' && (c.school === 'stem-magnet' || (c.education === 'college' && c.mind >= 6)) },
+  { id: 'corporate', title: 'Corporate associate in the Spire', salary2026: 115000, minAge: 22, qualifies: (c) => c.education === 'college' && (c.ties ?? []).includes('Spire Network') },
   { id: 'paramedic', title: 'Paramedic', salary2026: 52000, minAge: 20, qualifies: (c) => c.mind >= 5 && c.nerve >= 5 && c.education !== 'none' },
   { id: 'police', title: 'Police officer', salary2026: 68000, minAge: 21, qualifies: (c) => c.body >= 5 && c.nerve >= 5 && cleanRecord(c) },
   { id: 'utility', title: 'Utility Graded (construction, demolition, couriers)', salary2026: 45000, minAge: 18, minRank: 'D', license: 'Utility' },
