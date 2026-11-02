@@ -4,8 +4,9 @@ import { dollars, eligibleJobs, hire, jobLicense } from './economy';
 import { kindle } from './powers';
 import { Rng, newSeed } from './random';
 import { type Category, type Rank } from './rules';
-import { changeAttr, changeRep, GRADE_STEP_MONTHS, log, nextGrade } from './state';
+import { changeAttr, changeRep, GRADE_STEP_MONTHS, nextGrade } from './state';
 import type { Background, Character, District, GameState, Gender, Leaning } from './types';
+import { say } from './writer/writer';
 
 export type StartAge = 'newborn' | 'child' | 'teen' | 'young adult' | 'adult' | 'veteran';
 
@@ -117,7 +118,7 @@ export function createGame(opts: CreationOptions = {}): GameState {
   if (age >= 18) c.money = dollars(SAVINGS[background] * Math.min(1, 0.3 + (age - 18) / 20), startYear);
 
   const s: GameState = { version: 1, rngState: rng.state, date: { year: startYear, month: 1 }, city: 'Port Harlan', character: c, log: [] };
-  log(s, 'life', `${c.name}, age ${age}, ${background} background, living in ${c.district}, Port Harlan.`);
+  say(s, rng, 'life', 'start.intro', { background });
 
   if (powered !== 'baseline') {
     const choice = powered === 'roll' ? {} : powered;
@@ -132,7 +133,7 @@ export function createGame(opts: CreationOptions = {}): GameState {
         practice -= GRADE_STEP_MONTHS[c.grade];
         c.grade = nextGrade(c.grade)!;
       }
-      if (years > 0) log(s, 'power', `You Kindled at ${age - years}. Years of use since have brought you to Grade ${c.grade}.`);
+      if (years > 0) say(s, rng, 'power', 'start.kindled-earlier', { kindledAt: age - years });
     } else {
       c.kindleAge = Math.max(kindleAge, age + 1);
       if (choice.category || choice.rank || choice.description) c.pendingPower = choice;
@@ -150,7 +151,7 @@ export function createGame(opts: CreationOptions = {}): GameState {
       c.job = hire(spec, startYear);
       const lic = jobLicense(spec.id);
       if (lic) c.license = lic;
-      log(s, 'money', `You work as: ${c.job.title} ($${c.job.salary.toLocaleString()} a year).`);
+      say(s, rng, 'money', 'start.job', { job: c.job.title, salary: c.job.salary });
     }
   }
 

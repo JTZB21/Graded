@@ -7,14 +7,19 @@ A browser life-sim built from an existing SillyTavern card. The design is alread
 
 ## Architecture rule: the engine owns every number
 - All stats, dice, time, aging, Strain, money, reputation and legal state live in typed code under `src/engine/`.
-- The AI narrator only writes prose. It may *propose* stat changes in a structured block; the engine validates and applies them.
-- Never let model output set state directly.
+- The event writer (`src/engine/writer/`) only writes prose. It reads state and the numbers the engine already decided; it never changes state and never draws from the game's dice.
+- Choices are engine code too: every option's effect lives in `src/engine/decisions.ts`.
 
 ## Decisions already made by the owner
 - Standalone browser app (TypeScript, React, Vite), not a SillyTavern extension. Browser first; phone later.
-- The AI narrates events and scenes. Providers: NanoGPT (OpenAI-compatible API) and the Claude API, chosen in settings with the user's own keys. Tune prompts for DeepSeek 3.2 and GLM 4.6 first. Use plain structured output, not provider-specific tool calling.
+- No AI API (owner's decision, 2026-10-04, replacing the earlier NanoGPT/Claude narrator plan). The game writes its own event text from templates in `src/engine/writer/templates.ts`, filled from game state and lore, and works offline. Do not add network calls or model providers.
 - Port Harlan (USA) is the first playable start; other cities and eras come later.
 - Fame, Infamy and Street Cred each run from -100 to 100.
+
+## Writing events
+- Add text in `src/engine/writer/templates.ts`: one key per engine moment, several variants each, optional conditions (year, age, district, Rank, focus, ties).
+- Follow the card's tone: dark, grounded, satirical, second person, present tense. Never write what the player thinks or feels. Invented people use `{npc}` names (the card's banned names are filtered out).
+- A line naming an institution (Rush, Flatline, the Sump...) needs a `from` year at or after its founding (`ERA_WORDS` in `writer.ts`); `npm test` checks this.
 
 ## Data pipeline
 - `npm run import-lore` regenerates `src/data/lore.json`, `timeline.json` and `narrator.json` from `data/source/`. Never hand-edit `src/data/*.json`; change the source or the script.

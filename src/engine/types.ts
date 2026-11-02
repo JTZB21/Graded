@@ -76,6 +76,8 @@ export interface Character {
   fame: number;
   infamy: number;
   streetCred: number;
+  /** Groups the character has joined or signed with (Aurelian, Low Kings, the Choir, Ashgrove Academy). */
+  ties?: string[];
 
   alive: boolean;
 }
@@ -86,6 +88,18 @@ export interface LogEntry {
   text: string;
 }
 
+export interface DecisionOption {
+  id: string;
+  label: string;
+}
+
+/** A choice the game is waiting on. Time does not move until the player picks an option. */
+export interface Decision {
+  id: string;
+  text: string;
+  options: DecisionOption[];
+}
+
 export interface GameState {
   version: 1;
   rngState: number;
@@ -93,4 +107,5 @@ export interface GameState {
   city: 'Port Harlan';
   character: Character;
   log: LogEntry[];
+  pending?: Decision | null;
 }

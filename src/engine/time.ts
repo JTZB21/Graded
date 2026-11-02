@@ -3,17 +3,19 @@
 import timeline from '../data/timeline.json';
 import lore from '../data/lore.json';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, livingCost, prisonName, RENT, sentence } from './economy';
-import { EVENT_CHANCE, EVENTS } from './events';
+import { offer } from './decisions';
+import { EVENT_CHANCE, EVENTS, TEXTURE_CHANCE, TEXTURE_EVENTS } from './events';
 import { birthdayChecks, kindle, practice } from './powers';
 import { Rng } from './random';
 import { addMonths, ageOf, before, changeAttr, changeRep, log } from './state';
 import type { Focus, GameState } from './types';
+import { say } from './writer/writer';
 
 export interface SkipResult {
   state: GameState;
   monthsPassed: number;
-  /** Why the skip stopped early, if it did. */
-  stoppedBy?: 'event' | 'kindling' | 'death';
+  /** Why the skip stopped early, if it did. 'decision' means a choice was already waiting. */
+  stoppedBy?: 'event' | 'kindling' | 'death' | 'decision';
 }
 
 export const FOCUS_LABELS: Record<Focus, string> = {
@@ -38,7 +40,8 @@ export function availableFocuses(s: GameState): Focus[] {
 }
 
 const regionalSources = new Set(lore.filter((e) => e.kind === 'region' && e.title !== 'World Overview').map((e) => e.title));
-const worldHistory = timeline.filter((t) => !regionalSources.has(t.source));
+// Decade summaries ("1990 the Foundry Riots (1992)...") start lower-case and would leak later years early.
+const worldHistory = timeline.filter((t) => !regionalSources.has(t.source) && !/^[a-z]/.test(t.text));
 
 // Annual chance of dying of natural causes by age.
 function mortality(age: number): number {
@@ -51,6 +54,8 @@ function mortality(age: number): number {
 }
 
 export function advance(state: GameState, months: number, focus: Focus): SkipResult {
+  // Time waits for the player: answer the pending decision with choose() first.
+  if (state.pending) return { state, monthsPassed: 0, stoppedBy: 'decision' };
   const s: GameState = structuredClone(state);
   const c = s.character;
   const rng = new Rng(s.rngState);
@@ -69,19 +74,20 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
     }
 
     if (s.date.month === c.born.month) {
-      log(s, 'life', `You turn ${age}.`);
+      say(s, rng, 'life', 'life.birthday');
       birthdayChecks(s, rng);
       if (age === 18 && c.education === 'none' && focus !== 'crime') {
         c.education = 'high school';
-        log(s, 'life', 'You graduate high school.');
+        say(s, rng, 'life', 'life.graduate-high-school');
       }
       if (age === 19 && c.livesWithFamily) {
         c.livesWithFamily = false;
-        log(s, 'life', `You move out and rent your own place in ${c.district}.`);
+        say(s, rng, 'life', 'life.move-out');
       }
       if (c.kindleAge !== null && age >= c.kindleAge) {
-        log(s, 'power', 'Something comes out of you that should not have. The school sends you home; the Bureau sends a car.');
+        say(s, rng, 'power', 'power.kindling-moment');
         kindle(s, rng, c.pendingPower ?? {});
+        offer(s, rng, 'kindling');
         stoppedBy = 'kindling';
       }
     }
@@ -89,7 +95,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
     const imprisoned = c.inPrisonUntil && before(s.date, c.inPrisonUntil);
     if (c.inPrisonUntil && !imprisoned) {
       c.inPrisonUntil = null;
-      log(s, 'law', 'You are released. The bus ticket home is the last thing the state pays for.');
+      say(s, rng, 'law', 'law.released');
     }
 
     if (!imprisoned) {
@@ -102,35 +108,46 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       if (!c.livesWithFamily) {
         c.money -= dollars(RENT[c.district] + livingCost(c.graded), s.date.year);
         if (c.money < -dollars(RENT[c.district] * 3, s.date.year) && c.district !== 'Old Foundry') {
-          log(s, 'money', `Three months behind on rent, you are evicted and end up in a room in the Old Foundry.`);
           c.district = 'Old Foundry';
+          say(s, rng, 'money', 'money.evicted');
         }
       }
     }
-    if (c.graded) practice(s, focus === 'train' && !imprisoned);
+    if (c.graded) practice(s, rng, focus === 'train' && !imprisoned);
 
     c.health = Math.min(100, c.health + (focus === 'rest' ? 12 : 4));
     c.strain = focus === 'train' && c.graded && !c.powersGone ? 15 : 0;
 
-    if (!imprisoned && rng.chance(EVENT_CHANCE)) {
-      const ctx = { age, focus };
+    const ctx = { age, focus, year: s.date.year };
+    if (!imprisoned && !stoppedBy && rng.chance(EVENT_CHANCE)) {
       const ev = rng.weighted(EVENTS.map((e) => ({ item: e, weight: e.weight(c, ctx) })));
       if (ev?.run(s, rng, ctx)?.pause) stoppedBy = 'event';
+    } else if (!imprisoned && !stoppedBy && rng.chance(TEXTURE_CHANCE)) {
+      rng.weighted(TEXTURE_EVENTS.map((e) => ({ item: e, weight: e.weight(c, ctx) })))?.run(s, rng, ctx);
+    } else if (imprisoned && rng.chance(0.1)) {
+      // Inside: the yard, the Quell schedule, the hierarchy.
+      const rank = c.graded && !c.powersGone ? c.powers[0].rank : undefined;
+      if (rng.chance(0.3)) {
+        c.health = Math.max(0, c.health - rng.int(5, 20));
+        changeRep(c, 'streetCred', 2);
+        say(s, rng, 'law', 'law.prison-fight', { prison: prisonName(rank, s.date.year) });
+      } else say(s, rng, 'law', 'law.prison-day', { prison: prisonName(rank, s.date.year) });
     }
 
     if (c.health <= 0 || rng.chance(mortality(age) / 12)) {
       c.alive = false;
-      log(s, 'death', c.health <= 0 ? `You die of your injuries at ${age}.` : `You die at ${age}.`);
+      say(s, rng, 'death', c.health <= 0 ? 'death.injuries' : 'death.natural');
+      s.pending = null;
       stoppedBy = 'death';
     }
   }
 
   if (tally.crimeJobs) {
-    log(s, 'money', `${tally.crimeJobs} job${tally.crimeJobs > 1 ? 's' : ''} went off clean, for $${tally.crimeTake.toLocaleString()} in total.`);
+    say(s, rng, 'money', tally.crimeJobs > 1 ? 'money.crime-summary' : 'money.crime-summary-one', { jobs: tally.crimeJobs, money: tally.crimeTake });
   }
-  if (passed >= 6) {
+  if (passed >= 6 && c.money !== startMoney) {
     const delta = c.money - startMoney;
-    log(s, 'money', `Over ${passed} months your money ${delta >= 0 ? 'grew' : 'fell'} by $${Math.abs(delta).toLocaleString()}.`);
+    log(s, 'money', `Over ${passed} months your money ${delta >= 0 ? 'grew' : 'fell'} by $${Math.abs(delta).toLocaleString('en-US')}.`);
   }
   s.rngState = rng.state;
   return { state: s, monthsPassed: passed, stoppedBy };
@@ -146,7 +163,7 @@ function applyFocus(s: GameState, rng: Rng, focus: Focus, age: number, tally: { 
         if (c.background !== 'wealthy') c.money -= dollars(900, s.date.year);
         if (c.collegeMonths >= 36) {
           c.education = 'college';
-          log(s, 'life', 'You graduate from Harlan State University.');
+          say(s, rng, 'life', 'life.graduate-college');
         }
       }
       break;
@@ -158,7 +175,7 @@ function applyFocus(s: GameState, rng: Rng, focus: Focus, age: number, tally: { 
           c.job = hire(spec, s.date.year);
           const lic = jobLicense(spec.id);
           if (lic) c.license = lic;
-          log(s, 'money', `You are hired: ${c.job.title}, $${c.job.salary.toLocaleString()} a year.${lic ? ` The Bureau issues a ${lic} License.` : ''}`);
+          say(s, rng, 'money', lic ? 'money.hired-licensed' : 'money.hired', { job: c.job.title, salary: c.job.salary, license: lic ?? '' });
         }
       }
       break;
@@ -175,12 +192,13 @@ function applyFocus(s: GameState, rng: Rng, focus: Focus, age: number, tally: { 
       changeRep(c, 'infamy', 1);
       // Arrest odds rise with Infamy and fall with Nerve.
       if (rng.chance(Math.max(0.01, 0.05 + c.infamy / 1000 - c.nerve * 0.003))) {
-        const months = sentence(rng.int(6, 30), rank);
+        let months = sentence(rng.int(6, 30), rank);
+        if ((c.ties ?? []).includes('the Choir')) months = Math.round(months * 0.75); // Choir lawyers
         c.record.push({ year: s.date.year, offense: rank ? 'Unlicensed power use in a felony' : 'Armed robbery', sentenceMonths: months });
         c.inPrisonUntil = addMonths(s.date, months);
         c.job = null;
         if (c.license === 'Vigilance' || c.license === 'Utility') c.license = 'Civilian';
-        log(s, 'law', `Arrested. You are sentenced to ${months} months in ${prisonName(rank, s.date.year)}.`);
+        say(s, rng, 'law', 'law.arrested', { months, prison: prisonName(rank, s.date.year) });
       } else {
         tally.crimeJobs++;
         tally.crimeTake += take;
