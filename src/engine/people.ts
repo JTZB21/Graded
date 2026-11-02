@@ -4,7 +4,7 @@
 import { dollars } from './economy';
 import { Rng } from './random';
 import { clamp } from './rules';
-import { ageOf, changeAttr } from './state';
+import { ageOf, changeAttr, changeRep } from './state';
 import type { Background, Character, GameState, Person, Relation } from './types';
 import { FIRST_NAMES, LAST_NAMES, say } from './writer/writer';
 
@@ -27,7 +27,18 @@ export const RELATION_LABELS: Record<Relation, string> = {
   guardian: 'Foster carer',
   sibling: 'Sibling',
   friend: 'Friend',
+  rival: 'Rival',
+  partner: 'Partner',
+  spouse: 'Spouse',
+  child: 'Child',
+  protege: 'Protégé',
 };
+
+export const isParent = (p: Person) => p.relation === 'mother' || p.relation === 'father' || p.relation === 'guardian';
+/** Blood, marriage and the people who raised you. */
+export const isFamily = (p: Person) => isParent(p) || p.relation === 'sibling' || p.relation === 'spouse' || p.relation === 'child';
+export const isFriend = (p: Person) => p.relation === 'friend';
+export const isLover = (p: Person) => p.relation === 'partner' || p.relation === 'spouse';
 
 const surname = (c: Character) => c.name.trim().split(/\s+/).slice(1).join(' ') || c.name;
 
@@ -60,6 +71,9 @@ export function makeFamily(c: Character, rng: Rng): Person[] {
       out.push({ id: newId(rng, out), name: newName(rng, last, names()), relation: 'father', born: birth - rng.int(20, 42), bond: clamp(parentBond + rng.int(-15, 10), 0, 100), alive: true, wealth, moments: 0 });
     }
   }
+  // A street kid's parent is out of the picture; a Graded family has at least one Graded parent.
+  if (c.background === 'street') out[0].estranged = true;
+  if (c.background === 'graded family') out[0].graded = true;
   const siblings = rng.weighted([{ item: 0, weight: 3 }, { item: 1, weight: 4 }, { item: 2, weight: 2 }, { item: 3, weight: 1 }])!;
   for (let i = 0; i < siblings; i++) {
     out.push({ id: newId(rng, out), name: newName(rng, last, names()), relation: 'sibling', born: birth + rng.pick([-6, -4, -3, -2, -1, 1, 2, 3, 5]), bond: rng.int(40, 75), alive: true, moments: 0 });
@@ -81,8 +95,38 @@ export const peopleOf = (s: GameState): Person[] => s.character.people ?? [];
 export const knownPeople = (s: GameState) => peopleOf(s).filter((p) => p.born <= s.date.year);
 export const personAge = (s: GameState, p: Person) => s.date.year - p.born;
 
-const roleWord = (p: Person) => (p.relation === 'mother' ? 'your mother' : p.relation === 'father' ? 'your father' : p.relation === 'guardian' ? 'your foster carer' : p.relation === 'sibling' ? 'your sibling' : 'your friend');
-const vars = (p: Person, extra: Record<string, string | number> = {}) => ({ person: p.name, personFirst: p.name.split(' ')[0], rel: roleWord(p), ...extra });
+const ROLE_WORDS: Record<Person['relation'], string> = {
+  mother: 'your mother', father: 'your father', guardian: 'your foster carer', sibling: 'your sibling', friend: 'your friend',
+  rival: 'your rival', partner: 'your partner', spouse: 'your spouse', child: 'your child', protege: 'your protégé',
+};
+const roleWord = (p: Person) => ROLE_WORDS[p.relation];
+/** Template vars for a line about someone: {person} {personFirst} {rel}. */
+export const vars = (p: Person, extra: Record<string, string | number> = {}) => ({ person: p.name, personFirst: p.name.split(' ')[0], rel: roleWord(p), ...extra });
+
+/** Adds someone new to your life. `age` is their age now. */
+export function addPerson(s: GameState, rng: Rng, relation: Person['relation'], bond: number, age: number, last?: string): Person {
+  const c = s.character;
+  const p: Person = {
+    id: newId(rng, peopleOf(s)),
+    name: newName(rng, last, [c.name, ...peopleOf(s).map((q) => q.name)]),
+    relation,
+    born: s.date.year - age,
+    bond: clamp(bond, 0, 100),
+    alive: true,
+    moments: 0,
+  };
+  (c.people ??= []).push(p);
+  return p;
+}
+
+/** Living, present people who match. */
+export const around = (s: GameState, test: (p: Person) => boolean) => knownPeople(s).filter((p) => p.alive && test(p));
+/** Changes the bond with everyone who matches. */
+export function bondAll(s: GameState, test: (p: Person) => boolean, by: number) {
+  for (const p of around(s, test)) if (!p.estranged) p.bond = clamp(p.bond + by, 0, 100);
+}
+export const lover = (s: GameState) => around(s, isLover)[0];
+export { surname };
 
 // ---------- Interactions ----------
 
@@ -94,6 +138,8 @@ interface Ctx {
   pAge: number;
   imprisoned: boolean;
   parent: boolean;
+  /** Not speaking to you, or a rival: only some things are on the table. */
+  cold: boolean;
 }
 
 interface InteractionSpec {
@@ -118,7 +164,7 @@ export const INTERACTIONS: InteractionSpec[] = [
   {
     id: 'talk',
     label: 'Talk',
-    when: (x) => x.age >= 3 && (!x.imprisoned || x.parent),
+    when: (x) => !x.cold && x.age >= 3 && (!x.imprisoned || x.parent),
     apply: (s, rng, x) => {
       // Low bonds turn into arguments more often.
       if (rng.chance(x.p.bond < 30 ? 0.35 : 0.08)) {
@@ -133,7 +179,7 @@ export const INTERACTIONS: InteractionSpec[] = [
   {
     id: 'call',
     label: 'Call them',
-    when: (x) => x.age >= 10 && !(x.parent && x.c.livesWithFamily),
+    when: (x) => !x.cold && x.age >= 10 && !(x.parent && x.c.livesWithFamily) && !x.p.livesWithYou,
     apply: (s, rng, x) => {
       bond(x.p, rng.int(1, 5));
       say(s, rng, 'life', x.imprisoned ? 'people.call.prison' : 'people.call', vars(x.p));
@@ -143,7 +189,7 @@ export const INTERACTIONS: InteractionSpec[] = [
     id: 'gift',
     label: 'Buy them a gift',
     price: () => 60,
-    when: (x) => x.age >= 8 && !x.imprisoned,
+    when: (x) => !x.cold && x.age >= 8 && !x.imprisoned,
     apply: (s, rng, x) => {
       bond(x.p, rng.int(4, 10));
       say(s, rng, 'life', 'people.gift', vars(x.p));
@@ -153,7 +199,7 @@ export const INTERACTIONS: InteractionSpec[] = [
     id: 'dinner',
     label: 'Take them to dinner',
     price: () => 90,
-    when: (x) => x.age >= 16 && !x.imprisoned,
+    when: (x) => !x.cold && x.age >= 16 && !x.imprisoned && !isLover(x.p),
     apply: (s, rng, x) => {
       bond(x.p, rng.int(6, 13));
       if (rng.chance(0.06)) changeAttr(x.c, 'charm', 1);
@@ -163,7 +209,7 @@ export const INTERACTIONS: InteractionSpec[] = [
   {
     id: 'visit',
     label: 'Visit them',
-    when: (x) => x.age >= 12 && !x.imprisoned && !(x.parent && x.c.livesWithFamily),
+    when: (x) => !x.cold && x.age >= 12 && !x.imprisoned && !(x.parent && x.c.livesWithFamily) && !x.p.livesWithYou && !(x.p.relation === 'child' && x.pAge < 18),
     apply: (s, rng, x) => {
       bond(x.p, rng.int(4, 9));
       x.c.health = Math.min(100, x.c.health + 2);
@@ -174,7 +220,7 @@ export const INTERACTIONS: InteractionSpec[] = [
     id: 'give-money',
     label: 'Give them money',
     price: () => 500,
-    when: (x) => x.age >= 16 && !x.imprisoned,
+    when: (x) => !x.cold && x.age >= 16 && !x.imprisoned,
     apply: (s, rng, x) => {
       bond(x.p, rng.int(7, 14));
       say(s, rng, 'money', 'people.give-money', vars(x.p, { money: dollars(500, s.date.year) }));
@@ -183,7 +229,7 @@ export const INTERACTIONS: InteractionSpec[] = [
   {
     id: 'ask-money',
     label: 'Ask for money',
-    when: (x) => x.parent && x.age >= 6,
+    when: (x) => !x.cold && x.parent && x.age >= 6,
     apply: (s, rng, x) => {
       const p = x.p;
       // Closer parents with more money say yes more often, and give more.
@@ -201,12 +247,158 @@ export const INTERACTIONS: InteractionSpec[] = [
       say(s, rng, 'money', 'people.ask-money.yes', vars(p, { money: gift }));
     },
   },
+  {
+    id: 'chores',
+    label: 'Help around the house',
+    when: (x) => x.parent && !x.cold && x.c.livesWithFamily && x.age >= 5 && x.age < 18 && !x.imprisoned,
+    apply: (s, rng, x) => {
+      bond(x.p, rng.int(3, 8));
+      // Pocket money, if the house has any to spare.
+      if ((x.p.wealth ?? 0) >= 20_000 && rng.chance(0.6)) {
+        const pay = dollars(rng.int(5, 20) * (x.age < 12 ? 1 : 2), s.date.year);
+        x.c.money += pay;
+        say(s, rng, 'money', 'people.chores.paid', vars(x.p, { money: pay }));
+      } else say(s, rng, 'life', 'people.chores', vars(x.p));
+    },
+  },
+  {
+    id: 'date',
+    label: 'Take them out',
+    price: () => 80,
+    when: (x) => isLover(x.p) && !x.imprisoned,
+    apply: (s, rng, x) => {
+      bond(x.p, rng.int(7, 14));
+      x.c.health = Math.min(100, x.c.health + 3);
+      say(s, rng, 'life', 'people.date', vars(x.p));
+    },
+  },
+  {
+    id: 'move-in',
+    label: 'Ask them to move in',
+    when: (x) => x.p.relation === 'partner' && !x.p.livesWithYou && !x.c.livesWithFamily && x.age >= 18 && !x.imprisoned && x.p.bond >= 55,
+    apply: (s, rng, x) => {
+      if (rng.chance(x.p.bond / 110)) {
+        x.p.livesWithYou = true;
+        bond(x.p, 5);
+        say(s, rng, 'life', 'people.move-in.yes', vars(x.p));
+      } else {
+        bond(x.p, -3);
+        say(s, rng, 'life', 'people.move-in.no', vars(x.p));
+      }
+    },
+  },
+  {
+    id: 'propose',
+    label: 'Propose',
+    price: () => 2500,
+    when: (x) => x.p.relation === 'partner' && x.age >= 18 && x.pAge >= 18 && !x.imprisoned && x.p.bond >= 65,
+    apply: (s, rng, x) => {
+      if (rng.chance(Math.min(0.95, (x.p.bond - 40) / 55))) {
+        x.p.relation = 'spouse';
+        x.p.livesWithYou = !x.c.livesWithFamily;
+        bond(x.p, 10);
+        say(s, rng, 'life', 'people.propose.yes', vars(x.p));
+      } else {
+        bond(x.p, -12);
+        say(s, rng, 'life', 'people.propose.no', vars(x.p));
+      }
+    },
+  },
+  {
+    id: 'try-child',
+    label: 'Try for a baby',
+    when: (x) => isLover(x.p) && !!x.p.livesWithYou && x.age >= 18 && x.age <= 45 && x.pAge <= 45 && !x.imprisoned
+      && !peopleOf(x.s).some((q) => q.relation === 'child' && q.born > x.s.date.year),
+    apply: (s, rng, x) => {
+      if (rng.chance(0.35)) {
+        // Born within the year: the baby arrives on your next birthday.
+        const kid = addPerson(s, rng, 'child', rng.int(70, 90), -1, surname(x.c));
+        say(s, rng, 'life', 'people.expecting', vars(x.p, { baby: kid.name.split(' ')[0] }));
+      } else say(s, rng, 'life', 'people.not-expecting', vars(x.p));
+    },
+  },
+  {
+    id: 'play',
+    label: 'Spend the weekend with them',
+    price: () => 40,
+    when: (x) => x.p.relation === 'child' && x.pAge >= 1 && x.pAge < 18 && !x.imprisoned,
+    apply: (s, rng, x) => {
+      bond(x.p, rng.int(8, 14));
+      x.c.health = Math.min(100, x.c.health + 2);
+      say(s, rng, 'life', 'people.play', vars(x.p));
+    },
+  },
+  {
+    id: 'mentor',
+    label: 'Teach them the city',
+    when: (x) => x.p.relation === 'protege' && !x.imprisoned,
+    apply: (s, rng, x) => {
+      bond(x.p, rng.int(5, 10));
+      say(s, rng, 'life', 'people.mentor', vars(x.p));
+    },
+  },
+  {
+    id: 'break-up',
+    label: 'End it',
+    price: (x) => (x.p.relation === 'spouse' ? 3000 : 0),
+    when: (x) => isLover(x.p),
+    apply: (s, rng, x) => {
+      const married = x.p.relation === 'spouse';
+      x.c.people!.splice(x.c.people!.indexOf(x.p), 1);
+      say(s, rng, 'life', married ? 'people.divorce' : 'people.break-up', vars(x.p));
+    },
+  },
+  {
+    id: 'reconcile',
+    label: 'Reach out',
+    when: (x) => x.age >= 12 && !x.imprisoned && x.p.relation !== 'rival' && (!!x.p.estranged || x.p.bond < 15),
+    apply: (s, rng, x) => {
+      if (rng.chance(Math.min(0.85, 0.2 + (x.c.charm + x.c.nerve) * 0.035))) {
+        x.p.estranged = false;
+        bond(x.p, 25);
+        say(s, rng, 'life', 'people.reconcile.yes', vars(x.p));
+      } else say(s, rng, 'life', 'people.reconcile.no', vars(x.p));
+    },
+  },
+  {
+    id: 'confront',
+    label: 'Settle it',
+    when: (x) => x.p.relation === 'rival' && x.age >= 8 && !x.imprisoned,
+    apply: (s, rng, x) => {
+      const c = x.c;
+      if (c.body + c.nerve + rng.int(1, 8) >= 13) {
+        changeRep(c, 'streetCred', rng.int(2, 4));
+        if (rng.chance(0.25)) changeAttr(c, 'nerve', 1);
+        bond(x.p, 5); // grudging respect
+        say(s, rng, 'event', 'people.confront.win', vars(x.p));
+      } else {
+        c.health = Math.max(0, c.health - rng.int(4, 12));
+        bond(x.p, -5);
+        say(s, rng, 'event', 'people.confront.lose', vars(x.p));
+      }
+    },
+  },
+  {
+    id: 'make-peace',
+    label: 'Bury the hatchet',
+    when: (x) => x.p.relation === 'rival' && x.age >= 8 && !x.imprisoned,
+    apply: (s, rng, x) => {
+      if (rng.chance(Math.min(0.8, 0.1 + x.c.charm * 0.06 + x.p.bond / 200))) {
+        x.p.relation = 'friend';
+        x.p.bond = Math.max(x.p.bond, 30);
+        say(s, rng, 'life', 'people.make-peace.yes', vars(x.p));
+      } else {
+        bond(x.p, -4);
+        say(s, rng, 'life', 'people.make-peace.no', vars(x.p));
+      }
+    },
+  },
 ];
 
 function ctxOf(s: GameState, p: Person): Ctx {
   const c = s.character;
   const imprisoned = !!c.inPrisonUntil && c.inPrisonUntil.year * 12 + c.inPrisonUntil.month > s.date.year * 12 + s.date.month;
-  return { s, c, p, age: ageOf(s), pAge: personAge(s, p), imprisoned, parent: p.relation === 'mother' || p.relation === 'father' || p.relation === 'guardian' };
+  return { s, c, p, age: ageOf(s), pAge: personAge(s, p), imprisoned, parent: isParent(p), cold: !!p.estranged || p.relation === 'rival' };
 }
 
 const usedThisTurn = (s: GameState, p: Person) => (p.usedTurn === (s.turn ?? 0) ? p.usedCount ?? 0 : 0);
@@ -214,7 +406,7 @@ const usedThisTurn = (s: GameState, p: Person) => (p.usedTurn === (s.turn ?? 0) 
 /** What you can do with someone right now. */
 export function interactionsWith(s: GameState, personId: string): InteractionView[] {
   const p = peopleOf(s).find((q) => q.id === personId);
-  if (!p || !p.alive || !s.character.alive || s.pending) return [];
+  if (!p || !p.alive || p.born > s.date.year || !s.character.alive || s.pending) return [];
   const x = ctxOf(s, p);
   const tired = usedThisTurn(s, p) >= PER_TURN;
   return INTERACTIONS.filter((i) => i.when(x)).map((i) => {
@@ -277,22 +469,30 @@ export function peopleBirthday(s: GameState, rng: Rng) {
   const year = s.date.year;
   for (const p of [...c.people]) {
     if (!p.alive) continue;
-    if (p.born === year && p.relation === 'sibling') {
-      say(s, rng, 'life', 'people.sibling-born', vars(p));
+    if (p.born === year && (p.relation === 'sibling' || p.relation === 'child')) {
+      say(s, rng, 'life', p.relation === 'child' ? 'people.child-born' : 'people.sibling-born', vars(p));
       continue;
     }
     if (p.born > year) continue;
     const seen = p.usedTurn !== undefined && (s.turn ?? 0) - p.usedTurn <= 1;
-    const living = c.livesWithFamily && p.relation !== 'friend';
-    bond(p, seen || living ? -rng.int(0, 3) : -rng.int(3, p.relation === 'friend' ? 10 : 6));
+    const living = (c.livesWithFamily && (isParent(p) || p.relation === 'sibling')) || !!p.livesWithYou || (p.relation === 'child' && year - p.born < 18);
+    // Estranged people and rivals stay where they are; nobody is working on those.
+    if (!p.estranged && p.relation !== 'rival') bond(p, seen || living ? -rng.int(0, 3) : -rng.int(3, p.relation === 'friend' || p.relation === 'partner' ? 10 : 6));
     if (rng.chance(mortality(year - p.born))) {
       p.alive = false;
-      say(s, rng, 'death', p.relation === 'friend' ? 'people.died.friend' : 'people.died.family', vars(p, { age: year - p.born }));
+      say(s, rng, 'death', isFamily(p) || isLover(p) ? 'people.died.family' : 'people.died.friend', vars(p, { age: year - p.born }));
       continue;
     }
-    if (p.relation === 'friend' && p.bond < 10) {
+    if ((p.relation === 'friend' || p.relation === 'protege') && p.bond < 10) {
       c.people.splice(c.people.indexOf(p), 1);
       say(s, rng, 'life', 'people.drift', vars(p));
+    } else if (isLover(p) && p.bond < 10) {
+      c.people.splice(c.people.indexOf(p), 1);
+      say(s, rng, 'life', p.relation === 'spouse' ? 'people.left.spouse' : 'people.left.partner', vars(p));
+    } else if (p.relation === 'rival' && rng.chance(0.08)) {
+      // People move, change schools, get jobs across the river.
+      c.people.splice(c.people.indexOf(p), 1);
+      say(s, rng, 'life', 'people.rival-gone', vars(p));
     }
   }
 }

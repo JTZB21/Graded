@@ -35,6 +35,8 @@ export const KEY_FROM: Record<string, number> = {
   'choice.rush.try-': 2014,
   'act.crew-job.choir': 1990,
   'act.crew-job.lowkings': 2011,
+  'choice.enroll.ashgrove': 1979,
+  'school.graduate.ashgrove': 1979,
 };
 
 export const TEMPLATES: Record<string, Variant[]> = {
@@ -643,6 +645,10 @@ export const TEMPLATES: Record<string, Variant[]> = {
     'You get badly sick. Saint Bryce bills you ${money}.',
     'A fever turns into a week in bed and an ER visit. The bill from Saint Bryce: ${money}.',
   ],
+  'event.illness.street-kid': [
+    'You get badly sick and wait eleven hours at the free clinic in a church basement. A volunteer doctor gives you a week of pills and no bill.',
+    'A fever puts you on a cot at a shelter for a week. Nobody asks for insurance.',
+  ],
   'event.illness.child': [
     'You get badly sick. Your family pays the Saint Bryce bill and mentions it at dinner for a month.',
     'A fever puts you in the ER overnight. The bill goes to your parents, who open it at the kitchen table.',
@@ -921,5 +927,644 @@ export const TEMPLATES: Record<string, Variant[]> = {
     v('Choirsong, a stronger strain of Rush, turns up in the Old Foundry. Overdoses spike.', { from: 2025 }),
     v('Equal Ground marches on Federal Plaza. Imani Brooks is arrested again; it is her thirty-somethingth time.', { from: 2010 }),
     v('The Harlan Ledger runs a story on Juniper House survivors. Most of them still will not give their names.', { from: 1998 }),
+  ],
+  // ---------- School and growing up (see school.ts and MILESTONES in events.ts) ----------
+  'act.club': [
+    'You stay after the last bell for practice in a gym that smells of floor wax and radiator dust.',
+    'You join the chess club, which meets in a science room with the gas taps zip-tied shut.',
+    'You sign up for the school paper. Your first story is about the vending machine.',
+    v('You spend the afternoon at the {district} rec center, where the club keeps you off the corners for a few hours.', { rough: true }),
+    v('You join the debate team at {district} and spend Thursday nights arguing about city zoning.', { districts: ['Saint Bryce', 'Kesler Heights'] }),
+  ],
+  'act.club.up-body': [
+    'The coach runs the team until two people throw up. You are not one of them. (Body +1)',
+    'A season of practice shows in your times on the track. (Body +1)',
+  ],
+  'act.club.up-charm': [
+    'You give a speech at the school assembly and nobody throws anything. (Charm +1)',
+    'Drama club casts you as the lead. The second night goes better than the first. (Charm +1)',
+  ],
+  'act.club.friend': [
+    'You and {person} end up carrying the equipment back after practice. By the end of the season you are friends.',
+    'At club you get partnered with {person}. You start eating lunch together.',
+  ],
+  'act.skip-class': [
+    'You leave by the side stairwell after second period and spend the afternoon on the seawall.',
+    'You and two kids from your homeroom cut class to play pool in {district}. The truancy officer calls the wrong number.',
+    v('You skip afternoon classes and ride the H-Line end to end, twice.', { from: 1960 }),
+  ],
+  'act.skip-class.caught': [
+    'The school calls home. Dinner is very quiet.',
+    'A vice principal spots you at the bus stop at eleven in the morning. Your guardians get a letter.',
+  ],
+  'act.enroll.ask': [
+    'You collect brochures, application forms and a fee waiver you may not qualify for.',
+    'You sit in a counsellor\'s office in Saint Bryce while they read your transcript out loud.',
+  ],
+  'act.drop-out': [
+    'You withdraw from {school}. The registrar\'s office needs three signatures to let you go.',
+    'You stop going to {school}. A form letter arrives a month later to make it official.',
+  ],
+  'act.part-time': [
+    'You stack crates and mop floors at a corner shop in {district} after school. ${money} goes in a coffee tin.',
+    'You work weekend counter shifts under fluorescent lights while your classmates hang out down the block. You clear ${money}.',
+    v('You bus tables at Cal\'s All-Night Diner after school for ${money} and all the fries you can eat.', { districts: ['Riverside Docks'] }),
+  ],
+  'act.buy-car': [
+    'You buy a used car for ${money}. The previous owner leaves a rosary on the mirror and a dent in every door.',
+    'You hand over ${money} for a car with two hundred thousand miles on it. It starts on the second try.',
+  ],
+  'act.roam': [
+    'You spend Saturday learning the blocks around {district}: which shortcuts save ten minutes and which dogs bark through the fence.',
+    'You ride a bike with no brakes around {district} until the streetlights come on.',
+    v('You and the neighbourhood kids cut through back alleys, vacant lots and a storm drain nobody is supposed to know about.', { rough: true }),
+    v('You ride bikes down the cul-de-sacs of {district}, past lawns with signs that say who is welcome.', { districts: ['Kesler Heights'] }),
+    v('You explore the woods behind the big houses in the Ashgrove hills until a groundskeeper chases you off.', { districts: ['Ashgrove'] }),
+  ],
+  'act.date.match': [
+    'You go out with {person}. Dinner turns into a walk turns into a second date.',
+    'A friend sets you up with {person}. You talk until the bar closes and agree to do it again.',
+    v('You meet {person} at a dance hall in {district}. They ask for your number before the last song.', { until: 1985 }),
+    v('You meet {person} on a dating app. The photos are accurate, which surprises you both.', { from: 2012 }),
+  ],
+  'act.date.none': [
+    'You go on a date. They spend most of it talking about their ex.',
+    'The date ends with a handshake at the bus stop.',
+    'Your date checks the time four times before the food arrives.',
+  ],
+
+  'school.honor-roll': [
+    'Your report card from {school} comes home with a {gpa}. It goes on the fridge.',
+    '{school} puts you on the honour roll with a {gpa}. Your name is on a list in the front hall.',
+  ],
+  'school.failing': [
+    'Your grades at {school} slide to a {gpa}. A letter goes home asking for a meeting.',
+    'A teacher at {school} keeps you after class to show you a {gpa} in red pen.',
+  ],
+  'school.expelled': [
+    '{school} expels you after the arrest. In the autumn you start at {next}.',
+  ],
+  'school.expelled.college': [
+    '{school} drops you from the rolls while you are inside.',
+  ],
+  'school.dropout': [
+    'You never finish at {school}. The diploma goes to everyone else in your year.',
+    'Graduation at {school} happens without you. Nobody calls to ask why.',
+  ],
+  'school.graduate.magnet': [
+    'Four years at {school} leave you with calluses from a soldering iron and a head for systems. (Mind +1)',
+  ],
+  'school.graduate.prep': [
+    'You leave {school} with a blazer, a Latin motto and the phone numbers of people who will run the Spire someday. (Mind +1, Charm +1)',
+  ],
+  'school.graduate.parish': [
+    'The teachers at {school} shake your hand one at a time at the gate.',
+    'The {school} principal reads your name slowly, as if it might be on a test.',
+  ],
+  'school.graduate.trade': [
+    'You finish at {school} with a trade certificate and an apprentice card. The union hall has your name now.',
+    'You pass the practical exam at {school}. The certificate comes in a cardboard tube.',
+  ],
+  'school.graduate.community': [
+    'You finish your associate degree at {school}. Two years of night classes fit in one envelope.',
+  ],
+  'school.graduate.spire': [
+    'You graduate from {school} under a tent with a string quartet. Recruiters are waiting in the car park. (Charm +1)',
+  ],
+  'school.graduate.ashgrove': [
+    'You finish at {school} with your Grade logged, a sparring record and three agents\' business cards.',
+  ],
+  'school.dismissed': [
+    '{school} dismisses you for grades. A {gpa} is not enough, the letter says, in two paragraphs.',
+  ],
+  'school.scholarship-lost': [
+    'Your grades at {school} fall to {gpa}, and the scholarship goes with them. Tuition is your problem now.',
+  ],
+
+  'milestone.temperament.body': [
+    'You climb everything in the apartment, including the refrigerator. (Body +1)',
+    'You run everywhere. Nobody can get you to walk. (Body +1)',
+  ],
+  'milestone.temperament.mind': [
+    'You take the radio apart to see where the voices live. (Mind +1)',
+    'You ask "why" until the adults run out of answers. (Mind +1)',
+  ],
+  'milestone.temperament.charm': [
+    'You talk to every stranger on the bus, and most of them talk back. (Charm +1)',
+    'You learn that a smile gets you a second cookie. (Charm +1)',
+  ],
+  'milestone.temperament.nerve': [
+    'You refuse to come down from the top of the slide until you decide to. (Nerve +1)',
+    'You stare down the neighbour\'s dog until it leaves. (Nerve +1)',
+  ],
+  'milestone.first-day.friend': [
+    'First day at {school}. You share a crayon box with {person}, and by lunch you are a pair.',
+    'At {school} the teacher seats you next to {person}. You trade snacks before the first bell.',
+  ],
+  'milestone.first-day.rival': [
+    'First day at {school}. {Person} takes your seat and will not give it back. This is going to be a long year.',
+    'At {school}, {person} laughs at your shoes in front of the whole line. You remember the name.',
+  ],
+  'milestone.road-test.fail': [
+    'You fail the road test on the parallel park. The examiner writes something long on the clipboard.',
+    'You roll a stop sign during the road test. The examiner has you pull over and drives you back.',
+  ],
+  'milestone.road-test.pass': [
+    'You pass the road test on the first try. There is no car to drive, but the license goes in your wallet.',
+  ],
+  'milestone.road-test.car-gift': [
+    'You pass the road test. A car is waiting in the driveway with a bow on it.',
+  ],
+  'milestone.road-test.beater': [
+    'You pass the road test and spend ${money} of your savings on a car with a cracked dashboard and a working radio.',
+  ],
+  'milestone.summer.street': [
+    'Somebody opens the fire hydrant on your block. You spend the summer on the street with the older kids. (Nerve +1)',
+  ],
+  'milestone.summer.scrape': [
+    'You play street games all summer and come home with gravel in both knees.',
+  ],
+  'milestone.summer.camp-body': [
+    'You spend the summer swimming laps at the rec center pool. (Body +1)',
+  ],
+  'milestone.summer.camp-charm': [
+    'Summer day camp puts you in charge of the younger kids. They listen. (Charm +1)',
+  ],
+  'milestone.science-fair.ribbon': [
+    'Your science fair project wins a blue ribbon. Your family drives the poster board home flat in the back seat. (Mind +1)',
+    'Your project on water filters takes first place. A judge asks where you got the idea. (Mind +1)',
+  ],
+  'milestone.science-fair.volcano': [
+    'You bring a baking-soda volcano to the science fair. It erupts on the judge\'s shoes.',
+    'Your science fair poster is finished at seven in the morning on the day. It gets a participation ribbon.',
+  ],
+  'milestone.wipeout.clean': [
+    'You take a rusty bike down the steepest hill in {district} and make it to the bottom in one piece. The other kids talk about it for a week.',
+  ],
+  'milestone.wipeout.crash': [
+    'You take a skateboard down the steepest hill in {district}. The skateboard makes it to the bottom first. You get bruised ribs and a scar with a story.',
+  ],
+  'milestone.growth.body': [
+    'You grow four inches in a year. None of your trousers fit and you can reach the top shelf. (Body +1)',
+  ],
+  'milestone.growth.charm': [
+    'Your face catches up with your ears. People at school start saying hello first. (Charm +1)',
+  ],
+  'milestone.growth.tight': [
+    'You grow out of every pair of shoes you own. Money is tight, so you wear your cousin\'s.',
+  ],
+  'milestone.hallways.friend': [
+    'You and {person} get detention together and spend it laughing. You are inseparable by spring.',
+    '{Person} saves you a seat at lunch on a bad day. After that, it is always saved.',
+  ],
+  'milestone.hallways.rival': [
+    '{Person} decides you are the problem with high school. Your locker gets a new dent every week.',
+    'You and {person} want the same spot on the team. Only one of you gets it, and neither of you lets it go.',
+  ],
+  'milestone.hallways.scene': [
+    'You fall in with the kids who smoke behind the gym and play in basement bands. Teachers learn your name for the wrong reasons.',
+  ],
+  'milestone.summer-job': [
+    'You spend the summer unloading trucks at the docks for ${money}, cash, every Friday.',
+    'You work the summer at a car wash in {district}. You save ${money} and lose a shirt to the wax machine.',
+    v('You spend the summer behind the counter of a corner store in {district} for ${money}.', { rough: false }),
+  ],
+  'life.pet-died': [
+    '{PetName}, your {pet}, dies in their sleep in the spot by the radiator.',
+    'You bury {petName}, your old {pet}, in a shoebox. The apartment is very quiet.',
+  ],
+
+  // ---------- Choices: growing up ----------
+  'event.corner-store-dare': [
+    'At the corner store, {personFirst} nudges your elbow toward a rack of comics while the clerk argues with a delivery driver in the back. "Bet you won\'t," {personFirst} whispers.',
+    '{PersonFirst} stops at the candy aisle of a bodega in {district} and looks at the clerk, then at you. "Bet you won\'t take one."',
+  ],
+  'choice.dare.swipe': [
+    'The comic goes into your jacket and you walk out at a normal speed. {PersonFirst} talks about it for a month.',
+    'You pocket a pack of batteries and nobody looks up. {PersonFirst} tells the story to everyone, with improvements.',
+  ],
+  'choice.dare.caught': [
+    'The clerk catches your wrist at the door and calls home. The ride back is silent.',
+    'The clerk saw everything in the convex mirror. Your family gets a call, and {personFirst} gets away.',
+  ],
+  'choice.dare.pay': [
+    'You put your saved-up change on the counter. The clerk counts it twice and starts saving you the new issues.',
+  ],
+  'choice.dare.refuse': [
+    'You tell {personFirst} it is a stupid way to get banned from the only store on the block. {PersonFirst} sulks the whole way home.',
+  ],
+  'event.schoolyard-bully': [
+    'Behind the bleachers at recess, a sixth-grader corners a smaller kid from your class and shakes them down for lunch money.',
+    'At the bus stop, an older kid has a boy from your class pinned against the shelter, going through his backpack.',
+  ],
+  'choice.bully.step-in': [
+    'You step in and swing first. You both end up in the office with scraped knuckles, and the kid you stood up for, {person}, waits for you outside. (Nerve +1)',
+  ],
+  'choice.bully.joke': [
+    'You say something loud and funny enough that the yard teacher turns around. The bully walks off. The kid, {person}, sits with you at lunch after that.',
+  ],
+  'choice.bully.walk': [
+    'You keep your head down and walk past. You can still hear it from the other side of the yard.',
+  ],
+  'event.school-track': [
+    'Your guidance counsellor slides a manila folder across the desk. High school placement forms are due Friday, and where you go decides who you will know at eighteen.',
+  ],
+  'choice.track.magnet': [
+    'You pass the entrance exam for {school}. The acceptance letter comes with a reading list. (Mind +1)',
+  ],
+  'choice.track.magnet-fail': [
+    'You sit the exam for Harlan Technical and miss the cut by four points. You start at {school} in the autumn.',
+  ],
+  'choice.track.prep-paid': [
+    'You stay on at {school}. Your family writes the cheque without reading it.',
+  ],
+  'choice.track.prep-scholarship': [
+    'You win a scholarship to {school}. The blazer costs more than your family\'s rent, and the school pays for that too.',
+  ],
+  'choice.track.parish': [
+    'You enroll at {school}: uniforms, morning assembly, and a dean of students who has seen everything.',
+  ],
+  'choice.track.local': [
+    'You go to {school} with the kids from your block. Same bus, same corner, four more years.',
+  ],
+  'event.joyride': [
+    'Past midnight on a Friday, {personFirst} pulls up outside your building in a borrowed sedan with three kids from school in the back, music rattling the plates.',
+    '{PersonFirst} calls up to your window: somebody\'s cousin left the keys to a station wagon, and everyone is driving out to the grain silos at Riverside Docks.',
+  ],
+  'choice.joyride.ride': [
+    'You ride out to the silos with {personFirst} and the others. Nobody gets hurt, and the sunrise over the river is worth the trouble.',
+    'You climb into the front seat. {PersonFirst} drives too fast on the Harbor road and everyone screams the words to the same song.',
+  ],
+  'choice.joyride.busted': [
+    'Harbor Patrol breaks up the party at the silos. An officer takes your names and lets you go with a curfew warning. (Nerve +1)',
+  ],
+  'choice.joyride.drive': [
+    'You take the wheel and drive the speed limit the whole way. {PersonFirst} complains, and everyone gets home. (Nerve +1)',
+  ],
+  'choice.joyride.stay': [
+    'You tell {personFirst} you have an exam in the morning. You do, and you pass it.',
+  ],
+  'event.senior-year': [
+    'Senior year. Forms pile up on the kitchen table: college applications, a trade school flyer, a job ad from a warehouse, and nothing at all from the kids who already left.',
+  ],
+  'choice.senior.college': [
+    'You spend the year on practice tests at the kitchen table. Your grades go up.',
+  ],
+  'choice.senior.trade': [
+    'You sign up for the trade institute\'s autumn intake. The recruiter shakes your hand like you have already got the job.',
+  ],
+  'choice.senior.work': [
+    'You put your name down at a warehouse and a supermarket for after graduation.',
+  ],
+  'choice.senior.street': [
+    'You stop going to school. You learn other things on the corner instead. (Nerve +1)',
+  ],
+  'event.enroll.letters': [
+    'Envelopes arrive all summer. Some are thick, some are thin. You spread them out on the bed.',
+  ],
+  'choice.enroll.trade': [
+    'You start at {school}: steel-toed boots, a locker, and an instructor who still has all ten fingers.',
+  ],
+  'choice.enroll.community': [
+    'You enroll at {school}. Classes are at night, in rooms that smell of floor polish.',
+  ],
+  'choice.enroll.state': [
+    'You enroll at {school} in Saint Bryce. The bookstore line goes round the block.',
+  ],
+  'choice.enroll.spire': [
+    'You enroll at {school}. The orientation packet includes a guide to the dress code at alumni events.',
+  ],
+  'choice.enroll.ashgrove': [
+    'You move up to {school}. The dorm walls are reinforced and the sparring schedule is posted on Sundays.',
+  ],
+  'choice.enroll.scholarship': [
+    'You enroll at {school} on a scholarship. The letter mentions the grades you have to keep, twice.',
+  ],
+  'choice.enroll.hold': [
+    'You put school on hold. The brochures go in a drawer.',
+  ],
+
+  // ---------- Choices: family and friends ----------
+  'event.family-shortfall': [
+    'An envelope sits on the kitchen table in {district}: the utility company, final notice. Your family is short this month.',
+    'The landlord raises the rent on your family\'s place. Everyone looks at the calendar, then at each other.',
+  ],
+  'choice.shortfall.cover': [
+    'You put ${money} on the table. Nobody says thank you out loud, and everybody means it.',
+  ],
+  'choice.shortfall.shifts': [
+    'You pick up extra shifts alongside your family until the bill is paid. Everyone is tired for a month.',
+  ],
+  'choice.shortfall.no': [
+    'You tell them you do not have it. The silence at dinner lasts a week.',
+  ],
+  'event.bail-call': [
+    'Your {phone} goes off at three in the morning: {personFirst}, from central booking. A bar fight, a curfew sweep, ${money} bail before the morning arraignment.',
+    '{PersonFirst} calls from a precinct holding cell near the docks. They need ${money} by morning or they go in front of a judge in yesterday\'s clothes.',
+  ],
+  'choice.bail.post': [
+    'You post ${money} at the window and wait on a plastic chair until {personFirst} walks out.',
+  ],
+  'choice.bail.talk': [
+    'You talk to the desk sergeant for twenty minutes. {PersonFirst} is released with a warning and no bail.',
+  ],
+  'choice.bail.leave': [
+    'You let {personFirst} sit in holding overnight. They make it out on their own and stop answering your calls.',
+  ],
+  'event.sibling-kindling': [
+    'A scream from the bathroom: {personFirst} has cracked the mirror without touching it and the lights on the block are flickering. The neighbours are already at their windows.',
+    'Your sibling {personFirst} comes out of their room with frost on their hands and the radiator split open. Kindling: you have seen it on television enough times to know.',
+  ],
+  'choice.sibling.register': [
+    'You walk {personFirst} into the Bureau office yourself within the seventy-two hours. They come out with a temporary card and a Rank pending.',
+  ],
+  'choice.sibling.hide': [
+    'You tape the mirror, blame the wiring, and teach {personFirst} to breathe through it. Nobody official knows.',
+  ],
+  'choice.sibling.caught': [
+    'A neighbour reports the flickering lights. The Bureau finds {personFirst}, and finds that you covered it up: {months} months in {prison}.',
+  ],
+  'choice.sibling.contact': [
+    'You make a call. People arrive in a van with no markings and take care of everything for {personFirst}, including the paperwork.',
+  ],
+  'event.move-in': [
+    '{PersonFirst} spreads rental listings across your table. Split one place in {district} and you both save on rent.',
+  ],
+  'choice.move-in.yes': [
+    'You and {personFirst} put both names on the lease. Moving day takes three trips and one argument about a couch.',
+  ],
+  'choice.move-in.no': [
+    'You tell {personFirst} you are not ready. They fold the listings up very neatly.',
+  ],
+  'event.rival': [
+    'You run into {person} in {district}, and they make sure everyone around you hears what they think of you.',
+    '{Person} spots you across a crowded bar and starts in on you loud enough to stop the jukebox.',
+  ],
+  'choice.rival.fight': [
+    'You stand your ground. {PersonFirst} swings first and ends up on the floor. People remember who walked away.',
+  ],
+  'choice.rival.words': [
+    'You take {personFirst} apart in four sentences. The crowd laughs at them, not you.',
+  ],
+  'choice.rival.drink': [
+    'You buy {personFirst} a drink instead. By the second one you are laughing about the old days.',
+  ],
+  'choice.rival.walk': [
+    'You walk away. {PersonFirst} keeps talking to your back.',
+  ],
+
+  // ---------- Choices: adult life ----------
+  'event.first-lease': [
+    'You need a place of your own in {district}. Three leads before the first of the month: a damp basement studio, a three-bedroom share with two strangers, or a clean one-bedroom that stretches every dollar.',
+  ],
+  'choice.lease.basement': [
+    'You take the basement studio. The walls sweat and the window looks at ankles, but you keep ${money} a year.',
+  ],
+  'choice.lease.share-friend': [
+    'You take the share. One roommate, {person}, cooks for everyone and becomes a friend. You save ${money} a year.',
+  ],
+  'choice.lease.share-rival': [
+    'You take the share. One roommate, {person}, labels the milk and leaves notes on the fridge. You save ${money} a year and gain an enemy.',
+  ],
+  'choice.lease.clean': [
+    'You sign for the clean one-bedroom and pay a ${money} deposit. The radiator works and the locks are new.',
+  ],
+  'event.scapegoat': [
+    'An account at work comes up four thousand dollars short, thanks to your supervisor\'s bookkeeping. Before regional management arrives, your supervisor pulls you into the hallway and suggests you take it as a "rookie mistake," for a favour later.',
+  ],
+  'choice.scapegoat.receipts': [
+    'You print the timestamped logs and put them on the regional manager\'s desk. Your supervisor is gone by Friday; you get a ${money} bonus and a raise to ${salary} a year.',
+  ],
+  'choice.scapegoat.fall': [
+    'You sign the reprimand. ${money} in cash appears in your locker a week later.',
+  ],
+  'choice.scapegoat.quit': [
+    'You tell your supervisor where to put the write-up and walk out of the {job} job for good.',
+  ],
+  'event.aging-parent': [
+    'A doctor at Saint Bryce Medical calls you at work: {personFirst} fell on the stairs. Nothing life-threatening, but they cannot manage a third-floor walk-up alone any more.',
+  ],
+  'choice.parent.pay': [
+    'You pay ${money} toward a ground-floor flat with rails in the bathroom. {PersonFirst} calls every Sunday to complain about the neighbours.',
+  ],
+  'choice.parent.move-in': [
+    'You clear out the spare room and move {personFirst} in. The house runs on pill schedules now. (Nerve +1)',
+  ],
+  'choice.parent.siblings': [
+    'You and your sibling split the costs and the schedule for {personFirst}. There is a shared calendar and a lot of texts.',
+  ],
+  'choice.parent.leave': [
+    'You leave it to the hospital social worker. {PersonFirst} ends up in a care home across the river, and the calls get shorter.',
+  ],
+  'event.midlife': [
+    'An old acquaintance offers you a share in a small business in {district}: a corner diner, or a garage with two bays and a loyal clientele.',
+    'A Tuesday morning, a bathroom mirror, and a phone call from an old friend who wants a partner in a corner business in {district}.',
+  ],
+  'choice.midlife.buy-in': [
+    'You put ${money} into the business. Your name goes on the window, and the books pay you about ${salary} a year.',
+  ],
+  'choice.midlife.career': [
+    'You pass, and push for a senior role at your {job} job instead. The new salary is ${salary}, and the hours are longer.',
+  ],
+  'choice.midlife.sabbatical': [
+    'You take a month off. It costs ${money} in lost pay and you spend most of it sleeping, cooking and calling people back.',
+  ],
+  'event.torch': [
+    'A sharp nineteen-year-old from {district} keeps turning up where you are, asking how to survive Port Harlan without getting chewed up. They remind you of someone.',
+  ],
+  'choice.torch.protege': [
+    'You take {person} under your wing. They show up early, listen, and argue with everything.',
+  ],
+  'choice.torch.tough-love': [
+    'You give them ${money} and one hard truth about the city, and send them on their way.',
+  ],
+  'choice.torch.no': [
+    'You tell the kid you are retired from fixing other people\'s mistakes. They stop coming round.',
+  ],
+  'event.pension': [
+    'A certified letter from the pension fund: after "market restructuring," you can take a buyout now, fight the cut, or move into part-time consulting.',
+  ],
+  'choice.pension.lump-sum': [
+    'You take the ${money} buyout and clear out your desk. Somebody buys a sheet cake.',
+  ],
+  'choice.pension.won': [
+    'You organise the retirees and pack City Hall for three meetings straight. The fund settles: ${money}, and your face on the evening news.',
+  ],
+  'choice.pension.lost': [
+    'You fight the cut for a year. The fund wins in court and you take ${money}, less than they first offered.',
+  ],
+  'choice.pension.advisor': [
+    'You move into a part-time advisory role at ${salary} a year. Your calendar empties out.',
+  ],
+
+  // ---------- Choices: ordinary trouble ----------
+  'event.union-drive': [
+    'The shop steward passes union cards around the break room. Management has already noticed who is talking to whom.',
+  ],
+  'choice.union.won': [
+    'You sign. The vote passes by eleven, and the first contract raises your {job} pay to ${salary}.',
+  ],
+  'choice.union.lost': [
+    'You sign. The vote fails by six, and the break room goes quiet for a while.',
+  ],
+  'choice.union.fired': [
+    'You sign. Two weeks later you are let go from the {job} job for "attendance."',
+  ],
+  'choice.union.quiet': [
+    'You keep your head down and your card in your pocket.',
+  ],
+  'choice.union.snitch': [
+    'You give management the names. You get ${money} and nobody sits with you at lunch again.',
+  ],
+  'event.stray-pet': [
+    'A rain-soaked stray follows you home and sits on your stoop like it has been there all along.',
+    'A one-eared alley cat has been waiting outside your door for three nights running.',
+  ],
+  'choice.pet.keep': [
+    'You take the {pet} in and name it {petName}. It takes over the warmest spot in the place.',
+  ],
+  'choice.pet.shelter': [
+    'You walk the stray to the shelter. A volunteer writes your name on the intake form.',
+  ],
+  'event.car-trouble': [
+    'The alternator dies on the Harbor Expressway at rush hour. Your car sits on the shoulder with the hazards blinking.',
+  ],
+  'choice.car.fix': [
+    'You pay ${money} to keep it running for another year, probably.',
+  ],
+  'choice.car.upgrade': [
+    'You trade the old car in and pay ${money} for one that starts every time.',
+  ],
+  'choice.car.scrap': [
+    'You sell the car for scrap for ${money} and buy a bus pass.',
+  ],
+  'event.dental': [
+    'A cracked molar flares up at two in the morning. By sunrise half your face is swollen.',
+  ],
+  'choice.dental.clinic': [
+    'You pay ${money} at an urgent dental clinic. The dentist works fast and talks about baseball the whole time.',
+  ],
+  'choice.dental.tough': [
+    'You tough it out with clove oil and painkillers for two weeks.',
+  ],
+  'event.skimmer': [
+    'A card skimmer on a bodega reader drains ${money} from your account before the bank freezes your card.',
+  ],
+  'choice.skimmer.call': [
+    'You spend an afternoon on hold with the bank. The ${money} comes back in eight to ten business days.',
+  ],
+  'choice.skimmer.eat': [
+    'You eat the loss and start paying cash.',
+  ],
+
+  // ---------- Ordinary life (see MUNDANE_EVENTS in events.ts) ----------
+  'mundane.transit-strike.cab': [
+    'The transit workers walk out for a week. Shared cabs across {district} cost you ${money}.',
+  ],
+  'mundane.transit-strike.walk': [
+    'A transit strike shuts the buses and the ferries for a week. You walk three miles each way in the rain.',
+  ],
+  'mundane.pipe-burst': [
+    'A pipe bursts in the ceiling at two in the morning. The landlord takes a week to call anyone, and replacing the ruined bedding costs ${money}.',
+  ],
+  'mundane.pipe-burst.broke': [
+    'A pipe bursts above your bed. You sleep on the floor for a week because you cannot replace the mattress.',
+  ],
+  'mundane.tax-refund': [
+    'A tax refund arrives in the mail: ${money}, from a withholding mistake that works in your favour for once.',
+  ],
+  'mundane.jury-duty': [
+    'Jury duty: two weeks in a civil trial at the municipal court, a ${money} stipend and a front-row seat on city paperwork.',
+  ],
+  'mundane.block-party': [
+    'Neighbours drag grills and folding chairs into the street in {district}. Music comes out of open windows, and for one Saturday nobody calls the police.',
+    'Somebody opens a hydrant and somebody else brings a sound system. The {district} block party runs past midnight.',
+  ],
+  'mundane.audit': [
+    'Efficiency consultants spend a week watching your {job} work and asking why. You do not enjoy it.',
+  ],
+  'mundane.audit.impressed': [
+    'Efficiency consultants descend on your workplace. Your answers make it into their report: a ${money} bonus and your {job} salary goes to ${salary}.',
+  ],
+  'mundane.league': [
+    'You join a weeknight league in {district}: softball, bowling, or boxing at the rec center. {Person} on your team becomes a friend.',
+  ],
+
+  // ---------- People (see people.ts) ----------
+  'people.chores': [
+    'You help {personFirst} with the dishes and the laundry. They notice.',
+    'You carry the groceries up four flights for {personFirst} without being asked.',
+  ],
+  'people.chores.paid': [
+    'You help {personFirst} around the house all weekend. ${money} in pocket money appears on your pillow.',
+  ],
+  'people.date': [
+    'You take {personFirst} out for dinner and a film. You walk the long way home.',
+    'You and {personFirst} spend a Saturday wandering {district} with nowhere to be.',
+  ],
+  'people.move-in.yes': [
+    '{PersonFirst} says yes before you finish asking. Their boxes take up half the hallway by Friday.',
+  ],
+  'people.move-in.no': [
+    '{PersonFirst} says they need more time. They stay over less for a while.',
+  ],
+  'people.propose.yes': [
+    'You propose to {personFirst}. They say yes. The wedding is small, loud and in {district}.',
+    '{PersonFirst} says yes. Your families meet at the wedding and get along better than expected.',
+  ],
+  'people.propose.no': [
+    'You propose to {personFirst}. They say no, kindly, and you take the ring back to the shop.',
+  ],
+  'people.expecting': [
+    '{PersonFirst} shows you a positive test. The baby is due within the year, and you have already argued about the name {baby}.',
+  ],
+  'people.not-expecting': [
+    'You and {personFirst} try for a baby. Not this year.',
+  ],
+  'people.child-born': [
+    'Your child {person} is born at Saint Bryce Medical. You go home with a car seat and no sleep.',
+    '{Person} arrives at four in the morning, red and loud. You are a parent.',
+  ],
+  'people.play': [
+    'You spend the weekend with {personFirst}: the park, a cartoon, a fort made of couch cushions.',
+    'You take {personFirst} to the harbour to look at the ships. They ask a hundred questions.',
+  ],
+  'people.mentor': [
+    'You walk {personFirst} through how the city really works: who to pay, who to avoid, which promises mean anything.',
+  ],
+  'people.break-up': [
+    'You end things with {personFirst}. They take their toothbrush and leave the key on the counter.',
+  ],
+  'people.divorce': [
+    'You and {personFirst} divorce. The lawyers cost more than the wedding.',
+  ],
+  'people.left.partner': [
+    '{PersonFirst} breaks up with you over the phone. They had been gone a while before that.',
+  ],
+  'people.left.spouse': [
+    '{PersonFirst} files for divorce. The papers arrive at work.',
+  ],
+  'people.reconcile.yes': [
+    'You reach out to {personFirst}. The first call is short. The second one lasts an hour.',
+    'You knock on {personFirst}\'s door after years. They let you in.',
+  ],
+  'people.reconcile.no': [
+    'You reach out to {personFirst}. The call goes to voicemail and stays there.',
+    'You write {personFirst} a letter. It comes back unopened.',
+  ],
+  'people.confront.win': [
+    'You settle it with {personFirst} out back. They walk away first.',
+  ],
+  'people.confront.lose': [
+    'You try to settle it with {personFirst}. You lose, and you have the split lip to prove it.',
+  ],
+  'people.make-peace.yes': [
+    'You offer {personFirst} a truce. They take it, and by the end of the night you are friends.',
+  ],
+  'people.make-peace.no': [
+    'You offer {personFirst} a truce. They laugh in your face.',
+  ],
+  'people.rival-gone': [
+    '{Person} moves away. You hear about it from somebody else.',
   ],
 };

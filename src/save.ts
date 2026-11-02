@@ -2,6 +2,7 @@
 // (localStorage, which the Android app keeps too). Saves can also be copied out as text and pasted back.
 
 import { ensurePeople } from './engine/people';
+import { ensureSchool } from './engine/school';
 import { ageOf } from './engine/state';
 import { formatDate } from './engine/sheet';
 import type { GameState } from './engine/types';
@@ -35,6 +36,7 @@ const summary = (g: GameState) => `${g.character.name}, age ${ageOf(g)} · ${for
 export function migrate(g: GameState): GameState {
   const s = structuredClone(g);
   ensurePeople(s);
+  ensureSchool(s);
   s.turn ??= 0;
   return s;
 }

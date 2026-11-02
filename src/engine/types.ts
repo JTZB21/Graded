@@ -7,6 +7,18 @@ export type District = 'Ashgrove' | 'The Spire' | 'Saint Bryce' | 'Kesler Height
 export type Focus = 'school' | 'work' | 'train' | 'crime' | 'family' | 'rest';
 export type License = 'none' | 'Civilian' | 'Utility' | 'Vigilance' | 'Strategic';
 export type Education = 'none' | 'high school' | 'college';
+/** Kinds of school from 6 to 17 (see school.ts). */
+export type SchoolKind = 'underfunded-public' | 'standard-public' | 'parochial-charter' | 'stem-magnet' | 'elite-prep' | 'ashgrove-academy';
+/** Kinds of study after 18 (see school.ts). */
+export type CollegeKind = 'trade' | 'community' | 'state' | 'spire' | 'ashgrove';
+
+export interface Enrollment {
+  kind: CollegeKind;
+  /** Months done in this program. */
+  months: number;
+  /** Tuition waived. */
+  scholarship: boolean;
+}
 
 export interface YearMonth {
   year: number;
@@ -84,9 +96,22 @@ export interface Character {
   alive: boolean;
   /** Family and friends (see people.ts). Missing on saves from before the family system. */
   people?: Person[];
+
+  /** The school you go to (or last went to) between 6 and 17. Missing before school age. */
+  school?: SchoolKind | null;
+  /** Grade point average, 0-4, at school and college. */
+  gpa?: number;
+  /** College or trade school you are enrolled in now. */
+  college?: Enrollment | null;
+  /** Certificates and degrees short of a full degree ('trade certificate', 'associate degree'). */
+  credentials?: string[];
+  pet?: { kind: string; name: string; since: number } | null;
+  car?: 'beater' | 'reliable' | null;
+  /** One-off life moments that already happened (milestones, once-in-a-life choices). */
+  done?: string[];
 }
 
-export type Relation = 'mother' | 'father' | 'guardian' | 'sibling' | 'friend';
+export type Relation = 'mother' | 'father' | 'guardian' | 'sibling' | 'friend' | 'rival' | 'partner' | 'spouse' | 'child' | 'protege';
 
 export interface Person {
   id: string;
@@ -101,6 +126,12 @@ export interface Person {
   wealth?: number;
   /** Times you have spent with them. */
   moments: number;
+  /** Not speaking to you. Only reaching out can fix it. */
+  estranged?: boolean;
+  /** Kindled (a Graded parent, or a sibling who Kindles). */
+  graded?: boolean;
+  /** A partner or spouse who shares your home (splits the rent). */
+  livesWithYou?: boolean;
   /** Turn number and count of the last interactions, to limit them per turn. */
   usedTurn?: number;
   usedCount?: number;
@@ -122,6 +153,8 @@ export interface Decision {
   id: string;
   text: string;
   options: DecisionOption[];
+  /** The person the choice is about (a Person id), if any. */
+  about?: string;
 }
 
 export interface GameState {
