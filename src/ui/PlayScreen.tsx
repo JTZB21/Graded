@@ -1,3 +1,4 @@
+import { Icon, type IconName } from './Icon';
 import { useMemo, useState } from 'react';
 import { act, ACTION_GROUPS, availableActions, ENERGY, energyOf, type ActionGroup, type ActionView } from '../engine/actions';
 import { choose } from '../engine/decisions';
@@ -12,27 +13,27 @@ type Result = { lines: string[]; changes: string[] };
 
 const SKIPS: [string, number][] = [['6 months', 6], ['1 year', 12], ['5 years', 60]];
 
-const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'home', label: 'Home', icon: '🏠' },
-  { id: 'act', label: 'Act', icon: '⚡' },
-  { id: 'log', label: 'Log', icon: '📜' },
-  { id: 'self', label: 'Self', icon: '🪪' },
-  { id: 'more', label: 'More', icon: '☰' },
+const TABS: { id: Tab; label: string; icon: IconName }[] = [
+  { id: 'home', label: 'Home', icon: 'home' },
+  { id: 'act', label: 'Act', icon: 'bolt' },
+  { id: 'log', label: 'Log', icon: 'log' },
+  { id: 'self', label: 'Character', icon: 'id' },
+  { id: 'more', label: 'More', icon: 'more' },
 ];
 
 // Display only: which picture goes on which tile. The engine decides everything else.
-const ACTION_ICONS: Record<string, string> = {
-  gym: '🏋️', study: '📚', rest: '🛌', clinic: '🏥', healer: '✨', practice: '🎯', push: '🔥', 'show-off': '📸',
-  patrol: '🦺', 'odd-job': '🧰', 'job-hunt': '💼', raise: '📈', quit: '🚪', family: '🏡', 'night-out': '🍸',
-  volunteer: '🤝', move: '📦', steal: '🧤', fight: '🥊', 'crew-job': '🕶️', hustle: '🎲',
+const ACTION_ICONS: Record<string, IconName> = {
+  gym: 'body', study: 'book', rest: 'rest', clinic: 'clinic', healer: 'spark', practice: 'target', push: 'bolt', 'show-off': 'camera',
+  patrol: 'shield', 'odd-job': 'tools', 'job-hunt': 'briefcase', raise: 'trend', quit: 'door', family: 'home', 'night-out': 'glass',
+  volunteer: 'people', move: 'box', steal: 'hand', fight: 'fight', 'crew-job': 'mask', hustle: 'dice',
 };
-const GROUP_META: Record<ActionGroup, { icon: string; dot: string }> = {
-  'Body and mind': { icon: '💪', dot: 'var(--c-body)' },
-  Powers: { icon: '⚡', dot: 'var(--c-mind)' },
-  Money: { icon: '💵', dot: 'var(--c-money)' },
-  'People and places': { icon: '🫂', dot: 'var(--c-charm)' },
-  Underworld: { icon: '🕶️', dot: 'var(--c-infamy)' },
-  Inside: { icon: '🔒', dot: 'var(--c-cred)' },
+const GROUP_META: Record<ActionGroup, { icon: IconName; dot: string }> = {
+  'Body and mind': { icon: 'body', dot: 'var(--c-body)' },
+  Powers: { icon: 'bolt', dot: 'var(--c-mind)' },
+  Money: { icon: 'money', dot: 'var(--c-money)' },
+  'People and places': { icon: 'people', dot: 'var(--c-charm)' },
+  Underworld: { icon: 'mask', dot: 'var(--c-infamy)' },
+  Inside: { icon: 'lock', dot: 'var(--c-cred)' },
 };
 const KIND_LABELS: Record<LogEntry['kind'], string> = {
   life: 'Life', power: 'Powers', money: 'Money', law: 'Law', world: 'World', event: 'Events', death: 'Death',
@@ -86,7 +87,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
   function go(next: Tab, anchor?: string) {
     setTab(next);
     requestAnimationFrame(() => {
-      if (anchor) document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (anchor) document.getElementById(anchor)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
       else window.scrollTo({ top: 0 });
     });
   }
@@ -113,6 +114,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
   return (
     <div className="play">
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{result ? [...result.lines, ...result.changes].join('. ') : notice ?? ''}</div>
       {tab !== 'home' && <TopBar state={state} energy={energy} />}
       {tab !== 'home' && decision}
 
@@ -160,12 +162,12 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
       {tab === 'log' && <LogTab log={state.log} />}
       {tab === 'self' && <SelfTab state={state} />}
-      {tab === 'more' && <MoreTab actions={actions} onGo={go} onNew={onNew} />}
+      {tab === 'more' && <MoreTab onNew={onNew} />}
 
       <nav className="bottom-nav" aria-label="Sections">
         {TABS.map((t) => (
           <button key={t.id} className={tab === t.id ? 'active' : ''} onClick={() => go(t.id)} aria-current={tab === t.id ? 'page' : undefined}>
-            <span className="nav-icon" aria-hidden>{t.icon}</span>
+            <span className="nav-icon" aria-hidden><Icon name={t.icon} /></span>
             <span>{t.label}</span>
           </button>
         ))}
@@ -176,7 +178,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
 function Energy({ energy }: { energy: number }) {
   return (
-    <span className="energy" title="Energy refills when time moves">
+    <span className="energy" role="img" aria-label={`${energy} of ${ENERGY} energy remaining. Refills when time moves.`} title="Energy refills when time moves">
       {Array.from({ length: Math.max(ENERGY, energy) }, (_, i) => <i key={i} className={i < energy ? 'on' : ''} />)}
     </span>
   );
@@ -201,7 +203,6 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
   const legal = c.inPrisonUntil ? `Prison until ${formatDate(c.inPrisonUntil)}` : c.record.length ? `${c.record.length} conviction${c.record.length > 1 ? 's' : ''}` : 'Clean record';
   const power = c.graded ? `${notation(c)}${c.powersGone ? ' · gone dark' : ''}` : c.kindleAge !== null ? 'Baseline · marker+' : 'Baseline';
   const band = strainBand(c.strain);
-  const repBar = (v: number) => (v + 100) / 2;
 
   return (
     <section className="card profile">
@@ -218,41 +219,48 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
         </div>
       </div>
       <div className="badge-row">
-        <span className={`badge${c.graded ? ' power' : ''}`}>⚡ {power}</span>
-        {c.job && <span className="badge">💼 {c.job.title}</span>}
+        <span className={`badge${c.graded ? ' power' : ''}`}><Icon name="bolt" /> {power}</span>
+        {c.job && <span className="badge"><Icon name="briefcase" /> {c.job.title}</span>}
         {c.alive && <Energy energy={energy} />}
       </div>
 
-      <p className="eyebrow">Details</p>
-      <div className="stat-grid">
-        <Stat icon="❤️" label="Health" value={c.health} bar={c.health} color="var(--c-health)" />
-        <Stat icon="🔥" label="Strain" value={`${c.strain}%`} bar={c.strain} color={band === 'fine' ? 'var(--c-money)' : 'var(--c-infamy)'} hint={band} />
-        <Stat icon="💵" label="Money" value={compactMoney(c.money)} bar={c.money <= 0 ? 0 : Math.min(100, (Math.log10(c.money + 1) / 7) * 100)} color="var(--c-money)" />
-        <Stat icon="💪" label="Body" value={c.body} bar={c.body * 10} color="var(--c-body)" />
-        <Stat icon="🧠" label="Mind" value={c.mind} bar={c.mind * 10} color="var(--c-mind)" />
-        <Stat icon="😏" label="Charm" value={c.charm} bar={c.charm * 10} color="var(--c-charm)" />
-        <Stat icon="🫀" label="Nerve" value={c.nerve} bar={c.nerve * 10} color="var(--c-nerve)" />
-        <Stat icon="⭐" label="Fame" value={signed(c.fame)} bar={repBar(c.fame)} color="var(--c-fame)" />
-        <Stat icon="☠️" label="Infamy" value={signed(c.infamy)} bar={repBar(c.infamy)} color="var(--c-infamy)" />
-        <Stat icon="🕶️" label="Cred" value={signed(c.streetCred)} bar={repBar(c.streetCred)} color="var(--c-cred)" />
+      <p className="eyebrow">Vitals</p>
+      <div className="stat-grid vitals">
+        <Stat icon="health" label="Health" value={c.health} bar={c.health} color="var(--c-health)" />
+        <Stat icon="strain" label="Strain" value={`${c.strain}%`} bar={c.strain} color={band === 'fine' ? 'var(--c-money)' : 'var(--c-infamy)'} hint={band} />
+        <Stat icon="money" label="Money" value={compactMoney(c.money)} color="var(--c-money)" />
+      </div>
+      <p className="eyebrow">Attributes</p>
+      <div className="stat-grid attributes">
+        <Stat icon="body" label="Body" value={c.body} bar={c.body * 10} color="var(--c-body)" />
+        <Stat icon="mind" label="Mind" value={c.mind} bar={c.mind * 10} color="var(--c-mind)" />
+        <Stat icon="chat" label="Charm" value={c.charm} bar={c.charm * 10} color="var(--c-charm)" />
+        <Stat icon="shield" label="Nerve" value={c.nerve} bar={c.nerve * 10} color="var(--c-nerve)" />
+      </div>
+      <p className="eyebrow">Reputation</p>
+      <div className="stat-grid reputation">
+        <Stat icon="star" label="Fame" value={signed(c.fame)} bar={c.fame} bipolar color="var(--c-fame)" />
+        <Stat icon="warning" label="Infamy" value={signed(c.infamy)} bar={c.infamy} bipolar color="var(--c-infamy)" />
+        <Stat icon="mask" label="Cred" value={signed(c.streetCred)} bar={c.streetCred} bipolar color="var(--c-cred)" />
       </div>
 
       <div className="chip-row">
-        <span className="chip"><i style={{ background: 'var(--c-mind)' }} />📍 {c.district}</span>
-        <span className="chip"><i style={{ background: 'var(--c-fame)' }} />🪪 {c.license === 'none' ? 'No license' : `${c.license} License`}</span>
-        <span className="chip"><i style={{ background: c.inPrisonUntil || c.record.length ? 'var(--c-infamy)' : 'var(--c-health)' }} />⚖️ {legal}</span>
-        {(c.ties ?? []).map((t) => <span key={t} className="chip"><i style={{ background: 'var(--c-charm)' }} />🤝 {t}</span>)}
+        <span className="chip"><i style={{ background: 'var(--c-mind)' }} /><Icon name="pin" /> {c.district}</span>
+        <span className="chip"><i style={{ background: 'var(--c-fame)' }} /><Icon name="id" /> {c.license === 'none' ? 'No license' : `${c.license} License`}</span>
+        <span className="chip"><i style={{ background: c.inPrisonUntil || c.record.length ? 'var(--c-infamy)' : 'var(--c-health)' }} /><Icon name="scales" /> {legal}</span>
+        {(c.ties ?? []).map((t) => <span key={t} className="chip"><i style={{ background: 'var(--c-charm)' }} /><Icon name="people" /> {t}</span>)}
       </div>
     </section>
   );
 }
 
-function Stat({ icon, label, value, bar, color, hint }: { icon: string; label: string; value: string | number; bar: number; color: string; hint?: string }) {
+function Stat({ icon, label, value, bar, color, hint, bipolar = false }: { icon: IconName; label: string; value: string | number; bar?: number; color: string; hint?: string; bipolar?: boolean }) {
   return (
     <div className="stat" title={hint ? `${label}: ${hint}` : label}>
-      <div className="stat-label"><span aria-hidden>{icon}</span>{label}</div>
+      <div className="stat-label"><span aria-hidden><Icon name={icon} /></span>{label}</div>
       <div className="stat-value">{value}</div>
-      <div className="bar"><div style={{ width: `${Math.max(0, Math.min(100, bar))}%`, background: color }} /></div>
+      {bar !== undefined && <div className={bipolar ? 'bar bipolar' : 'bar'} aria-hidden="true"><div style={{ width: `${bipolar ? Math.min(100, Math.abs(bar)) / 2 : Math.max(0, Math.min(100, bar))}%`, left: bipolar ? `${bar < 0 ? 50 - Math.min(100, Math.abs(bar)) / 2 : 50}%` : undefined, background: color }} /></div>}
+      {bipolar && <span className="meter-caption">−100 · 0 · +100</span>}
     </div>
   );
 }
@@ -300,7 +308,7 @@ function ActTab({ actions, energy, alive, pending, onAct }: { actions: ActionVie
             <div className="tile-grid">
               {list.map((a) => (
                 <button key={a.id} className="tile" disabled={!!a.disabled} title={a.disabled} onClick={() => onAct(a.id)}>
-                  <span className="tile-icon" aria-hidden>{ACTION_ICONS[a.id] ?? GROUP_META[g].icon}</span>
+                  <span className="tile-icon" aria-hidden><Icon name={ACTION_ICONS[a.id] ?? GROUP_META[g].icon} /></span>
                   <span className="tile-label">{a.label}</span>
                   <small>{a.cost} energy{a.price ? ` · ${compactMoney(a.price)}` : ''}</small>
                   {a.disabled && <small className="why">{a.disabled}</small>}
@@ -329,8 +337,8 @@ function LogTab({ log }: { log: LogEntry[] }) {
     <>
       <div className="page-head"><h2>Life log</h2></div>
       <div className="filter-row">
-        <button className={`pill small${filter === 'all' ? ' active' : ''}`} onClick={() => setFilter('all')}>All</button>
-        {kinds.map((k) => <button key={k} className={`pill small${filter === k ? ' active' : ''}`} onClick={() => setFilter(k)}>{KIND_LABELS[k]}</button>)}
+        <button className={`pill small${filter === 'all' ? ' active' : ''}`} aria-pressed={filter === 'all'} onClick={() => setFilter('all')}>All</button>
+        {kinds.map((k) => <button key={k} className={`pill small${filter === k ? ' active' : ''}`} aria-pressed={filter === k} onClick={() => setFilter(k)}>{KIND_LABELS[k]}</button>)}
       </div>
       <section className="card">
         {years.map(([year, entries]) => (
@@ -373,37 +381,19 @@ function SelfTab({ state }: { state: GameState }) {
   );
 }
 
-function MoreTab({ actions, onGo, onNew }: { actions: ActionView[]; onGo: (t: Tab, anchor?: string) => void; onNew: () => void }) {
-  const groups = ACTION_GROUPS.filter((g) => actions.some((a) => a.group === g));
+function MoreTab({ onNew }: { onNew: () => void }) {
   return (
     <>
       <div className="page-head">
-        <h2 className="display">Everything</h2>
-        <p className="muted">Every part of this life, one tap away.</p>
+        <h2>More</h2>
+        <p className="muted">Manage this life.</p>
       </div>
-      {groups.length > 0 && (
-        <section className="tile-section">
-          <h3 className="section-title"><i style={{ background: 'var(--c-money)' }} />This month</h3>
-          <div className="tile-grid">
-            {groups.map((g) => (
-              <button key={g} className="tile" onClick={() => onGo('act', `group-${g}`)}>
-                <span className="tile-icon" aria-hidden>{GROUP_META[g].icon}</span>
-                <span className="tile-label">{g}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-      <section className="tile-section">
-        <h3 className="section-title"><i style={{ background: 'var(--c-mind)' }} />Your life</h3>
-        <div className="tile-grid">
-          <button className="tile" onClick={() => onGo('home')}><span className="tile-icon" aria-hidden>🏠</span><span className="tile-label">Home</span></button>
-          <button className="tile" onClick={() => onGo('log')}><span className="tile-icon" aria-hidden>📜</span><span className="tile-label">Life log</span></button>
-          <button className="tile" onClick={() => onGo('self')}><span className="tile-icon" aria-hidden>🪪</span><span className="tile-label">Character</span></button>
-          <button className="tile" onClick={() => { if (confirm('Start a new life? This one will be lost.')) onNew(); }}>
-            <span className="tile-icon" aria-hidden>🌱</span><span className="tile-label">New life</span>
-          </button>
-        </div>
+      <section className="card">
+        <h3>Start a new life</h3>
+        <p className="hint">Starting over replaces your current character and their history.</p>
+        <button className="pill" onClick={() => { if (confirm('Start a new life? This one will be lost.')) onNew(); }}>
+          <Icon name="seed" /> New life
+        </button>
       </section>
     </>
   );
