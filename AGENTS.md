@@ -9,6 +9,7 @@ A browser life-sim built from an existing SillyTavern card. The design is alread
 - All stats, dice, time, aging, Strain, money, reputation and legal state live in typed code under `src/engine/`.
 - The event writer (`src/engine/writer/`) only writes prose. It reads state and the numbers the engine already decided; it never changes state and never draws from the game's dice.
 - Choices are engine code too: every option's effect lives in `src/engine/decisions.ts`.
+- Actions the player takes during a month (work out, study, patrol, fight, move...) live in `src/engine/actions.ts`: each has an energy cost, an optional price, and engine-applied effects. Their text keys start with `act.`.
 
 ## Decisions already made by the owner
 - Standalone browser app (TypeScript, React, Vite), not a SillyTavern extension. Browser first; phone later.

@@ -48,3 +48,32 @@ export function sheetRows(s: GameState): SheetRow[] {
   for (const r of c.record) rows.push({ label: `Record ${r.year}`, value: `${r.offense}, ${r.sentenceMonths} months` });
   return rows;
 }
+
+/** What changed between two states, as short labels ("Body +1", "$-300", "Moved to Saint Bryce"). */
+export function changes(before: GameState, after: GameState): string[] {
+  const a = before.character;
+  const b = after.character;
+  const out: string[] = [];
+  const num = (label: string, x: number, y: number, unit = '') => {
+    if (x !== y) out.push(`${label} ${signed(y - x)}${unit}`);
+  };
+  num('Body', a.body, b.body);
+  num('Mind', a.mind, b.mind);
+  num('Charm', a.charm, b.charm);
+  num('Nerve', a.nerve, b.nerve);
+  num('Health', a.health, b.health);
+  num('Strain', a.strain, b.strain, '%');
+  if (a.money !== b.money) out.push(`${b.money > a.money ? '+' : '-'}${money(Math.abs(b.money - a.money))}`);
+  num('Fame', a.fame, b.fame);
+  num('Infamy', a.infamy, b.infamy);
+  num('Street Cred', a.streetCred, b.streetCred);
+  if (a.grade !== b.grade && b.grade) out.push(`Grade ${b.grade}`);
+  if (a.district !== b.district) out.push(`Moved to ${b.district}`);
+  if (a.job?.title !== b.job?.title) out.push(b.job ? `New job: ${b.job.title}` : 'No job');
+  if (a.job && b.job && a.job.title === b.job.title && a.job.salary !== b.job.salary) out.push(`Salary ${money(b.job.salary)}`);
+  if (a.license !== b.license) out.push(`${b.license === 'none' ? 'No' : b.license} license`);
+  if (!a.inPrisonUntil && b.inPrisonUntil) out.push(`Prison until ${formatDate(b.inPrisonUntil)}`);
+  else if (a.inPrisonUntil && b.inPrisonUntil && formatDate(a.inPrisonUntil) !== formatDate(b.inPrisonUntil)) out.push(`Release moved to ${formatDate(b.inPrisonUntil)}`);
+  if (a.alive && !b.alive) out.push('Dead');
+  return out;
+}

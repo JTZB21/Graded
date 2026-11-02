@@ -33,9 +33,255 @@ export const KEY_FROM: Record<string, number> = {
   'choice.rush.kindle': 2014,
   'choice.rush.overdose': 2014,
   'choice.rush.try-': 2014,
+  'act.crew-job.choir': 1990,
+  'act.crew-job.lowkings': 2011,
 };
 
 export const TEMPLATES: Record<string, Variant[]> = {
+  // ---------- Actions (things the player does this month; see actions.ts) ----------
+  'act.gym': [
+    'You put in an hour on the bench and the bag. Nothing changes that a mirror would notice.',
+    'You run the river path until your lungs burn, then walk home in the rain.',
+    v('You lift at a Graded-only gym where the plates are bolted down and the mirror is shatterproof.', { graded: true, from: 1980 }),
+    v('You work out in a boxing gym on the Old Foundry riverfront. The heavy bag has scorch marks.', { rough: true }),
+    v('You jog laps around a Kesler Heights cul-de-sac. A Baseline Watch sign tracks your progress.', { districts: ['Kesler Heights'] }),
+    v('You train in a gym in the Spire with a juice bar and a Pinnacle poster in every room.', { districts: ['The Spire'], from: 1983 }),
+  ],
+  'act.gym.up': [
+    'Weeks of early mornings pay off. Your shirts fit differently. (Body +1)',
+    'You add weight to the bar and it goes up anyway. (Body +1)',
+    v('A trainer at the Graded gym clocks your numbers twice and writes them down. (Body +1)', { graded: true, from: 1980 }),
+  ],
+  'act.gym.prison': [
+    'You do push-ups in the yard while the tower guards watch.',
+    'You join the pull-up line in the yard. Nobody talks during sets.',
+  ],
+  'act.gym.prison-up': [
+    'A month of yard work-outs shows. People give you more room in the chow line. (Body +1)',
+  ],
+  'act.study': [
+    'You spend the afternoon in the library with a stack of books and a vending-machine coffee.',
+    'You study at the kitchen table until the light outside goes.',
+    v('You study in a Saint Bryce café full of Harlan State students and one tired professor grading papers.', { districts: ['Saint Bryce'] }),
+    v('You study in the Old Foundry branch library, where the radiator works one day in three.', { districts: ['Old Foundry'] }),
+    v('You watch lectures on your {phone} on the H-Line, between Enhanced-incident delays.', { from: 2010 }),
+    v('You take notes from library microfiche until the librarian flicks the lights.', { until: 1995 }),
+  ],
+  'act.study.up': [
+    'Something clicks. You start finishing the problems before the answer key. (Mind +1)',
+    'You read everything twice and it starts to stick. (Mind +1)',
+  ],
+  'act.study.prison': [
+    'You read whatever the prison library cart has this week: a law book, a western, a manual for a car nobody makes any more.',
+    'You work through a GED packet at a steel table bolted to the floor.',
+  ],
+  'act.study.prison-up': [
+    'You read your way through the prison law library. Other inmates start bringing you their paperwork. (Mind +1)',
+  ],
+  'act.rest': [
+    'You take a day for yourself: real food, a long sleep, and the {phone} switched off.',
+    'You sleep fourteen hours and eat everything in the fridge.',
+  ],
+  'act.rest.strain': [
+    'You eat like a Graded eats, three plates and a pint of ice cream, and sleep it off. The Strain eases.',
+    'Sugar, fat and twelve hours of sleep. The tremor in your hands is gone by morning.',
+    v('A diner charges you for "double portions" without asking. You eat both. The headache fades.', { graded: true }),
+  ],
+  'act.clinic': [
+    'A walk-in clinic patches you up. The doctor spends more time on the billing codes than on you.',
+    'You get seen after four hours in a waiting room. Stitches, painkillers, and a pamphlet.',
+    v('Saint Bryce Medical\'s ER fits you between three hero-fight casualties.', { districts: ['Saint Bryce'] }),
+    v('The doctor charges the Graded surcharge and breaks two needles on you before she gets the shot in.', { graded: true }),
+  ],
+  'act.clinic.strain-ward': [
+    'Saint Bryce\'s Strain Ward puts you on a cooling bed with an IV of glucose. The nosebleeds stop.',
+    'A Strain Ward nurse checks your readings, sighs, and hangs a glucose drip. You leave steadier.',
+  ],
+  'act.healer': [
+    'A licensed BIO healer puts two hands on your ribs. Ten minutes later you are whole and much poorer.',
+    'You pay a healer in cash in the back room of a clinic. Whatever was broken knits while you watch.',
+    v('A healer on a private Aurelian contract squeezes you in between corporate clients. The bill arrives before you reach the lobby.', { from: 1994 }),
+  ],
+  'act.practice': [
+    'You practise your {power} power in private until your head pounds. Control comes a little easier.',
+    'You run drills alone, over and over, the same technique until it stops misfiring.',
+    v('You practise in an empty Old Foundry lot where nobody calls the police on a Graded.', { districts: ['Old Foundry'] }),
+    v('You practise in your bedroom with the door locked and a towel under it.', { family: true }),
+    v('You practise on Ashgrove Academy\'s training floor under a supervisor with a stopwatch.', { tie: 'Ashgrove Academy', from: 1979 }),
+    v('You train on an Aurelian practice floor with a coach who films every rep.', { tie: 'Aurelian' }),
+  ],
+  'act.practice.prison': [
+    'You practise in your cell in small, quiet ways the guards cannot see.',
+    v('You try to practise, but the Quell in your system makes everything muddy. You get a little anyway.', { from: 2003 }),
+  ],
+  'act.push': [
+    'You push your power past where it wants to stop. Your nose bleeds, but something new opens up.',
+    'You train until you black out, wake on the floor, and go again. It works. It is also how people die.',
+    v('You take a dangerous job just to see what your power does under pressure. You learn more in an hour than in a month.', { minAge: 18 }),
+  ],
+  'act.strain.danger': [
+    'The Strain catches up: migraine, tremors, a nosebleed that will not stop. You lose a day to it.',
+    'Your power misfires and your heart stutters. You sit on the floor until it settles.',
+  ],
+  'act.strain.critical': [
+    'You go past 90% Strain. Capillaries burst in both eyes and you wake up in Saint Bryce\'s Strain Ward.',
+    'Your power shuts off mid-use and your body follows. Burnout. A neighbour finds you and calls it in.',
+  ],
+  'act.show-off': [
+    'You use your power in public. A few people stop to watch. One of them claps.',
+    'You show off your {power} power for a crowd outside a corner store. Kids follow you for a block.',
+    v('Tourists outside Aurelian Tower film you, thinking you might be someone.', { districts: ['The Spire'], from: 1994 }),
+    v('You show off at a block party. The Old Foundry has seen better, and says so, and buys you a drink anyway.', { districts: ['Old Foundry'] }),
+  ],
+  'act.show-off.viral': [
+    'Someone films you using your power and it spreads. {Gossip} argue about your Rank for a week.',
+    v('A clip of you hits Spotlight\'s "Street Graded" segment. Strangers recognise you on the H-Line.', { from: 2008 }),
+  ],
+  'act.show-off.cited': [
+    'A patrol car pulls up. Public power use on a Civilian license: a ${money} fine and a note on your file.',
+    'A cop asks for your {card} and writes you up for unlicensed public use. ${money}, payable in thirty days.',
+  ],
+  'act.patrol.licensed': [
+    'You patrol your sponsor\'s route. You stop a mugging, pose for a photo, and file the paperwork.',
+    'You work a licensed patrol shift. A car thief surrenders the moment he sees your costume.',
+    v('You break up a fight on Pier 9 on a licensed patrol. The Ledger runs a photo.', { districts: ['Riverside Docks'] }),
+  ],
+  'act.patrol.rogue': [
+    'You go out masked and stop a robbery. The victim does not call the police, and neither do you.',
+    'You patrol the rooftops without a license. You stop one mugging and scare off two more.',
+    v('You chase a dealer out of an Old Foundry stairwell. The building\'s grandmothers start leaving food on your fire escape.', { districts: ['Old Foundry'] }),
+    v('Your rogue patrol ends up on GradeWatch. Half the comments call you a hero, the other half a felon.', { from: 2013 }),
+  ],
+  'act.patrol.hurt': [
+    'Your patrol goes wrong: the other guy has a power too. You limp home and do not report it.',
+    'You get jumped on patrol by three people with bats. You walk away. Barely.',
+  ],
+  'act.patrol.arrested': [
+    'Police catch you on an unlicensed patrol. Vigilantism is a felony: {months} months in {prison}.',
+    'The Bureau picks you up mid-patrol. The judge calls you "a danger to the public you claim to protect." {months} months in {prison}.',
+  ],
+  'act.odd-job': [
+    'You pick up day labour and get paid ${money} in cash.',
+    'You work a weekend shift unloading trucks. ${money}, no questions.',
+    v('You haul crates at the Riverside container terminal for ${money} cash.', { districts: ['Riverside Docks'] }),
+    v('You serve drinks at a Spire launch party for ${money} plus tips. Nobody looks at the help.', { districts: ['The Spire'] }),
+    v('You run deliveries on an app that takes a third of every fare. ${money} for the week.', { from: 2014 }),
+  ],
+  'act.odd-job.kid': [
+    'You mow lawns and walk dogs for ${money}.',
+    'You shovel snow up and down the block for ${money}.',
+    'You run errands for the corner store owner. ${money} and a soda.',
+  ],
+  'act.odd-job.overtime': [
+    'You pick up extra shifts as a {job}. ${money} more on the next paycheck.',
+    'You work a week of overtime. Your boss notices. Your back notices more. ${money} extra.',
+  ],
+  'act.job-hunt.none': [
+    'You spend the week on applications. Nobody calls back.',
+    'You get one interview. They ask your Rank before your name and the job goes to someone else.',
+    v('You hand out résumés across the Spire. A receptionist takes one, glances at your address, and drops it in a tray.', { rough: true }),
+    v('Every listing says "Grade Card required." You fill out forty of them anyway.', { graded: true, from: 1978 }),
+  ],
+  'act.raise.yes': [
+    'You ask for a raise and get it: {pct}%. Your salary as a {job} is now ${salary}.',
+    'You make your case with numbers. Your manager signs off on {pct}% more: ${salary} a year.',
+  ],
+  'act.raise.no': [
+    'You ask for a raise. Your manager says "next quarter" in the voice people use for "never."',
+    'You ask for a raise and get a speech about the budget.',
+  ],
+  'act.raise.fired': [
+    'You ask for a raise. A week later your job as a {job} is "restructured" away.',
+  ],
+  'act.quit': [
+    'You quit your job as a {job}. Your last paycheck comes two weeks late.',
+    'You hand in your notice as a {job} and clear out your locker.',
+  ],
+  'act.family': [
+    'You spend Sunday with family. Dinner, an old argument, and leftovers to take home.',
+    'You help around the house and listen to the same stories again.',
+    v('Your foster family gets a phone call from you, which surprises them.', { backgrounds: ['foster system'] }),
+    v('Dinner with family turns into a conversation about your Rank. It always does.', { graded: true }),
+    v('Your family hosts the street for a cook-out. Half the Old Foundry turns up with a dish.', { districts: ['Old Foundry'] }),
+  ],
+  'act.family.up': [
+    'A long night with family gets you laughing at yourself. People notice you are easier to be around. (Charm +1)',
+  ],
+  'act.family.money': [
+    'Your family takes you to lunch at a club in Ashgrove and slips you ${money} on the way out.',
+    'A relative presses ${money} into your hand and tells you not to tell your parents.',
+  ],
+  'act.night-out': [
+    'You go out. Cheap drinks, loud music, and you are home by three.',
+    'You spend the night out with friends and make it home in the rain.',
+    v('You end the night at Cal\'s All-Night Diner with a basket of the best fries in the city.', { districts: ['Riverside Docks'] }),
+    v('You go to a Dud comedy club in the Old Foundry. The headliner does ten minutes on F-Ranks and kills.', { districts: ['Old Foundry'] }),
+    v('You try for The Ceiling. The bouncer checks your card and waves you up the elevator.', { districts: ['The Spire'], minRank: 'B' }),
+    v('You try for The Ceiling. The bouncer looks at your card and points you to a bar down the street.', { districts: ['The Spire'] }),
+    v('You go to a party in Saint Bryce where Harlan State students argue about Graded rights until dawn.', { districts: ['Saint Bryce'] }),
+    v('You go to a house party in Kesler Heights. The host asks if you are "one of them" before you get your coat off.', { districts: ['Kesler Heights'], graded: true }),
+  ],
+  'act.volunteer': [
+    'You volunteer at a shelter. You hand out blankets and learn three people\'s names.',
+    'You help clean up after a hero fight that left a block in pieces. Nobody from the hero\'s sponsor shows.',
+    v('You volunteer at the Low Kings\' soup kitchen on Mercer Street. Dez Uwaifo shakes your hand.', { districts: ['Riverside Docks'], from: 2011 }),
+    v('You help Equal Ground\'s mutual-aid table in the Old Foundry hand out food and legal pamphlets.', { districts: ['Old Foundry'], from: 2000 }),
+    v('You volunteer at Saint Bryce Medical, mopping the floors of the Strain Ward.', { districts: ['Saint Bryce'] }),
+  ],
+  'act.move.ask': [
+    'You look at flats across Port Harlan. Rent runs from ${low} a month in the Old Foundry to ${high} in the Ashgrove hills. Landlords want the first month up front, and they can legally ask your Rank.',
+  ],
+  'act.move.done': [
+    'You move to {district}. The first month\'s rent, ${money}, goes to the landlord before the keys come to you.',
+    'You pack what fits in a borrowed van and move to {district}. ${money} up front.',
+    v('You move to {district}. The landlord asks for a "risk deposit" when he sees your Rank. ${money} gone.', { graded: true }),
+  ],
+  'act.move.stay': [
+    'You look at a few places and stay where you are.',
+  ],
+  'act.steal': [
+    'You lift something small from a store and sell it on for ${money}.',
+    'You pick a pocket on a crowded H-Line platform. ${money} in the wallet.',
+    v('You steal a crate off the back of a truck at the docks. It is worth ${money} to the right buyer.', { districts: ['Riverside Docks'] }),
+    v('You swipe a tourist\'s bag outside the Pinnacle gift shop. ${money} and a souvenir mug.', { districts: ['The Spire'], from: 1994 }),
+  ],
+  'act.steal.caught-minor': [
+    'A store guard catches you. The police drive you home. Your file now has your name in it.',
+    'You get caught with your hands in a till. The owner calls your family instead of the cops, this time.',
+  ],
+  'act.steal.caught': [
+    'You get caught stealing. The judge has seen your type: {months} months in {prison}.',
+    'A camera you missed. {months} months in {prison} for theft.',
+  ],
+  'act.fight.win': [
+    'You fight for money in a back room and win. The purse is ${money}; the bruises are free.',
+    v('You fight in The Pit under the Riverside cold-storage yards and win. ${money} in a paper bag.', { districts: ['Riverside Docks'] }),
+    v('You win a bout in The Pit. Bettors who took the long odds buy you drinks. ${money}.', { graded: true }),
+  ],
+  'act.fight.lose': [
+    'You fight for money and lose. You wake up behind a dumpster with your share of the gate gone.',
+    v('Your opponent in The Pit is a higher Rank than the promoter said. You lose badly.', { graded: true }),
+  ],
+  'act.crew-job.lowkings': [
+    'You run a job for the Low Kings: a chop-shop delivery on Mercer Street. ${money} for your cut.',
+    'You collect protection money for the Low Kings and keep the peace on three blocks. ${money}.',
+  ],
+  'act.crew-job.choir': [
+    'You move a Choir shipment through the port. ${money}, and nobody says what was in the crates.',
+    'The Choir sends you to lean on a shopkeeper. You do. ${money}.',
+  ],
+  'act.crew-job.caught': [
+    'The job goes wrong and the police are waiting. {months} months in {prison}.',
+    'Somebody talked. You get {months} months in {prison}; the crew sends a lawyer and a carton of cigarettes.',
+  ],
+  'act.hustle': [
+    'You trade commissary, stamps and favours. ${money} in your account by the end of the month.',
+    'You run a card game on the block. ${money}, and nobody sees the guards take their cut.',
+  ],
+  'act.hustle.caught': [
+    'A guard catches your hustle. Solitary, a beating, and {months} more months on your sentence.',
+  ],
+
   // ---------- Starting a life ----------
   'start.intro': [
     '{name}, age {age}, {background} background, living in {district}, Port Harlan.',
