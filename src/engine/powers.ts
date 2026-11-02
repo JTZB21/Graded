@@ -39,9 +39,19 @@ export function kindle(s: GameState, rng: Rng, opts: KindleOptions = {}) {
 export function practice(s: GameState, rng: Rng, training: boolean) {
   const c = s.character;
   if (!c.graded || !c.grade || c.powersGone) return;
-  const age = ageOf(s);
-  const ageRate = age < 18 ? 1 : age <= 30 ? 1.5 : age <= 44 ? 1 : age <= 59 ? 0.5 : 0.25;
-  c.gradeProgress += (training ? 1 : 0.1) * ageRate;
+  gainProgress(s, rng, (training ? 1 : 0.1) * ageRate(ageOf(s)));
+}
+
+/** Age multiplier on practice: the young learn fast, the old slowly. */
+export function ageRate(age: number): number {
+  return age < 18 ? 1 : age <= 30 ? 1.5 : age <= 44 ? 1 : age <= 59 ? 0.5 : 0.25;
+}
+
+/** Adds months of practice and raises the Grade when the step is complete. */
+export function gainProgress(s: GameState, rng: Rng, months: number) {
+  const c = s.character;
+  if (!c.graded || !c.grade || c.powersGone) return;
+  c.gradeProgress += months;
   const next = nextGrade(c.grade);
   if (!next || c.gradeProgress < GRADE_STEP_MONTHS[c.grade]) return;
   if (next === 'V' && !c.masteryPotential) return;

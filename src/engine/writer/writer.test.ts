@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { act, availableActions } from '../actions';
 import { createGame } from '../creation';
 import { choose, DECISIONS } from '../decisions';
 import { EVENTS } from '../events';
@@ -20,6 +21,12 @@ function playLife(seed: number, startYear: number, years = 60) {
       offered.push(s.pending.id);
       s = choose(s, r.pick(s.pending.options).id);
     }
+    // Take a couple of actions the player could take right now, like a player would.
+    for (let k = 0; k < 2 && s.character.alive && !s.pending; k++) {
+      const open = availableActions(s).filter((a) => !a.disabled);
+      if (open.length) s = act(s, r.pick(open).id);
+    }
+    if (s.pending) continue;
     s = advance(s, 6, r.pick(FOCUSES)).state;
   }
   return { s, offered };

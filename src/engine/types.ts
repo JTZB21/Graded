@@ -78,6 +78,8 @@ export interface Character {
   streetCred: number;
   /** Groups the character has joined or signed with (Aurelian, Low Kings, the Choir, Ashgrove Academy). */
   ties?: string[];
+  /** Calendar year of the last time the character asked for a raise (once a year). */
+  raiseAskedYear?: number;
 
   alive: boolean;
 }
@@ -108,4 +110,6 @@ export interface GameState {
   character: Character;
   log: LogEntry[];
   pending?: Decision | null;
+  /** Energy left for actions this month (see actions.ts). Refills when time moves. Missing means full. */
+  energy?: number;
 }

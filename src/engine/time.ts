@@ -1,6 +1,7 @@
 // Time skips: the engine ticks month by month, applies the focus, and rolls events.
 
 import timeline from '../data/timeline.json';
+import { ENERGY } from './actions';
 import lore from '../data/lore.json';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, livingCost, prisonName, RENT, sentence } from './economy';
 import { offer } from './decisions';
@@ -149,6 +150,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
     const delta = c.money - startMoney;
     log(s, 'money', `Over ${passed} months your money ${delta >= 0 ? 'grew' : 'fell'} by $${Math.abs(delta).toLocaleString('en-US')}.`);
   }
+  if (passed > 0) s.energy = ENERGY;
   s.rngState = rng.state;
   return { state: s, monthsPassed: passed, stoppedBy };
 }

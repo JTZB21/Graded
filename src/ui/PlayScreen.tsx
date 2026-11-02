@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
+import { act, ACTION_GROUPS, availableActions, ENERGY, energyOf } from '../engine/actions';
 import { choose } from '../engine/decisions';
-import { formatDate, sheetRows, statusPanel } from '../engine/sheet';
+import { changes, formatDate, sheetRows, statusPanel } from '../engine/sheet';
 import { advance, availableFocuses, FOCUS_LABELS } from '../engine/time';
 import type { Focus, GameState, LogEntry } from '../engine/types';
 
@@ -11,18 +12,31 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
   const [chosen, setChosen] = useState<Focus>(focuses.includes('work') ? 'work' : focuses.includes('school') ? 'school' : focuses[0]);
   const focus = focuses.includes(chosen) ? chosen : focuses[0];
   const [notice, setNotice] = useState<string | null>(null);
+  const [result, setResult] = useState<{ lines: string[]; changes: string[] } | null>(null);
   const c = state.character;
+  const actions = availableActions(state);
+  const energy = energyOf(state);
+
+  function doAction(id: string) {
+    const next = act(state, id);
+    onChange(next);
+    setResult({ lines: next.log.slice(state.log.length).map((e) => e.text), changes: changes(state, next) });
+    setNotice(null);
+  }
 
   function skip(months: number) {
     const r = advance(state, months, focus);
     onChange(r.state);
+    setResult(null);
     if (r.stoppedBy === 'event' || r.stoppedBy === 'kindling') {
       setNotice(`The skip stopped after ${r.monthsPassed} month${r.monthsPassed === 1 ? '' : 's'}.`);
     } else setNotice(null);
   }
 
   function decide(optionId: string) {
-    onChange(choose(state, optionId));
+    const next = choose(state, optionId);
+    onChange(next);
+    setResult({ lines: next.log.slice(state.log.length).map((e) => e.text), changes: changes(state, next) });
     setNotice(null);
   }
 
@@ -71,6 +85,41 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
         )}
         <button className="secondary" onClick={onNew}>New life</button>
       </section>
+
+      {c.alive && (result || actions.length > 0) && (
+        <section className="panel">
+          <div className="actions-head">
+            <h2>This month</h2>
+            <span className="energy" title="Energy refills when time moves">
+              Energy {'●'.repeat(energy)}{'○'.repeat(Math.max(0, ENERGY - energy))}
+            </span>
+          </div>
+          {result && (
+            <div className="result">
+              {result.lines.map((l, i) => <p key={i}>{l}</p>)}
+              {result.changes.length > 0 && <p className="changes">{result.changes.join(' · ')}</p>}
+            </div>
+          )}
+          {ACTION_GROUPS.map((g) => {
+            const list = actions.filter((a) => a.group === g);
+            if (!list.length) return null;
+            return (
+              <div key={g} className="action-group">
+                <h3>{g}</h3>
+                <div className="actions">
+                  {list.map((a) => (
+                    <button key={a.id} className="action" disabled={!!a.disabled} title={a.disabled} onClick={() => doAction(a.id)}>
+                      {a.label}
+                      <small>{a.cost > 1 ? `${a.cost} energy` : '1 energy'}{a.price ? ` · $${a.price.toLocaleString('en-US')}` : ''}{a.disabled ? ` · ${a.disabled}` : ''}</small>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+          {actions.length > 0 && energy === 0 && <p className="muted">You are out of energy for this month. Skip ahead to keep going.</p>}
+        </section>
+      )}
 
       <section className="panel log">
         <h2>Life log</h2>

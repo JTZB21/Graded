@@ -1,12 +1,12 @@
 // Choices. A pausing event offers a decision; time stops until the player picks an option.
 // Every effect of every option is applied here, by the engine. The writer only describes them.
 
-import { crimePay, dollars, eligibleJobs, hire, jobLicense, prisonName, sentence } from './economy';
+import { crimePay, dollars, eligibleJobs, hire, jobLicense, prisonName, RENT, sentence } from './economy';
 import { kindle } from './powers';
 import { Rng } from './random';
 import { addMonths, ageOf, changeAttr, changeRep } from './state';
 import type { Character, District, GameState, LogEntry } from './types';
-import { say, write } from './writer/writer';
+import { say, write, type Vars } from './writer/writer';
 
 interface OptionSpec {
   id: string;
@@ -29,7 +29,7 @@ const crew = (c: Character) => tied(c, 'Low Kings') || tied(c, 'the Choir');
 const hurt = (c: Character, by: number) => { c.health = Math.max(0, c.health - by); };
 const rankOf = (c: Character) => (c.graded && !c.powersGone ? c.powers[0].rank : undefined);
 
-function arrest(s: GameState, rng: Rng, offense: string, base: [number, number]) {
+export function arrest(s: GameState, rng: Rng, offense: string, base: [number, number]) {
   const c = s.character;
   const rank = rankOf(c);
   let months = sentence(rng.int(base[0], base[1]), rank);
@@ -323,16 +323,44 @@ export const DECISIONS: Record<string, DecisionSpec> = {
       { id: 'decline', label: 'Stay where you are', apply: (s, rng) => { changeAttr(s.character, 'nerve', 1); say(s, rng, 'life', 'choice.ashgrove.decline'); } },
     ],
   },
+
+  // Offered by the "Move to another district" action. Landlords take the first month up front.
+  move: {
+    kind: 'life',
+    options: [
+      ...([
+        ['Old Foundry', 'The Old Foundry (cheapest)'],
+        ['Riverside Docks', 'Riverside Docks'],
+        ['Kesler Heights', 'Kesler Heights'],
+        ['Saint Bryce', 'Saint Bryce'],
+        ['The Spire', 'The Spire'],
+        ['Ashgrove', 'The Ashgrove hills (dearest)'],
+      ] as [District, string][]).map(([district, label]): OptionSpec => ({
+        id: district,
+        label,
+        when: (s) => s.character.district !== district && s.character.money >= dollars(RENT[district], s.date.year),
+        apply: (s, rng) => {
+          const c = s.character;
+          const deposit = dollars(RENT[district], s.date.year);
+          c.money -= deposit;
+          c.district = district;
+          c.livesWithFamily = false;
+          say(s, rng, 'life', 'act.move.done', { money: deposit, rent: deposit });
+        },
+      })),
+      { id: 'stay', label: 'Stay where you are', apply: (s, rng) => say(s, rng, 'life', 'act.move.stay') },
+    ],
+  },
 };
 
 /**
  * Offers a decision: writes the situation into the log and sets it as pending.
  * `situation` is the template key for the opening line (defaults to `event.<id>`).
  */
-export function offer(s: GameState, rng: Rng, id: string, situation = `event.${id}`) {
+export function offer(s: GameState, rng: Rng, id: string, situation = `event.${id}`, vars: Vars = {}) {
   const spec = DECISIONS[id];
   if (!spec) throw new Error(`Unknown decision "${id}"`);
-  const text = write(s, rng, situation);
+  const text = write(s, rng, situation, vars);
   s.log.push({ date: { ...s.date }, kind: spec.kind, text });
   s.pending = {
     id,
