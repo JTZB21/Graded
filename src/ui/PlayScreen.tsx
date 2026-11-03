@@ -458,6 +458,7 @@ function MoreTab({ state, onLoad, onNew }: { state: GameState; onLoad: (g: GameS
       <div className="page-head">
         <h2>More</h2>
         <p className="muted">Saves and this life. The game also saves itself after every move.</p>
+        <p className="build-tag">{__BUILD__}</p>
       </div>
       <section className="card">
         <h3>Save slots</h3>

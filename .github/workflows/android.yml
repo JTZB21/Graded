@@ -40,12 +40,14 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
+      # The build number goes in the file name so a new download never gets
+      # confused with an older GRADED.apk already sitting in Downloads.
       - name: Rename APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk GRADED.apk
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk GRADED-build-${{ github.run_number }}.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: GRADED-apk
-          path: GRADED.apk
+          name: GRADED-apk-build-${{ github.run_number }}
+          path: GRADED-build-${{ github.run_number }}.apk
           retention-days: 30

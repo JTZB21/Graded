@@ -45,16 +45,16 @@ export function CreateScreen({ onStart }: { onStart: (s: GameState) => void }) {
     <section className="card create">
       <img className="cover" src="/cover.png" alt="" />
       <h2>Build your character</h2>
-      <p className="hint">Anything left on "roll" is rolled for you. You start in Port Harlan.</p>
+      <p className="hint">Anything left on Random is rolled for you. You start in Port Harlan.</p>
       <div className="form">
         <label>
           Name
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="roll" />
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Random name" />
         </label>
         <label>
           Gender
           <select value={gender} onChange={(e) => setGender(e.target.value as Gender)}>
-            <option value={ROLL}>roll</option>
+            <option value={ROLL}>Random</option>
             <option value="male">male</option>
             <option value="female">female</option>
             <option value="nonbinary">nonbinary</option>
@@ -63,7 +63,7 @@ export function CreateScreen({ onStart }: { onStart: (s: GameState) => void }) {
         <label>
           Starting age
           <select value={startAge} onChange={(e) => setStartAge(e.target.value as StartAge)}>
-            <option value={ROLL}>roll</option>
+            <option value={ROLL}>Random</option>
             {Object.entries(START_AGES).map(([k, [lo, hi]]) => (
               <option key={k} value={k}>{k} ({lo === hi ? lo : `${lo}-${hi}`})</option>
             ))}
@@ -76,14 +76,14 @@ export function CreateScreen({ onStart }: { onStart: (s: GameState) => void }) {
         <label>
           Background
           <select value={background} onChange={(e) => setBackground(e.target.value as Background)}>
-            <option value={ROLL}>roll</option>
+            <option value={ROLL}>Random</option>
             {BACKGROUNDS.map((b) => <option key={b} value={b}>{b}</option>)}
           </select>
         </label>
         <label>
           Powers
           <select value={powered} onChange={(e) => setPowered(e.target.value as typeof powered)}>
-            <option value="roll">roll the Kindling</option>
+            <option value="roll">Random (roll the Kindling)</option>
             <option value="choose">choose my power</option>
             <option value="baseline">baseline (no powers)</option>
           </select>
@@ -93,14 +93,14 @@ export function CreateScreen({ onStart }: { onStart: (s: GameState) => void }) {
             <label>
               Category
               <select value={category} onChange={(e) => setCategory(e.target.value as Category)}>
-                <option value={ROLL}>roll</option>
+                <option value={ROLL}>Random</option>
                 {Object.entries(CATEGORIES).map(([k, v]) => <option key={k} value={k}>{k} · {v}</option>)}
               </select>
             </label>
             <label>
               Rank
               <select value={rank} onChange={(e) => setRank(e.target.value as Rank)}>
-                <option value={ROLL}>roll</option>
+                <option value={ROLL}>Random</option>
                 {RANKS.filter((r) => r !== 'X').map((r) => <option key={r} value={r}>{r}</option>)}
               </select>
             </label>
@@ -122,6 +122,7 @@ export function CreateScreen({ onStart }: { onStart: (s: GameState) => void }) {
         <button className="age-up" onClick={start}>Begin</button>
         <button className="pill" onClick={() => onStart(createGame())}>Roll everything</button>
       </div>
+      <p className="build-tag">{__BUILD__}</p>
     </section>
   );
 }
