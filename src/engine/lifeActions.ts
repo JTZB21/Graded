@@ -75,7 +75,7 @@ export const LIFE_ACTIONS: ActionSpec[] = [
   {
     id: 'sell-home', label: 'Sell your home (5% selling costs)', group: 'Money', cost: 1,
     when: x => !x.imprisoned && x.age >= 18 && !!lifeOf(x.s).home,
-    apply: (s, rng) => { const l = ensureLife(s); const money = Math.round(l.home!.value * 0.95) - l.home!.mortgage; s.character.money += money; l.home = null; say(s, rng, 'money', 'act.life.sell-home', { money }); },
+    apply: (s, rng) => { const l = ensureLife(s); const money = Math.round(l.home!.value * 0.95) - l.home!.mortgage; s.character.money += money; l.home = null; say(s, rng, 'money', money >= 0 ? 'act.life.sell-home' : 'act.life.sell-home-short', { money: Math.abs(money) }); },
   },
   {
     id: 'start-business', label: 'Start a service business', group: 'Money', cost: 2, price: () => 3000,

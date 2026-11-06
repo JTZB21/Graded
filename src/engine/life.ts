@@ -77,27 +77,37 @@ export function lifeMonth(s: GameState, rng: Rng, focus: Focus, imprisoned: bool
     const b = l.business;
     const gross = dollars(b.level * (100 + l.skills.enterprise * 12), s.date.year);
     b.profit = rng.chance(0.15) ? -dollars(300 * b.level, s.date.year) : Math.round(gross * b.reputation / 50);
-    c.money += b.profit; l.stress += 1;
+    c.money += b.profit;
   } else if (l.business) l.business.profit = 0;
+  // Stress builds from load and eases on its own, so it settles near ten times the monthly load.
+  let load = 0;
+  if (!imprisoned && l.business) load += 1;
   if (!imprisoned && c.job) {
     if (l.career.jobId !== c.job.id || l.career.retired) {
       l.career = { jobId: c.job.id, experience: 0, performance: 50, level: 1, retired: false, pension: 0 };
     }
     l.career.experience++;
     l.career.performance = clamp(l.career.performance + (focus === 'work' ? 2 : -1) - (l.stress >= 80 ? 2 : 0) - (l.happiness < 25 ? 1 : 0), 0, 100);
-    l.stress += focus === 'work' ? 2 : 1;
+    load += focus === 'work' ? 2 : 1;
   }
   if (!imprisoned && l.career.retired) c.money += Math.round(l.career.pension / 12);
-  l.stress += focus === 'rest' ? -5 : focus === 'family' ? -2 : focus === 'crime' ? 2 : 0;
-  if (c.money < 0 && age >= 18) l.stress += 2;
+  if (focus === 'crime') load += 2;
+  if (imprisoned) load += 2;
+  if (c.money < 0 && age >= 18) load += 2;
+  if (l.debt > 0) load += 1;
+  const burnedOut = l.stress >= 85;
+  l.stress += load - Math.round(l.stress / 10) - (focus === 'rest' ? 5 : focus === 'family' ? 2 : 0);
   l.stress = clamp(l.stress, 0, 100);
-  l.happiness = clamp(l.happiness + (focus === 'family' || focus === 'rest' ? 1 : 0) - (l.stress >= 75 ? 2 : 0), 0, 100);
-  if (l.stress >= 85) c.health = Math.max(0, c.health - 5);
+  // Rest and family lift happiness; otherwise it drifts back toward 60. Heavy stress drags it down.
+  const lift = focus === 'family' || focus === 'rest' ? 1 : l.happiness < 60 ? 1 : l.happiness > 60 ? -1 : 0;
+  l.happiness = clamp(l.happiness + lift - (l.stress >= 75 ? 3 : 0), 0, 100);
+  // Burnout wears health down but never kills on its own: it stops at 25.
+  if (burnedOut && c.health > 25) c.health = Math.max(25, c.health - 6);
 }
 
 export function lifeBirthday(s: GameState, rng: Rng) {
   const l = ensureLife(s);
   if (l.home) l.home.value = Math.round(l.home.value * (1 + rng.int(-3, 6) / 100));
   if (l.stress >= 75) say(s, rng, 'life', 'life.burnout');
-  if (ageOf(s) >= 18) say(s, rng, 'money', 'life.accounts', { savings: l.savings, investments: l.investments, debt: l.debt });
+  if (ageOf(s) >= 18 && (l.savings || l.investments || l.debt)) say(s, rng, 'money', 'life.accounts', { savings: l.savings, investments: l.investments, debt: l.debt });
 }

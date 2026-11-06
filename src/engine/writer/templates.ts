@@ -40,27 +40,96 @@ export const KEY_FROM: Record<string, number> = {
 };
 
 export const TEMPLATES: Record<string, Variant[]> = {
-  "act.life.unwind": ["You turn down another obligation. For once, the evening stays empty.", "You spend an afternoon away from work and the noise. Nobody invoices you for it."],
-  "act.life.learn": ["You practise {skill} work until the mistakes stop repeating. Skill level: {level}."],
-  "act.life.freelance": ["You deliver a commission and collect {money}. The next client already wants revisions."],
-  "act.life.deposit": ["You move {money} into savings. The bank offers 2.5% annual interest and a handshake."],
-  "act.life.withdraw": ["You transfer {money} from savings back into spending money."],
-  "act.life.invest": ["You invest {money} in a diversified portfolio. The returns come with no promises."],
-  "act.life.sell-investments": ["You sell {money} of your portfolio at its current value."],
-  "act.life.loan": ["You borrow {money} at 12% annual interest. The monthly payment starts next month."],
-  "act.life.repay": ["You repay {money} of your loan balance. The fine print gets a little shorter."],
-  "act.life.career": ["You take on training and extra responsibility. Your performance improves; your evenings shrink."],
-  "act.life.promotion": ["Your promotion clears the desk upstairs. Career level {level}; annual salary {salary}."],
-  "act.life.home": ["You sign for a home worth {money}. The mortgage payment is {payment} a month, before upkeep."],
-  "act.life.sell-home": ["You sell the house and settle the mortgage and selling costs. Your cash changes by {money}."],
-  "act.life.business": ["You open a small service business. The first customer asks for a discount."],
-  "act.life.expand": ["You expand the business to level {level}. More capacity, more overhead."],
-  "act.life.close-business": ["You close the business and stop taking orders. The invoices finally stop multiplying."],
-  "act.life.retire": ["You hand in your notice. Your annual pension is {salary}."],
-  "life.accounts": ["Your accounts show savings of {savings}, investments of {investments}, and personal debt of {debt}."],
-  "life.burnout": ["Work and obligations crowd out the rest of the week. Sustained stress is wearing down your health."],
-  "life.home-lost": ["The lender forces a sale, settles the mortgage, and returns any remaining equity. Your credit takes the hit."],
-  "life.heir": ["You take up the story after {ancestor}. The settled estate leaves you {money}."],
+  // ---------- Everyday life (see life.ts and lifeActions.ts) ----------
+  'act.life.unwind': [
+    'You turn down another obligation. For once, the evening stays empty.',
+    'You spend an afternoon away from work and the noise. Nobody invoices you for it.',
+    'You switch your phone off for a day. The world keeps turning without your input.',
+  ],
+  'act.life.learn': [
+    'You practise {skill} work until the mistakes stop repeating. Skill level: {level}.',
+    'You put in the hours on {skill} work: tutorials, failures, a second try. Skill level: {level}.',
+  ],
+  'act.life.freelance': [
+    'You deliver a commission and collect ${money}. The next client already wants revisions.',
+    'You finish a rush job for a client who pays late but pays: ${money}.',
+  ],
+  'act.life.deposit': [
+    'You move ${money} into savings. The bank offers 2.5% annual interest and a handshake.',
+    'You park ${money} in a savings account. The teller does not look up.',
+  ],
+  'act.life.withdraw': [
+    'You transfer ${money} from savings back into spending money.',
+    'You pull ${money} out of savings. The app asks if you are sure.',
+  ],
+  'act.life.invest': [
+    'You invest ${money} in a diversified portfolio. The returns come with no promises.',
+    'You buy ${money} of index funds. The prospectus runs forty pages and promises nothing.',
+  ],
+  'act.life.sell-investments': [
+    'You sell ${money} of your portfolio at its current value.',
+    'You cash out ${money} of investments. The brokerage takes its cut quietly.',
+  ],
+  'act.life.loan': [
+    'You borrow ${money} at 12% annual interest. The monthly payment starts next month.',
+    'The bank approves ${money} at 12% a year. The loan officer slides over a pen and eleven pages.',
+  ],
+  'act.life.repay': [
+    'You repay ${money} of your loan balance. The fine print gets a little shorter.',
+    'You send ${money} to the lender. The balance shrinks; the interest keeps counting.',
+  ],
+  'act.life.career': [
+    'You take on training and extra responsibility. Your performance improves; your evenings shrink.',
+    'You volunteer for the project nobody wants. Your manager writes your name down.',
+  ],
+  'act.life.promotion': [
+    'Your promotion clears the desk upstairs. Career level {level}; annual salary ${salary}.',
+    'You get the new title and the smaller desk that comes with it. Level {level}, ${salary} a year.',
+  ],
+  'act.life.home': [
+    'You sign for a home worth ${money}. The mortgage payment is ${payment} a month, before upkeep.',
+    'You close on a ${money} house. The bank owns most of it; the payment is ${payment} a month.',
+  ],
+  'act.life.sell-home': [
+    'You sell the house and settle the mortgage and selling costs. You walk away with ${money}.',
+    'The sale closes. After the mortgage and the agents, ${money} is left for you.',
+  ],
+  'act.life.sell-home-short': [
+    'You sell the house for less than you owe. Covering the gap costs you ${money}.',
+    'The sale does not cover the mortgage. You pay ${money} to close it out.',
+  ],
+  'act.life.business': [
+    'You open a small service business. The first customer asks for a discount.',
+    'You register a business name and print cards nobody asked for. The first job comes in a week later.',
+  ],
+  'act.life.expand': [
+    'You expand the business to level {level}. More capacity, more overhead.',
+    'You hire help and take a bigger space. The business is level {level} now, and so are the bills.',
+  ],
+  'act.life.close-business': [
+    'You close the business and stop taking orders. The invoices finally stop multiplying.',
+    'You shut the business down. The last customer still owes you.',
+  ],
+  'act.life.retire': [
+    'You hand in your notice. Your annual pension is ${salary}.',
+    'You clear out your desk after the cake. The pension pays ${salary} a year.',
+  ],
+  'life.accounts': [
+    'Your accounts show savings of ${savings}, investments of ${investments}, and personal debt of ${debt}.',
+    'The yearly statements arrive: ${savings} saved, ${investments} invested, ${debt} owed.',
+  ],
+  'life.burnout': [
+    'Work and obligations crowd out the rest of the week. Sustained stress is wearing down your health.',
+    'You sleep badly for months. Your doctor uses the word burnout and suggests time off.',
+  ],
+  'life.home-lost': [
+    'The lender forces a sale, settles the mortgage, and returns any remaining equity. Your credit takes the hit.',
+    'The bank forecloses. Whatever equity is left lands in your account with a letter about your credit.',
+  ],
+  'life.heir': [
+    'You take up the story after {ancestor}. The settled estate leaves you ${money}.',
+    'The lawyers finish with {ancestor}\'s estate. Your share is ${money}.',
+  ],
 
   // ---------- Actions (things the player does this month; see actions.ts) ----------
   'act.gym': [

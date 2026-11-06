@@ -79,7 +79,7 @@ export function changes(before: GameState, after: GameState): string[] {
   num('Happiness', la.happiness, lb.happiness);
   num('Stress', la.stress, lb.stress);
   num('Credit', la.credit, lb.credit);
-  for (const skill of ['creative', 'technical', 'enterprise'] as const) num(skill, la.skills[skill], lb.skills[skill]);
+  for (const skill of ['creative', 'technical', 'enterprise'] as const) num(skill[0].toUpperCase() + skill.slice(1), la.skills[skill], lb.skills[skill]);
   num('Strain', a.strain, b.strain, '%');
   if (a.money !== b.money) out.push(`${b.money > a.money ? '+' : '-'}${money(Math.abs(b.money - a.money))}`);
   num('Fame', a.fame, b.fame);

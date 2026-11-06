@@ -20,6 +20,25 @@ function adult(year = 2026) {
 const view = (s: GameState, id: string) => availableActions(s).find(a => a.id === id)!;
 
 describe('everyday life', () => {
+  it('a working adult does not burn out on the default Work focus', () => {
+    for (const seed of [1, 2, 3, 4, 5]) {
+      let s = adult(); s.rngState = seed;
+      for (let year = 0; year < 15 && s.character.alive; year++) {
+        s.pending = null;
+        s = advance(s, 12, 'work').state;
+      }
+      expect(lifeOf(s).stress).toBeLessThan(50);
+    }
+  });
+  it('stress alone never kills', () => {
+    const s = adult(); const l = ensureLife(s); l.stress = 100; s.character.health = 30;
+    for (let m = 0; m < 24; m++) { l.stress = 100; lifeMonth(s, new Rng(m), 'crime', false); }
+    expect(s.character.health).toBeGreaterThanOrEqual(25);
+  });
+  it('writes money with a dollar sign', () => {
+    const s = act(adult(), 'save-money');
+    expect(s.log.at(-1)!.text).toMatch(/\$\d/);
+  });
   it('migrates old saves without changing cash or consuming dice', () => {
     const s = adult(); delete s.character.life;
     const before = structuredClone(s); const next = migrate(s);
