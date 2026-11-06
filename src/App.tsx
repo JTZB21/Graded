@@ -1,3 +1,4 @@
+import { ThemeToggle, ThemeSettings } from './ui/ThemeSettings';
 import { useEffect, useState } from 'react';
 import type { GameState } from './engine/types';
 import { autosave, clearAutosave, loadAutosave, loadSlot, slotInfo, SLOTS } from './save';
@@ -16,6 +17,7 @@ export default function App() {
 
   return (
     <main className={game ? 'with-nav' : ''}>
+      <div className="app-masthead"><span className="app-wordmark">GRADED<span>A Port Harlan life</span></span><ThemeToggle /></div>
       {!game && (
         <header className="brand">
           <h1>GRADED</h1>
@@ -35,7 +37,7 @@ export default function App() {
       {game ? (
         <PlayScreen state={game} onChange={setGame} onNew={() => { clearAutosave(); setGame(null); }} />
       ) : (
-        <CreateScreen onStart={setGame} />
+        <><CreateScreen onStart={setGame} /><ThemeSettings /></>
       )}
     </main>
   );

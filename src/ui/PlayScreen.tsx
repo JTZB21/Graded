@@ -1,3 +1,5 @@
+import { ThemeSettings } from './ThemeSettings';
+import { netWorth } from '../engine/life';
 import { LifePanel } from './LifePanel';
 import { lifeOf } from '../engine/life';
 import { continueAsHeir, heirsOf } from '../engine/legacy';
@@ -18,6 +20,7 @@ import type { Focus, GameState, LogEntry } from '../engine/types';
 
 type Tab = 'home' | 'act' | 'people' | 'log' | 'self' | 'more';
 type Result = { lines: string[]; changes: string[] };
+const FOCUS_SHORT: Record<Focus, string> = { school: 'School', work: 'Career', train: 'Training', crime: 'Crime', family: 'Family', rest: 'Recovery' };
 
 const TABS: { id: Tab; label: string; icon: IconName }[] = [
   { id: 'home', label: 'Home', icon: 'home' },
@@ -25,7 +28,7 @@ const TABS: { id: Tab; label: string; icon: IconName }[] = [
   { id: 'people', label: 'People', icon: 'people' },
   { id: 'log', label: 'Log', icon: 'log' },
   { id: 'self', label: 'Character', icon: 'id' },
-  { id: 'more', label: 'More', icon: 'more' },
+  { id: 'more', label: 'Settings', icon: 'more' },
 ];
 
 // Display only: which picture goes on which tile. The engine decides everything else.
@@ -144,7 +147,13 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
       {tab === 'home' && (
         <>
+          <div className="home-heading"><p className="eyebrow">Your story, one year at a time</p><h1>Life in Port Harlan</h1></div>
           <ProfileCard state={state} energy={energy} />
+          <section className="life-overview" aria-label="Life overview">
+            <button onClick={() => go('self')}><span>Net worth</span><strong>{compactMoney(netWorth(state))}</strong><small>Accounts &amp; property ↗</small></button>
+            <button onClick={() => go('people')}><span>Your circle</span><strong>{(c.people ?? []).filter(p => p.alive && p.born <= state.date.year).length} people</strong><small>Family &amp; relationships ↗</small></button>
+          </section>
+          {c.alive && !state.pending && <div className="home-shortcuts"><button className="pill" onClick={() => go('act')}>Explore activities <span aria-hidden="true">→</span></button><button className="link" onClick={() => go('self')}>View your life ledger</button></div>}
           {decision}
           {resultCard}
           {notice && !state.pending && <p className="warn page-note">{notice}</p>}
@@ -161,11 +170,11 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
               <label className="dock-focus">
                 <span className="sr-only">Focus for this year</span>
                 <select value={focus} onChange={(e) => setChosen(e.target.value as Focus)} aria-label="Focus for this year">
-                  {focuses.map((f) => <option key={f} value={f}>{FOCUS_LABELS[f]}</option>)}
+                  {focuses.map((f) => <option key={f} value={f} title={FOCUS_LABELS[f]}>{FOCUS_SHORT[f]}</option>)}
                 </select>
               </label>
               <button className="age-up" onClick={skip}>
-                Age up +1 year{monthsLeft < 12 ? <small> · {monthsLeft} mo</small> : null}
+                Age up +1 year{monthsLeft < 12 ? <small>{monthsLeft} mo to birthday</small> : null}
               </button>
             </div>
           )}
@@ -277,7 +286,7 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
         <Stat icon="chat" label="Charm" value={c.charm} bar={c.charm * 10} color="var(--c-charm)" />
         <Stat icon="shield" label="Nerve" value={c.nerve} bar={c.nerve * 10} color="var(--c-nerve)" />
       </div>
-      <div className="stat-grid attributes">
+      <div className="stat-grid attributes wellbeing">
         <Stat icon="health" label="Happiness" value={lifeOf(state).happiness} bar={lifeOf(state).happiness} color="var(--c-health)" />
         <Stat icon="warning" label="Stress" value={lifeOf(state).stress} bar={lifeOf(state).stress} color="var(--c-infamy)" hint="Sustained stress of 85 or more damages health. Take time for yourself in Act." />
       </div>
@@ -344,11 +353,12 @@ function ActTab({ actions, energy, alive, pending, onAct }: { actions: ActionVie
         <p className="muted">Activities cost energy; account transfers are free. Energy refills when you age up. Actions marked with a game let you play for better odds.</p>
       </div>
       {energy === 0 && actions.length > 0 && <p className="warn page-note">You are out of energy for activities this year. Account transfers remain available. Age up from Home to refill.</p>}
+      <div className="activity-index" aria-label="Activity categories">{ACTION_GROUPS.filter(g => actions.some(a => a.group === g)).map(g => <a href={`#group-${g.replaceAll(' ', '-')}`} key={g}>{g}</a>)}</div>
       {ACTION_GROUPS.map((g) => {
         const list = actions.filter((a) => a.group === g);
         if (!list.length) return null;
         return (
-          <section key={g} id={`group-${g}`} className="tile-section">
+          <section key={g} id={`group-${g.replaceAll(' ', '-')}`} className="tile-section">
             <h3 className="section-title"><i style={{ background: GROUP_META[g].dot }} />{g}</h3>
             <div className="tile-grid">
               {list.map((a) => (
@@ -465,10 +475,11 @@ function MoreTab({ state, onLoad, onNew }: { state: GameState; onLoad: (g: GameS
   return (
     <>
       <div className="page-head">
-        <h2>More</h2>
+        <h2>Settings &amp; saves</h2>
         <p className="muted">Saves and this life. The game also saves itself after every move.</p>
         <p className="build-tag">{__BUILD__}</p>
       </div>
+      <ThemeSettings />
       <section className="card">
         <h3>Save slots</h3>
         <p className="hint">Saves stay on this device.</p>
