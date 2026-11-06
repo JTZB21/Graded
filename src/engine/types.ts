@@ -1,3 +1,4 @@
+import type { Life } from './life';
 import type { Category, Grade, Rank } from './rules';
 
 export type Gender = 'male' | 'female' | 'nonbinary';
@@ -47,6 +48,7 @@ export interface Offense {
 }
 
 export interface Character {
+  life?: Life;
   name: string;
   gender: Gender;
   born: YearMonth;

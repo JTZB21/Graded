@@ -40,6 +40,28 @@ export const KEY_FROM: Record<string, number> = {
 };
 
 export const TEMPLATES: Record<string, Variant[]> = {
+  "act.life.unwind": ["You turn down another obligation. For once, the evening stays empty.", "You spend an afternoon away from work and the noise. Nobody invoices you for it."],
+  "act.life.learn": ["You practise {skill} work until the mistakes stop repeating. Skill level: {level}."],
+  "act.life.freelance": ["You deliver a commission and collect {money}. The next client already wants revisions."],
+  "act.life.deposit": ["You move {money} into savings. The bank offers 2.5% annual interest and a handshake."],
+  "act.life.withdraw": ["You transfer {money} from savings back into spending money."],
+  "act.life.invest": ["You invest {money} in a diversified portfolio. The returns come with no promises."],
+  "act.life.sell-investments": ["You sell {money} of your portfolio at its current value."],
+  "act.life.loan": ["You borrow {money} at 12% annual interest. The monthly payment starts next month."],
+  "act.life.repay": ["You repay {money} of your loan balance. The fine print gets a little shorter."],
+  "act.life.career": ["You take on training and extra responsibility. Your performance improves; your evenings shrink."],
+  "act.life.promotion": ["Your promotion clears the desk upstairs. Career level {level}; annual salary {salary}."],
+  "act.life.home": ["You sign for a home worth {money}. The mortgage payment is {payment} a month, before upkeep."],
+  "act.life.sell-home": ["You sell the house and settle the mortgage and selling costs. Your cash changes by {money}."],
+  "act.life.business": ["You open a small service business. The first customer asks for a discount."],
+  "act.life.expand": ["You expand the business to level {level}. More capacity, more overhead."],
+  "act.life.close-business": ["You close the business and stop taking orders. The invoices finally stop multiplying."],
+  "act.life.retire": ["You hand in your notice. Your annual pension is {salary}."],
+  "life.accounts": ["Your accounts show savings of {savings}, investments of {investments}, and personal debt of {debt}."],
+  "life.burnout": ["Work and obligations crowd out the rest of the week. Sustained stress is wearing down your health."],
+  "life.home-lost": ["The lender forces a sale, settles the mortgage, and returns any remaining equity. Your credit takes the hit."],
+  "life.heir": ["You take up the story after {ancestor}. The settled estate leaves you {money}."],
+
   // ---------- Actions (things the player does this month; see actions.ts) ----------
   'act.gym': [
     'You put in an hour on the bench and the bag. Nothing changes that a mirror would notice.',

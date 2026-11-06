@@ -1,5 +1,6 @@
 // Time skips: the engine ticks month by month, applies the focus, and rolls events.
 
+import { housingCost, lifeMonth, lifeBirthday } from './life';
 import timeline from '../data/timeline.json';
 import { ENERGY } from './actions';
 import lore from '../data/lore.json';
@@ -81,6 +82,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       birthdayChecks(s, rng);
       peopleBirthday(s, rng);
       petYear(s, rng);
+      lifeBirthday(s, rng);
       if (age >= 7 && age <= 18 && c.school && c.education === 'none' && !imprisonedNow(s)) schoolYear(s, rng, focus);
       collegeYear(s, rng, focus);
       if (age === 18 && c.education === 'none') {
@@ -143,8 +145,8 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       if (!c.livesWithFamily && age >= 18) {
         // A partner who lives with you pays their share of the rent.
         const share = around(s, (p) => isLover(p) && !!p.livesWithYou).length ? 0.65 : 1;
-        c.money -= dollars(RENT[c.district] * share + livingCost(c.graded), s.date.year);
-        if (c.money < -dollars(RENT[c.district] * 3, s.date.year) && c.district !== 'Old Foundry') {
+        c.money -= housingCost(s, share) + dollars(livingCost(c.graded), s.date.year);
+        if (!c.life?.home && c.money < -dollars(RENT[c.district] * 3, s.date.year) && c.district !== 'Old Foundry') {
           c.district = 'Old Foundry';
           say(s, rng, 'money', 'money.evicted');
         }
@@ -154,6 +156,8 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
 
     c.health = Math.min(100, c.health + (focus === 'rest' ? 12 : 4));
     c.strain = focus === 'train' && c.graded && !c.powersGone ? 15 : 0;
+
+    lifeMonth(s, rng, focus, !!imprisoned);
 
     const ctx = { age, focus, year: s.date.year, month: s.date.month };
     if (!imprisoned && !stoppedBy && rng.chance(EVENT_CHANCE)) {
@@ -218,7 +222,7 @@ function applyFocus(s: GameState, rng: Rng, focus: Focus, age: number, tally: { 
       if (rng.chance(0.02)) changeAttr(c, 'mind', 1);
       break;
     case 'work':
-      if (!c.job && age >= 16 && rng.chance(0.2 + c.charm * 0.03)) {
+      if (!c.job && !c.life?.career.retired && age >= 16 && rng.chance(0.2 + c.charm * 0.03)) {
         const jobs = eligibleJobs(c, age);
         if (jobs.length) {
           const spec = rng.pick(jobs.slice(0, 2));

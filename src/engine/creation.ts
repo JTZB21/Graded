@@ -1,5 +1,6 @@
 // Character creation, following the card's creation questions. Anything left out is rolled.
 
+import { ensureLife } from './life';
 import { addPerson, makeFamily, surname } from './people';
 import { firstSchool, startGpa } from './school';
 import { dollars, eligibleJobs, hire, jobLicense } from './economy';
@@ -162,6 +163,7 @@ export function createGame(opts: CreationOptions = {}): GameState {
     }
   }
 
+  ensureLife(s);
   s.rngState = rng.state;
   return s;
 }
