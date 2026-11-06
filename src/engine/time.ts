@@ -146,7 +146,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
         // A partner who lives with you pays their share of the rent.
         const share = around(s, (p) => isLover(p) && !!p.livesWithYou).length ? 0.65 : 1;
         c.money -= housingCost(s, share) + dollars(livingCost(c.graded), s.date.year);
-        if (!c.life?.home && c.money < -dollars(RENT[c.district] * 3, s.date.year) && c.district !== 'Old Foundry') {
+        if (c.life?.home?.district !== c.district && c.money < -dollars(RENT[c.district] * 3, s.date.year) && c.district !== 'Old Foundry') {
           c.district = 'Old Foundry';
           say(s, rng, 'money', 'money.evicted');
         }
