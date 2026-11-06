@@ -22,3 +22,7 @@ Milestones 1 to 3 are done: you can create a character in Port Harlan, live thei
 The app is wrapped with [Capacitor](https://capacitorjs.com/) (`android/`). Every push and pull request runs the **Android APK** GitHub Action, which builds a debug APK and attaches it to the run as the `GRADED-apk` artifact. The APK is signed with a fixed debug key (`android/app/debug.keystore`) so new builds install over old ones without losing saves.
 
 To rebuild locally with Android Studio: `npm run android:sync`, then open `android/` in Android Studio.
+
+## Appearance
+
+Use the Light/Dark button in the top bar, or **Settings → Appearance** for Light, Dark, or Device mode. Device mode follows your system's color scheme. The choice is stored separately from saves and remains in place when starting or loading another life. The Home dashboard links to your accounts and relationships; the Act screen has a category directory.
