@@ -1,3 +1,6 @@
+import { LifePanel } from './LifePanel';
+import { lifeOf } from '../engine/life';
+import { continueAsHeir, heirsOf } from '../engine/legacy';
 import { Icon, type IconName } from './Icon';
 import { useMemo, useState } from 'react';
 import { act, ACTION_GROUPS, availableActions, ENERGY, energyOf, MINIGAMES, type ActionGroup, type ActionView } from '../engine/actions';
@@ -147,7 +150,8 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
           {notice && !state.pending && <p className="warn page-note">{notice}</p>}
           {!c.alive && (
             <section className="card">
-              <p className="warn">{c.name} has died. Legacy play (continuing as a child or heir) comes in a later update.</p>
+              <p className="warn">{c.name} has died. Continue the family story as a living child, or start a new life.</p>
+              {heirsOf(state).map(p => <button className="pill" key={p.id} onClick={() => { onChange(continueAsHeir(state, p.id)); setResult(null); setNotice(null); }}>Continue as {p.name}</button>)}
               <button className="age-up" onClick={onNew}>Start a new life</button>
             </section>
           )}
@@ -187,7 +191,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
         </>
       )}
       {tab === 'log' && <LogTab log={state.log} />}
-      {tab === 'self' && <SelfTab state={state} />}
+      {tab === 'self' && <><SelfTab state={state} /><LifePanel state={state} onChange={onChange} /></>}
       {tab === 'more' && <MoreTab state={state} onLoad={(g) => { onChange(g); setResult(null); setNotice(null); go('home'); }} onNew={onNew} />}
       {playing && MINIGAMES[playing] && (
         <MiniGame kind={MINIGAMES[playing]} onDone={(score) => doAction(playing, score)} onCancel={() => setPlaying(null)} />
@@ -273,6 +277,11 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
         <Stat icon="chat" label="Charm" value={c.charm} bar={c.charm * 10} color="var(--c-charm)" />
         <Stat icon="shield" label="Nerve" value={c.nerve} bar={c.nerve * 10} color="var(--c-nerve)" />
       </div>
+      <div className="stat-grid attributes">
+        <Stat icon="health" label="Happiness" value={lifeOf(state).happiness} bar={lifeOf(state).happiness} color="var(--c-health)" />
+        <Stat icon="warning" label="Stress" value={lifeOf(state).stress} bar={lifeOf(state).stress} color="var(--c-infamy)" hint="Sustained stress of 85 or more damages health. Take time for yourself in Act." />
+      </div>
+      <p className="muted">Accounts, skills, property and your will: Character → Everyday life.</p>
       <p className="eyebrow">Reputation</p>
       <div className="stat-grid reputation">
         <Stat icon="star" label="Fame" value={signed(c.fame)} bar={c.fame} bipolar color="var(--c-fame)" />
@@ -332,9 +341,9 @@ function ActTab({ actions, energy, alive, pending, onAct }: { actions: ActionVie
     <>
       <div className="page-head">
         <h2>This year</h2>
-        <p className="muted">Each action costs energy. Energy refills when you age up. Actions marked with a game let you play for better odds.</p>
+        <p className="muted">Activities cost energy; account transfers are free. Energy refills when you age up. Actions marked with a game let you play for better odds.</p>
       </div>
-      {energy === 0 && actions.length > 0 && <p className="warn page-note">You are out of energy for this year. Age up from Home to keep going.</p>}
+      {energy === 0 && actions.length > 0 && <p className="warn page-note">You are out of energy for activities this year. Account transfers remain available. Age up from Home to refill.</p>}
       {ACTION_GROUPS.map((g) => {
         const list = actions.filter((a) => a.group === g);
         if (!list.length) return null;

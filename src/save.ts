@@ -1,6 +1,7 @@
 // Local saves: an autosave plus three slots, kept in the browser's storage on this device
 // (localStorage, which the Android app keeps too). Saves can also be copied out as text and pasted back.
 
+import { ensureLife } from './engine/life';
 import { ensurePeople } from './engine/people';
 import { ensureSchool } from './engine/school';
 import { ageOf } from './engine/state';
@@ -37,6 +38,7 @@ export function migrate(g: GameState): GameState {
   const s = structuredClone(g);
   ensurePeople(s);
   ensureSchool(s);
+  ensureLife(s);
   s.turn ??= 0;
   return s;
 }

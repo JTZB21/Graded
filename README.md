@@ -15,7 +15,7 @@ npm run build      # typecheck and production build
 
 ## Status
 
-Milestones 1 to 3 are done: you can create a character in Port Harlan, live their life through time skips, and make the big choices when the game stops to ask. See [docs/PLAN.md](docs/PLAN.md) for the full plan and what comes next.
+Milestones 1 to 3 are done: you can create a character in Port Harlan, live their life through time skips, and make the big choices when the game stops to ask. Everyday life now includes wellbeing, skills, banking, debt, property, career progression, businesses, retirement and legacy play. See [the everyday-life guide](docs/EVERYDAY_LIFE.md) and [docs/PLAN.md](docs/PLAN.md).
 
 ## Android
 

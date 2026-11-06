@@ -1,3 +1,4 @@
+import { lifeOf } from './life';
 // The status panel and character sheet, in the card's format.
 
 import { CATEGORIES, RANK_INFO, strainBand } from './rules';
@@ -74,6 +75,11 @@ export function changes(before: GameState, after: GameState): string[] {
   num('Charm', a.charm, b.charm);
   num('Nerve', a.nerve, b.nerve);
   num('Health', a.health, b.health);
+  const la = lifeOf(before), lb = lifeOf(after);
+  num('Happiness', la.happiness, lb.happiness);
+  num('Stress', la.stress, lb.stress);
+  num('Credit', la.credit, lb.credit);
+  for (const skill of ['creative', 'technical', 'enterprise'] as const) num(skill, la.skills[skill], lb.skills[skill]);
   num('Strain', a.strain, b.strain, '%');
   if (a.money !== b.money) out.push(`${b.money > a.money ? '+' : '-'}${money(Math.abs(b.money - a.money))}`);
   num('Fame', a.fame, b.fame);

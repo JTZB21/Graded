@@ -281,3 +281,10 @@ main.with-nav:has(.age-dock) { padding-bottom: calc(170px + env(safe-area-inset-
 .profile .stat-value { font-size: 1.05rem; margin: 4px 0 6px; }
 .profile .meter-caption { display: none; }
 .profile .eyebrow { margin: 12px 0 8px; }
+
+.life-ledger { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; }
+.life-ledger div { min-width: 0; }
+.life-ledger dt { font-size: .8rem; opacity: .75; }
+.life-ledger dd { margin: .25rem 0 0; font-weight: 700; overflow-wrap: anywhere; }
+.life-panel p { overflow-wrap: anywhere; }
+.life-panel select { display: block; width: 100%; margin-top: .5rem; }

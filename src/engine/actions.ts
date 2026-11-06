@@ -2,6 +2,7 @@
 // energy; every action spends some and may cost money. The engine decides every effect and roll
 // here; the writer (./writer) only describes the outcome.
 
+import { LIFE_ACTIONS } from './lifeActions';
 import { arrest, offer } from './decisions';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, RENT } from './economy';
 import { addPerson, around, bondAll, isFamily, isLover, isParent, peopleOf, tryMakeFriend, vars as personVars } from './people';
@@ -36,7 +37,7 @@ export const MINIGAMES: Record<string, 'memory' | 'lockpick' | 'timing'> = {
   fight: 'timing',
 };
 
-interface ActionSpec {
+export interface ActionSpec {
   id: string;
   label: string;
   group: ActionGroup;
@@ -44,6 +45,8 @@ interface ActionSpec {
   cost: number;
   /** Price in 2026 dollars, scaled to the current year. */
   price?: (x: Ctx) => number;
+  /** Exact price already in current-year dollars (balances, down payments). */
+  actualPrice?: (x: Ctx) => number;
   /** Whether the action shows at all right now. */
   when: (x: Ctx) => boolean;
   /** Why a shown action cannot be taken right now (shown greyed out), if any. */
@@ -109,6 +112,7 @@ const NIGHT_OUT: Record<District, number> = {
 };
 
 export const ACTIONS: ActionSpec[] = [
+  ...LIFE_ACTIONS,
   // ---------- Body and mind ----------
   {
     id: 'gym',
@@ -657,7 +661,7 @@ const ctxOf = (s: GameState, skill = 0.5): Ctx => {
   return { s, c, age: ageOf(s), year: s.date.year, imprisoned, skill: Math.max(0, Math.min(1, skill)) };
 };
 
-const priceOf = (spec: ActionSpec, x: Ctx) => (spec.price ? dollars(spec.price(x), x.year) : 0);
+const priceOf = (spec: ActionSpec, x: Ctx) => spec.actualPrice ? spec.actualPrice(x) : spec.price ? dollars(spec.price(x), x.year) : 0;
 
 export const energyOf = (s: GameState) => s.energy ?? ENERGY;
 
