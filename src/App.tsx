@@ -13,11 +13,15 @@ export default function App() {
     if (game) autosave(game);
   }, [game]);
 
+  // Starting, loading or ending a life swaps the whole screen: open the new one at the top.
+  const playing = game !== null;
+  useEffect(() => { window.scrollTo({ top: 0 }); }, [playing]);
+
   const saved = SLOTS.map((n) => ({ n, info: slotInfo(n) })).filter((x) => x.info);
 
   return (
     <main className={game ? 'with-nav' : ''}>
-      <div className="app-masthead"><span className="app-wordmark">GRADED<span>A Port Harlan life</span></span><ThemeToggle /></div>
+      <div className="app-masthead">{game ? <span className="app-wordmark">GRADED<span>A Port Harlan life</span></span> : <span />}<ThemeToggle /></div>
       {!game && (
         <header className="brand">
           <h1>GRADED</h1>

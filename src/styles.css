@@ -396,3 +396,5 @@ a:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outl
 .age-dock .age-up { font-size: 1.05rem; }
 .age-dock .age-up small { display: block; margin-top: 3px; }
 :root[data-theme="dark"] .mg-strike.go { color: #261710; }
+/* The masthead now sits above the tab top bar, so the bar no longer pulls up over the page padding. */
+.topbar { margin-top: 0; }
