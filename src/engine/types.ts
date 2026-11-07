@@ -126,6 +126,8 @@ export interface Person {
   alive: boolean;
   /** Household wealth in 2026 dollars (parents and guardians). */
   wealth?: number;
+  /** Where you met a school or work contact. Older contacts may have no origin. */
+  metAt?: { kind: 'school' | 'work'; key: string; label: string };
   /** Times you have spent with them. */
   moments: number;
   /** Not speaking to you. Only reaching out can fix it. */

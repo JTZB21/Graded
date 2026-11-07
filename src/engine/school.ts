@@ -87,6 +87,7 @@ export function schoolYear(s: GameState, rng: Rng, focus: Focus) {
   const vars = { school: schoolName(c, ageOf(s)), gpa: after.toFixed(1) };
   if (before < 3.5 && after >= 3.5) say(s, rng, 'life', 'school.honor-roll', vars);
   else if (before >= 1.5 && after < 1.5) say(s, rng, 'life', 'school.failing', vars);
+  else say(s, rng, 'life', 'school.report', vars);
 }
 
 /** What graduating from each school gives you. Returns a template key, if there is anything to say. */
@@ -131,6 +132,16 @@ export const COLLEGES: Record<CollegeKind, CollegeSpec> = {
   spire: { name: 'Spire University', months: 48, tuition: 62000 },
   ashgrove: { name: "Ashgrove Academy's upper school", months: 36, tuition: 0, stipend: 18000 },
 };
+
+export function currentSchool(s: GameState) {
+  const c = s.character;
+  const age = ageOf(s);
+  if (c.college) return { key: c.college.kind, label: COLLEGES[c.college.kind].name };
+  if (age >= 6 && age < 18 && c.school && c.education === 'none') {
+    return { key: c.school, label: schoolName(c, age) };
+  }
+  return null;
+}
 
 /** Who can get in, right now. */
 export function admits(s: GameState, kind: CollegeKind): boolean {
@@ -240,7 +251,7 @@ export function collegeYear(s: GameState, rng: Rng, focus: Focus) {
   } else if (e.scholarship && e.kind !== 'ashgrove' && gpa < 3) {
     e.scholarship = false;
     say(s, rng, 'money', 'school.scholarship-lost', vars);
-  }
+  } else say(s, rng, 'life', 'school.report', vars);
 }
 
 /** Gives a save from before schools its school, GPA and any college in progress. */

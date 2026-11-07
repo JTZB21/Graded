@@ -40,6 +40,32 @@ export const KEY_FROM: Record<string, number> = {
 };
 
 export const TEMPLATES: Record<string, Variant[]> = {
+  'act.work.application-declined': [
+    'The office files your application for {job}. A short letter arrives to say the position is filled.',
+    'You interview for {job}. The manager thanks you for coming in and leaves the decision at that.',
+  ],
+  'act.work.coaching': [
+    '{person} stays after the shift to show you how the experienced crew handles the backlog. Your performance improves.',
+    '{person} walks you through a mistake that costs the team time. You get the next run right.',
+  ],
+  'act.school.study-group': [
+    '{person} brings the notes you missed. You work through the hard questions together and your grades improve.',
+    'You and {person} take a table in the library. By closing time you can both finish the assignment without looking at the answers.',
+  ],
+  'school.report': [
+    'Your report from {school} puts your GPA at {gpa}.',
+    '{school} sends home the grades. Your GPA is {gpa}.',
+  ],
+  'work.review.strong': [
+    'Your review for {job} puts your performance at {performance}/100. Your supervisor suggests asking about advancement.',
+  ],
+  'work.review.steady': [
+    'Your review for {job} puts your performance at {performance}/100. The supervisor circles a few things to work on.',
+  ],
+  'work.review.low': [
+    'Your review for {job} puts your performance at {performance}/100. The supervisor asks you to set aside time for coaching.',
+  ],
+
   // ---------- Everyday life (see life.ts and lifeActions.ts) ----------
   'act.life.unwind': [
     'You turn down another obligation. For once, the evening stays empty.',

@@ -18,3 +18,5 @@ Full plan with diagrams and decisions: https://claude.ai/code/artifact/780a087b-
 5. [ ] **Polish.** Done: status panel, cover art, dossier styling, refreshed life dashboard and activity directory, persistent Light/Dark/Device appearance setting (2026-11-06). Still to do: expanded news feed and further Grade Card polish.
 
 6. [x] **Everyday life expansion (2026-11-06).** Wellbeing and burnout, creative/technical/enterprise skills, freelance commissions, savings and investments, personal loans and credit, mortgages and home ownership, career performance/promotions/retirement, service businesses, and a Character ledger. Original mechanics informed by the categories visible in the supplied Verdant Life APK; retains the yearly loop and six energy. See `docs/EVERYDAY_LIFE.md` for rules and limitations.
+
+- **People, Work and School** — Added context contacts, relationship filters, a job board, career reviews, and a school report card. Study groups and workplace coaching carry over into People.

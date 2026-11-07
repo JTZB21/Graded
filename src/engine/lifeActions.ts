@@ -1,6 +1,6 @@
 import type { ActionSpec } from './actions';
 import { dollars } from './economy';
-import { bankLot, ensureLife, homePrice, lifeOf } from './life';
+import { currentCareer, bankLot, ensureLife, homePrice, lifeOf } from './life';
 import { clamp } from './rules';
 import { say } from './writer/writer';
 
@@ -17,7 +17,7 @@ export const LIFE_ACTIONS: ActionSpec[] = [
     apply: (s, rng) => { const l = ensureLife(s); l.skills[skill]++; l.happiness = Math.min(100, l.happiness + 2); say(s, rng, 'life', 'act.life.learn', { skill, level: l.skills[skill] }); },
   })),
   {
-    id: 'freelance', label: 'Take freelance commissions', group: 'Money', cost: 1,
+    id: 'freelance', label: 'Take freelance commissions', group: 'Work', cost: 1,
     when: x => !x.imprisoned && x.age >= 16,
     blocked: x => Math.max(lifeOf(x.s).skills.creative, lifeOf(x.s).skills.technical) < 1 ? 'Learn a creative or technical skill first' : undefined,
     apply: (s, rng) => { const l = ensureLife(s); const pay = dollars(rng.int(100, 300) * Math.max(l.skills.creative, l.skills.technical), s.date.year); s.character.money += pay; l.stress = Math.min(100, l.stress + 8); say(s, rng, 'money', 'act.life.freelance', { money: pay }); },
@@ -55,12 +55,12 @@ export const LIFE_ACTIONS: ActionSpec[] = [
     apply: (s, rng) => { const l = ensureLife(s); const paid = Math.min(l.debt, bankLot(s)); l.debt -= paid; l.credit = clamp(l.credit + (l.debt === 0 ? 10 : 0), 300, 850); say(s, rng, 'money', 'act.life.repay', { money: paid }); },
   },
   {
-    id: 'career-development', label: 'Build your career performance', group: 'Money', cost: 1,
+    id: 'career-development', label: 'Build your career performance', group: 'Work', cost: 1,
     when: x => !x.imprisoned && !!x.c.job,
-    apply: (s, rng) => { const l = ensureLife(s); if (l.career.jobId !== s.character.job!.id) l.career = { jobId: s.character.job!.id, performance: 50, level: 1, experience: 0, retired: false, pension: 0 }; l.career.performance = Math.min(100, l.career.performance + 20); l.stress = Math.min(100, l.stress + 10); say(s, rng, 'money', 'act.life.career'); },
+    apply: (s, rng) => { const l = ensureLife(s); l.career = currentCareer(s); l.career.performance = Math.min(100, l.career.performance + 20); l.stress = Math.min(100, l.stress + 10); say(s, rng, 'money', 'act.life.career'); },
   },
   {
-    id: 'promotion', label: 'Apply for promotion (+15% salary)', group: 'Money', cost: 1,
+    id: 'promotion', label: 'Apply for promotion (+15% salary)', group: 'Work', cost: 1,
     when: x => !x.imprisoned && !!x.c.job,
     blocked: x => { const c = lifeOf(x.s).career; return c.jobId !== x.c.job?.id || c.experience < 12 ? 'Need 12 months in this job' : c.performance < 70 ? 'Need 70 career performance' : c.level >= 5 ? 'At the top of this career' : lifeOf(x.s).used.promotion === (x.s.turn ?? 0) ? 'Already promoted this turn' : undefined; },
     apply: (s, rng) => { const l = ensureLife(s); s.character.job!.salary = Math.round(s.character.job!.salary * 1.15); l.career.level++; l.career.performance -= 20; l.used.promotion = s.turn ?? 0; say(s, rng, 'money', 'act.life.promotion', { level: l.career.level, salary: s.character.job!.salary }); },
@@ -96,7 +96,7 @@ export const LIFE_ACTIONS: ActionSpec[] = [
     apply: (s, rng) => { ensureLife(s).business = null; say(s, rng, 'money', 'act.life.close-business'); },
   },
   {
-    id: 'retire', label: 'Retire (pension: 35% of current salary)', group: 'Money', cost: 1,
+    id: 'retire', label: 'Retire (pension: 35% of current salary)', group: 'Work', cost: 1,
     when: x => !x.imprisoned && x.age >= 65 && !!x.c.job,
     apply: (s, rng) => { const l = ensureLife(s); l.career.pension = Math.round(s.character.job!.salary * 0.35); l.career.retired = true; s.character.job = null; say(s, rng, 'money', 'act.life.retire', { salary: l.career.pension }); },
   },

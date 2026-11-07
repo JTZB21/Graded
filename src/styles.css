@@ -398,3 +398,20 @@ a:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outl
 :root[data-theme="dark"] .mg-strike.go { color: #261710; }
 /* The masthead now sits above the tab top bar, so the bar no longer pulls up over the page padding. */
 .topbar { margin-top: 0; }
+
+.activity-status { margin: 0 0 12px; }
+.activity-status h4 { margin: 0; font: bold 1.2rem var(--serif); }
+.activity-status p:not(.eyebrow) { margin: 7px 0 0; font-size: .85rem; line-height: 1.45; }
+.activity-progress { margin-top: 12px; }
+.activity-progress label { display: grid; gap: 5px; font-size: .8rem; font-weight: 600; }
+.activity-progress progress { width: 100%; accent-color: var(--accent); }
+.job-board { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
+.job-board summary { cursor: pointer; color: var(--accent); padding: 8px 0; font-weight: 700; }
+.job-list { list-style: none; padding: 0; margin: 6px 0 0; }
+.job-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 5px 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.job-list small { display: block; color: var(--muted); margin-top: 4px; }
+.job-list .job-reason { grid-column: 1 / -1; color: var(--warn); margin: 0; }
+.people-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.people-empty { padding: 12px 3px; }
+.person-result { margin-top: 8px; }
+#action-result, #pending-choice { scroll-margin-top: 84px; }

@@ -7,7 +7,7 @@ import lore from '../data/lore.json';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, livingCost, prisonName, RENT, sentence } from './economy';
 import { offer } from './decisions';
 import { birthdayMilestone, EVENT_CHANCE, EVENTS, MUNDANE_CHANCE, MUNDANE_EVENTS, petYear, TEXTURE_CHANCE, TEXTURE_EVENTS } from './events';
-import { around, isLover, peopleBirthday } from './people';
+import { around, bondAll, isFamily, isLover, peopleBirthday } from './people';
 import { admits, collegeMonth, collegeYear, COLLEGES, enroll, expel, graduationPerks, marked, schoolName, schoolYear } from './school';
 import { birthdayChecks, kindle, practice } from './powers';
 import { Rng } from './random';
@@ -81,6 +81,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       say(s, rng, 'life', 'life.birthday');
       birthdayChecks(s, rng);
       peopleBirthday(s, rng);
+      if (focus === 'family' && !imprisonedNow(s)) bondAll(s, p => isFamily(p) || isLover(p), 4);
       petYear(s, rng);
       lifeBirthday(s, rng);
       if (age >= 7 && age <= 18 && c.school && c.education === 'none' && !imprisonedNow(s)) schoolYear(s, rng, focus);

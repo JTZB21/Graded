@@ -2,11 +2,12 @@
 // energy; every action spends some and may cost money. The engine decides every effect and roll
 // here; the writer (./writer) only describes the outcome.
 
+import { currentCareer, ensureLife, freshCareer, lifeOf } from './life';
 import { LIFE_ACTIONS } from './lifeActions';
 import { arrest, offer } from './decisions';
-import { crimePay, dollars, eligibleJobs, hire, jobLicense, RENT } from './economy';
-import { addPerson, around, bondAll, isFamily, isLover, isParent, peopleOf, tryMakeFriend, vars as personVars } from './people';
-import { changeGpa, COLLEGES, mark, marked } from './school';
+import { crimePay, dollars, eligibleJobs, hire, jobLicense, JOBS, RENT } from './economy';
+import { addPerson, around, bondAll, isFamily, isLover, isParent, peopleOf, spendTimeWithPeer, tryMakeFriend, vars as personVars } from './people';
+import { changeGpa, COLLEGES, currentSchool, mark, marked } from './school';
 import { ageRate, gainProgress } from './powers';
 import { Rng } from './random';
 import { GRADES, RANKS, type Rank } from './rules';
@@ -17,8 +18,8 @@ import { say } from './writer/writer';
 /** Energy per turn (one Age up, about a year). Moving time refills it. */
 export const ENERGY = 6;
 
-export type ActionGroup = 'Body and mind' | 'School' | 'Powers' | 'Money' | 'People and places' | 'Underworld' | 'Inside';
-export const ACTION_GROUPS: ActionGroup[] = ['Body and mind', 'School', 'Powers', 'Money', 'People and places', 'Underworld', 'Inside'];
+export type ActionGroup = 'Body and mind' | 'School' | 'Work' | 'Powers' | 'Money' | 'People and places' | 'Underworld' | 'Inside';
+export const ACTION_GROUPS: ActionGroup[] = ['Body and mind', 'School', 'Work', 'Powers', 'Money', 'People and places', 'Underworld', 'Inside'];
 
 interface Ctx {
   s: GameState;
@@ -113,6 +114,62 @@ const NIGHT_OUT: Record<District, number> = {
 
 export const ACTIONS: ActionSpec[] = [
   ...LIFE_ACTIONS,
+  ...JOBS.map((job): ActionSpec => ({
+    id: `apply-${job.id}`,
+    label: job.title,
+    group: 'Work',
+    cost: 1,
+    when: x => free(x) && x.c.job?.id !== job.id && eligibleJobs(x.c, x.age).includes(job),
+    blocked: x => lifeOf(x.s).used[`apply-${job.id}`] === (x.s.turn ?? 0) ? 'Already applied this turn' : undefined,
+    apply: (s, rng, x) => {
+      const life = ensureLife(s);
+      life.used[`apply-${job.id}`] = s.turn ?? 0;
+      const chance = 0.25 + x.c.charm * 0.04 + (x.c.education === 'college' ? 0.1 : 0);
+      if (!rng.chance(chance)) {
+        say(s, rng, 'life', 'act.work.application-declined', { job: job.title });
+        return;
+      }
+      x.c.job = hire(job, x.year);
+      life.career = freshCareer(job.id);
+      const license = jobLicense(job.id);
+      if (license) x.c.license = license;
+      say(s, rng, 'money', license ? 'money.hired-licensed' : 'money.hired', {
+        job: job.title, salary: x.c.job.salary, license: license ?? '',
+      });
+    },
+  })),
+  {
+    id: 'study-group',
+    label: 'Study with a classmate',
+    group: 'School',
+    cost: 1,
+    when: x => free(x) && !!currentSchool(x.s),
+    blocked: x => lifeOf(x.s).used.studyGroup === (x.s.turn ?? 0) ? 'Already met this turn' : undefined,
+    apply: (s, rng) => {
+      const school = currentSchool(s)!;
+      const contact = spendTimeWithPeer(s, rng, { kind: 'school', ...school });
+      ensureLife(s).used.studyGroup = s.turn ?? 0;
+      changeGpa(s.character, 0.12);
+      say(s, rng, 'life', 'act.school.study-group', personVars(contact));
+    },
+  },
+  {
+    id: 'work-mentor',
+    label: 'Ask a coworker for coaching',
+    group: 'Work',
+    cost: 1,
+    when: x => free(x) && !!x.c.job,
+    blocked: x => lifeOf(x.s).used.workMentor === (x.s.turn ?? 0) ? 'Already met this turn' : undefined,
+    apply: (s, rng, x) => {
+      const life = ensureLife(s);
+      const job = x.c.job!;
+      const contact = spendTimeWithPeer(s, rng, { kind: 'work', key: job.id, label: job.title });
+      life.used.workMentor = s.turn ?? 0;
+      life.career = currentCareer(s);
+      life.career.performance = Math.min(100, life.career.performance + 12);
+      say(s, rng, 'life', 'act.work.coaching', personVars(contact));
+    },
+  },
   // ---------- Body and mind ----------
   {
     id: 'gym',
@@ -131,7 +188,7 @@ export const ACTIONS: ActionSpec[] = [
   {
     id: 'study',
     label: 'Study',
-    group: 'Body and mind',
+    group: 'School',
     cost: 1,
     when: (x) => x.age >= 6,
     apply: (s, rng, x) => {
@@ -197,6 +254,7 @@ export const ACTIONS: ActionSpec[] = [
       heal(x.c, 2);
       if (rng.chance(0.2)) {
         const f = addPerson(s, rng, 'friend', 45, Math.max(6, x.age + rng.int(-1, 1)));
+        f.metAt = { kind: 'school', ...currentSchool(s)! };
         say(s, rng, 'life', 'act.club.friend', personVars(f));
         return;
       }
@@ -337,7 +395,7 @@ export const ACTIONS: ActionSpec[] = [
   {
     id: 'part-time',
     label: 'Work an after-school job',
-    group: 'Money',
+    group: 'Work',
     cost: 2,
     when: (x) => free(x) && x.age >= 14 && x.age < 18 && !x.c.job,
     blocked: (x) => (x.c.health < 15 ? 'Too hurt' : undefined),
@@ -365,7 +423,7 @@ export const ACTIONS: ActionSpec[] = [
   {
     id: 'odd-job',
     label: 'Pick up extra work',
-    group: 'Money',
+    group: 'Work',
     cost: 1,
     when: (x) => free(x) && x.age >= 12,
     blocked: (x) => (x.c.health < 15 ? 'Too hurt' : undefined),
@@ -387,7 +445,7 @@ export const ACTIONS: ActionSpec[] = [
   {
     id: 'job-hunt',
     label: 'Look for a job',
-    group: 'Money',
+    group: 'Work',
     cost: 1,
     when: (x) => free(x) && x.age >= 16 && !x.c.job,
     apply: (s, rng, x) => {
@@ -407,7 +465,7 @@ export const ACTIONS: ActionSpec[] = [
   {
     id: 'raise',
     label: 'Ask for a raise',
-    group: 'Money',
+    group: 'Work',
     cost: 1,
     when: (x) => free(x) && !!x.c.job,
     blocked: (x) => (x.c.raiseAskedYear === x.year ? 'Already asked this year' : undefined),
@@ -428,7 +486,7 @@ export const ACTIONS: ActionSpec[] = [
   {
     id: 'quit',
     label: 'Quit your job',
-    group: 'Money',
+    group: 'Work',
     cost: 1,
     when: (x) => free(x) && !!x.c.job,
     apply: (s, rng, x) => {
