@@ -102,7 +102,7 @@ function PersonSheet({ state, p, onClose, onInteract, result }: { state: GameSta
           <div className="who">
             <h2>{p.name}</h2>
             <p>{RELATION_LABELS[p.relation]} · age {personAge(state, p)}{tags(p)}</p>
-            {p.metAt && <p className="muted">Met through {p.metAt.label}</p>}
+            {p.metAt && <p className="muted">{p.metAt.kind === 'work' ? `Met at work · ${p.metAt.label}` : `Met at school · ${p.metAt.label}`}</p>}
             {p.wealth !== undefined && <p className="muted">Household wealth: {money(p.wealth)} (2026)</p>}
           </div>
         </div>

@@ -2,6 +2,7 @@ import type { ActionView } from '../engine/actions';
 import { dollars, JOBS } from '../engine/economy';
 import { currentCareer } from '../engine/life';
 import { COLLEGES, currentSchool, yearlyTuition } from '../engine/school';
+import { ageOf } from '../engine/state';
 import type { GameState } from '../engine/types';
 
 const money = (amount: number) => `$${amount.toLocaleString('en-US')}`;
@@ -33,10 +34,13 @@ export function WorkStatus({ state, openings, onApply }: {
 }) {
   const { job } = state.character;
   const career = currentCareer(state);
+  const retired = !job && career.retired;
+  // When energy runs out every opening shares the same reason; say it once instead of under each job.
+  const outOfEnergy = openings.length > 0 && openings.every(action => action.disabled === 'Not enough energy this year');
   return (
     <div className="card activity-status">
       <p className="eyebrow">Career</p>
-      <h4>{job?.title ?? (career.retired ? 'Retired' : 'Looking for work')}</h4>
+      <h4>{job?.title ?? (retired ? 'Retired' : ageOf(state) >= 16 ? 'Looking for work' : 'No job yet')}</h4>
       {job && (
         <>
           <p>{money(job.salary)} / year · Level {career.level} · {career.experience} months in role</p>
@@ -46,11 +50,13 @@ export function WorkStatus({ state, openings, onApply }: {
           </div>
         </>
       )}
-      {!job && career.retired && <p>{money(career.pension)} annual pension</p>}
+      {retired && <p>{money(career.pension)} annual pension</p>}
       {openings.length > 0 && (
-        <details className="job-board" open={!job}>
+        <details className="job-board" open={!job && !retired}>
           <summary>Job board · {openings.length} eligible {openings.length === 1 ? 'role' : 'roles'}</summary>
           <p className="muted">Apply directly for 1 energy. A successful application starts the new role immediately.</p>
+          {retired && <p className="warn">Taking a job ends your pension.</p>}
+          {outOfEnergy && <p className="warn">Not enough energy this year. Age up to apply.</p>}
           <ul className="job-list">
             {openings.map(action => {
               const opening = JOBS.find(spec => `apply-${spec.id}` === action.id)!;
@@ -58,7 +64,7 @@ export function WorkStatus({ state, openings, onApply }: {
                 <li key={action.id}>
                   <div><strong>{opening.title}</strong><small>{money(dollars(opening.salary2026, state.date.year))} / year{opening.license ? ` · ${opening.license} license` : ''}</small></div>
                   <button className="pill small" disabled={!!action.disabled} aria-label={`Apply for ${opening.title}`} onClick={() => onApply(action.id)}>Apply</button>
-                  {action.disabled && <small className="warn job-reason">{action.disabled}</small>}
+                  {action.disabled && !outOfEnergy && <small className="warn job-reason">{action.disabled}</small>}
                 </li>
               );
             })}
