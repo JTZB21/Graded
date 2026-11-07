@@ -1,3 +1,4 @@
+import { SchoolStatus, WorkStatus } from './ActivityStatus';
 import { ThemeSettings } from './ThemeSettings';
 import { netWorth } from '../engine/life';
 import { LifePanel } from './LifePanel';
@@ -19,7 +20,7 @@ import { ageUp, availableFocuses, FOCUS_LABELS, monthsToBirthday } from '../engi
 import type { Focus, GameState, LogEntry } from '../engine/types';
 
 type Tab = 'home' | 'act' | 'people' | 'log' | 'self' | 'more';
-type Result = { lines: string[]; changes: string[] };
+type Result = { lines: string[]; changes: string[]; personId?: string };
 const FOCUS_SHORT: Record<Focus, string> = { school: 'School', work: 'Career', train: 'Training', crime: 'Crime', family: 'Family', rest: 'Recovery' };
 
 const TABS: { id: Tab; label: string; icon: IconName }[] = [
@@ -41,6 +42,7 @@ const ACTION_ICONS: Record<string, IconName> = {
 const GROUP_META: Record<ActionGroup, { icon: IconName; dot: string }> = {
   'Body and mind': { icon: 'body', dot: 'var(--c-body)' },
   School: { icon: 'book', dot: 'var(--c-mind)' },
+  Work: { icon: 'briefcase', dot: 'var(--c-money)' },
   Powers: { icon: 'bolt', dot: 'var(--c-mind)' },
   Money: { icon: 'money', dot: 'var(--c-money)' },
   'People and places': { icon: 'people', dot: 'var(--c-charm)' },
@@ -100,12 +102,13 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
     onChange(next);
     setResult(resultOf(next));
     setNotice(null);
+    if (tab === 'act') requestAnimationFrame(() => document.getElementById(next.pending ? 'pending-choice' : 'action-result')?.scrollIntoView({ block: 'start' }));
   }
 
   function doInteract(personId: string, id: string) {
     const next = interact(state, personId, id);
     onChange(next);
-    setResult(resultOf(next));
+    setResult({ ...resultOf(next), personId });
     setNotice(null);
   }
 
@@ -120,7 +123,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
   }
 
   const decision = c.alive && state.pending && (
-    <section className="card decision">
+    <section className="card decision" id="pending-choice">
       <p className="eyebrow">Your call</p>
       {notice && <p className="muted">{notice}</p>}
       <p className="decision-text">{state.pending.text}</p>
@@ -131,7 +134,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
   );
 
   const resultCard = result && (result.lines.length > 0 || result.changes.length > 0) && (
-    <section className="card result">
+    <section className="card result" id="action-result">
       {result.lines.map((l, i) => <p key={i}>{l}</p>)}
       {result.changes.length > 0 && (
         <div className="change-chips">{result.changes.map((ch) => <span key={ch} className="change">{ch}</span>)}</div>
@@ -184,17 +187,18 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
       {tab === 'act' && (
         <>
           {resultCard}
-          <ActTab actions={actions} energy={energy} alive={c.alive} pending={!!state.pending} onAct={doAction} />
+          <ActTab state={state} actions={actions} energy={energy} onAct={doAction} />
         </>
       )}
 
       {tab === 'people' && (
         <>
-          {resultCard}
+          {!result?.personId && resultCard}
           <PeopleTab
             state={state}
-            friendAction={actions.find((a) => a.id === 'make-friend')}
-            onMakeFriend={() => doAction('make-friend')}
+            socialActions={actions.filter(a => a.id === 'make-friend' || a.id === 'date')}
+            onAct={doAction}
+            result={result?.personId ? { personId: result.personId, lines: result.lines, changes: result.changes } : undefined}
             onInteract={doInteract}
           />
         </>
@@ -343,9 +347,9 @@ function LogItem({ e }: { e: LogEntry }) {
   );
 }
 
-function ActTab({ actions, energy, alive, pending, onAct }: { actions: ActionView[]; energy: number; alive: boolean; pending: boolean; onAct: (id: string) => void }) {
-  if (!alive) return <section className="card"><p className="muted">Nothing left to do in this life.</p></section>;
-  if (pending) return <section className="card"><p className="muted">Answer the choice above first.</p></section>;
+function ActTab({ state, actions, energy, onAct }: { state: GameState; actions: ActionView[]; energy: number; onAct: (id: string) => void }) {
+  if (!state.character.alive) return <section className="card"><p className="muted">Nothing left to do in this life.</p></section>;
+  if (state.pending) return <section className="card"><p className="muted">Answer the choice above first.</p></section>;
   return (
     <>
       <div className="page-head">
@@ -356,12 +360,16 @@ function ActTab({ actions, energy, alive, pending, onAct }: { actions: ActionVie
       <div className="activity-index" aria-label="Activity categories">{ACTION_GROUPS.filter(g => actions.some(a => a.group === g)).map(g => <a href={`#group-${g.replaceAll(' ', '-')}`} key={g}>{g}</a>)}</div>
       {ACTION_GROUPS.map((g) => {
         const list = actions.filter((a) => a.group === g);
+        const openings = g === 'Work' ? list.filter(a => a.id.startsWith('apply-')) : [];
+        const tiles = g === 'Work' ? list.filter(a => !a.id.startsWith('apply-') && (openings.length === 0 || a.id !== 'job-hunt')) : list;
         if (!list.length) return null;
         return (
           <section key={g} id={`group-${g.replaceAll(' ', '-')}`} className="tile-section">
             <h3 className="section-title"><i style={{ background: GROUP_META[g].dot }} />{g}</h3>
+            {g === 'School' && <SchoolStatus state={state} />}
+            {g === 'Work' && <WorkStatus state={state} openings={openings} onApply={onAct} />}
             <div className="tile-grid">
-              {list.map((a) => (
+              {tiles.map((a) => (
                 <button key={a.id} className="tile" disabled={!!a.disabled} title={a.disabled} onClick={() => onAct(a.id)}>
                   <span className="tile-icon" aria-hidden><Icon name={ACTION_ICONS[a.id] ?? GROUP_META[g].icon} /></span>
                   <span className="tile-label">{a.label}</span>

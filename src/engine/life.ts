@@ -24,7 +24,7 @@ export interface Life {
 export function lifeOf(s: GameState): Life {
   return s.character.life ?? {
     happiness: 65, stress: 15, savings: 0, investments: 0, debt: 0, credit: 600,
-    home: null, career: { jobId: null, experience: 0, performance: 50, level: 1, retired: false, pension: 0 },
+    home: null, career: freshCareer(null),
     business: null, skills: { creative: 0, technical: 0, enterprise: 0 }, will: null, used: {},
   };
 }
@@ -32,6 +32,17 @@ export function lifeOf(s: GameState): Life {
 /** Additive save migration. Reading a sheet never mutates the save. */
 export function ensureLife(s: GameState): Life {
   return s.character.life ??= lifeOf(s);
+}
+
+export function freshCareer(jobId: string | null): Life['career'] {
+  return { jobId, experience: 0, performance: 50, level: 1, retired: false, pension: 0 };
+}
+
+export function currentCareer(s: GameState): Life['career'] {
+  const career = lifeOf(s).career;
+  const jobId = s.character.job?.id ?? null;
+  if (!jobId || (career.jobId === jobId && !career.retired)) return career;
+  return freshCareer(jobId);
 }
 
 export const homePrice = (s: GameState) => dollars(RENT[s.character.district] * 180, s.date.year);
@@ -83,9 +94,7 @@ export function lifeMonth(s: GameState, rng: Rng, focus: Focus, imprisoned: bool
   let load = 0;
   if (!imprisoned && l.business) load += 1;
   if (!imprisoned && c.job) {
-    if (l.career.jobId !== c.job.id || l.career.retired) {
-      l.career = { jobId: c.job.id, experience: 0, performance: 50, level: 1, retired: false, pension: 0 };
-    }
+    l.career = currentCareer(s);
     l.career.experience++;
     l.career.performance = clamp(l.career.performance + (focus === 'work' ? 2 : -1) - (l.stress >= 80 ? 2 : 0) - (l.happiness < 25 ? 1 : 0), 0, 100);
     load += focus === 'work' ? 2 : 1;
@@ -108,6 +117,12 @@ export function lifeMonth(s: GameState, rng: Rng, focus: Focus, imprisoned: bool
 export function lifeBirthday(s: GameState, rng: Rng) {
   const l = ensureLife(s);
   if (l.home) l.home.value = Math.round(l.home.value * (1 + rng.int(-3, 6) / 100));
+  const job = s.character.job;
+  if (job && l.career.jobId === job.id && l.career.experience >= 6 && !l.career.retired) {
+    const performance = l.career.performance;
+    const key = performance >= 70 ? 'work.review.strong' : performance < 40 ? 'work.review.low' : 'work.review.steady';
+    say(s, rng, 'life', key, { job: job.title, performance });
+  }
   if (l.stress >= 75) say(s, rng, 'life', 'life.burnout');
   if (ageOf(s) >= 18 && (l.savings || l.investments || l.debt)) say(s, rng, 'money', 'life.accounts', { savings: l.savings, investments: l.investments, debt: l.debt });
 }

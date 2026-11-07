@@ -125,6 +125,23 @@ export const around = (s: GameState, test: (p: Person) => boolean) => knownPeopl
 export function bondAll(s: GameState, test: (p: Person) => boolean, by: number) {
   for (const p of around(s, test)) if (!p.estranged) p.bond = clamp(p.bond + by, 0, 100);
 }
+/** Repeated time in the same setting builds on an existing relationship. */
+export function spendTimeWithPeer(s: GameState, rng: Rng, metAt: NonNullable<Person['metAt']>): Person {
+  const peer = around(s, p => p.relation === 'friend' && !p.estranged &&
+    p.metAt?.kind === metAt.kind && p.metAt.key === metAt.key)[0];
+  const age = ageOf(s);
+  const contact = peer ?? addPerson(s, rng, 'friend', 36, metAt.kind === 'school'
+    ? Math.max(6, age + rng.int(-1, 1))
+    : Math.max(16, age + rng.int(-4, 8)));
+  if (peer) bond(contact, 6);
+  contact.metAt = metAt;
+  contact.moments++;
+  const turn = s.turn ?? 0;
+  if (contact.usedTurn !== turn) contact.usedCount = 0;
+  contact.usedTurn = turn;
+  return contact;
+}
+
 export const lover = (s: GameState) => around(s, isLover)[0];
 export { surname };
 
