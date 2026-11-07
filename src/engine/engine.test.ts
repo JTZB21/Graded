@@ -3,7 +3,7 @@ import { createGame } from './creation';
 import { choose } from './decisions';
 import { priceLevel } from './economy';
 import { ageOf } from './state';
-import { advance, availableFocuses } from './time';
+import { advance, ageUp, availableFocuses } from './time';
 import type { Focus, GameState } from './types';
 
 /** Skips month by month until `months` pass, taking the first option at each decision (but not past death). */
@@ -120,4 +120,22 @@ describe('priceLevel', () => {
     expect(priceLevel(1980)).toBeCloseTo(0.27);
     expect(priceLevel(1975)).toBeGreaterThan(priceLevel(1970));
   });
+});
+
+describe('kindling window triggers (playtest fix, 2026-11-07)', () => {
+  it('brings some Kindlings forward and still kindles everyone by 21', () => {
+    let early = 0;
+    for (let seed = 1; seed <= 40; seed++) {
+      let s = createGame({ age: 11, seed, powered: { rank: 'A' } });
+      const drawn = s.character.kindleAge!;
+      while (!s.character.graded && s.character.alive && ageOf(s) < 22) {
+        if (s.pending) s = choose(s, s.pending.options[0].id);
+        else s = ageUp(s, ageOf(s) >= 12 ? 'train' : 'school').state;
+      }
+      if (!s.character.alive) continue;
+      expect(s.character.graded).toBe(true);
+      if (s.character.kindleAge === null && ageOf(s) < drawn) early++;
+    }
+    expect(early).toBeGreaterThan(0);
+  }, 120000);
 });

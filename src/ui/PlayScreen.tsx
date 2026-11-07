@@ -247,7 +247,7 @@ function TopBar({ state, energy }: { state: GameState; energy: number }) {
 function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
   const c = state.character;
   const legal = c.inPrisonUntil ? `Prison until ${formatDate(c.inPrisonUntil)}` : c.record.length ? `${c.record.length} conviction${c.record.length > 1 ? 's' : ''}` : 'Clean record';
-  const power = c.graded ? `${notation(c)}${c.powersGone ? ' · gone dark' : ''}` : c.kindleAge !== null ? 'Baseline · marker+' : 'Baseline';
+  const power = c.graded ? `${notation(c)}${c.powersGone ? ' · gone dark' : ''}` : c.kindleAge !== null ? `Marker+ · powers due by ${Math.max(21, ageOf(state) + 1)}` : 'Baseline';
   const band = strainBand(c.strain);
   const age = ageOf(state);
   const school = c.college
