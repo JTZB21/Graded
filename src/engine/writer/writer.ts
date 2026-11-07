@@ -33,6 +33,8 @@ export interface Cond {
   minStreetCred?: number;
   /** The character belongs to this group (see Character.ties). */
   tie?: string;
+  /** The character has (true) or lacks (false) a living friend who is still speaking to them. */
+  friends?: boolean;
 }
 
 export type Variant = string | { t: string; when: Cond };
@@ -116,6 +118,10 @@ export function fits(s: GameState, when: Cond, focus?: Focus): boolean {
   if (when.minInfamy !== undefined && c.infamy < when.minInfamy) return false;
   if (when.minStreetCred !== undefined && c.streetCred < when.minStreetCred) return false;
   if (when.tie && !(c.ties ?? []).includes(when.tie)) return false;
+  if (when.friends !== undefined) {
+    const has = (c.people ?? []).some((p) => p.alive && p.relation === 'friend' && !p.estranged && p.born <= year);
+    if (has !== when.friends) return false;
+  }
   return true;
 }
 
