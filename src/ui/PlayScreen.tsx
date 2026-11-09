@@ -10,6 +10,8 @@ import { act, ACTION_GROUPS, availableActions, ENERGY, energyOf, MINIGAMES, type
 import { interact } from '../engine/people';
 import { anySlots, deleteSlot, exportCode, importCode, loadSlot, saveSlot, slotInfo, SLOTS, type Slot } from '../save';
 import { MiniGame } from './MiniGames';
+import { EffectsSettings } from './Effects';
+import { momentsFor, playFx, toneOf } from './fx';
 import { PeopleTab } from './PeopleTab';
 import { choose } from '../engine/decisions';
 import { CATEGORIES, RANK_INFO, strainBand } from '../engine/rules';
@@ -77,6 +79,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
   function skip() {
     const r = ageUp(state, focus);
+    playFx(momentsFor(state, r.state), null);
     onChange(r.state);
     setResult(null);
     if (r.stoppedBy === 'event' || r.stoppedBy === 'kindling') {
@@ -87,6 +90,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
   function decide(optionId: string) {
     const next = choose(state, optionId);
+    playFx(momentsFor(state, next));
     onChange(next);
     setResult(resultOf(next));
     setNotice(null);
@@ -99,6 +103,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
     }
     setPlaying(null);
     const next = act(state, id, skill);
+    playFx(momentsFor(state, next));
     onChange(next);
     setResult(resultOf(next));
     setNotice(null);
@@ -109,6 +114,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
   function doInteract(personId: string, id: string) {
     const next = interact(state, personId, id);
+    playFx(momentsFor(state, next));
     onChange(next);
     setResult({ ...resultOf(next), personId });
     setNotice(null);
@@ -125,7 +131,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
   }
 
   const decision = c.alive && state.pending && (
-    <section className="card decision" id="pending-choice">
+    <section className="card decision fx-enter" id="pending-choice" key={state.pending.text}>
       <p className="eyebrow">Your call</p>
       {notice && <p className="muted">{notice}</p>}
       <p className="decision-text">{state.pending.text}</p>
@@ -136,10 +142,10 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
   );
 
   const resultCard = result && (result.lines.length > 0 || result.changes.length > 0) && (
-    <section className="card result" id="action-result">
+    <section className="card result fx-enter" id="action-result" key={result.lines.join() + result.changes.join()}>
       {result.lines.map((l, i) => <p key={i}>{l}</p>)}
       {result.changes.length > 0 && (
-        <div className="change-chips">{result.changes.map((ch) => <span key={ch} className="change">{ch}</span>)}</div>
+        <div className="change-chips">{result.changes.map((ch, i) => <span key={ch} className={`change ${toneOf(ch)}`} style={{ animationDelay: `${120 + i * 50}ms` }}>{ch}</span>)}</div>
       )}
     </section>
   );
@@ -150,6 +156,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
       {tab !== 'home' && <TopBar state={state} energy={energy} />}
       {tab !== 'home' && decision}
 
+      <div className="tab-view" key={tab}>
       {tab === 'home' && (
         <>
           <div className="home-heading"><p className="eyebrow">Your story, one year at a time</p><h1>Life in Port Harlan</h1></div>
@@ -190,11 +197,11 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
         <>
           {state.pending && resultCard}
           {!state.pending && result && (result.lines.length > 0 || result.changes.length > 0) && (
-            <section className="card result result-toast" role="status" aria-live="polite">
+            <section className="card result result-toast fx-enter" id="action-result" key={result.lines.join() + result.changes.join()} role="status" aria-live="polite">
               <button className="toast-close" aria-label="Dismiss" onClick={() => setResult(null)}>×</button>
               {result.lines.map((l, i) => <p key={i}>{l}</p>)}
               {result.changes.length > 0 && (
-                <div className="change-chips">{result.changes.map((ch) => <span key={ch} className="change">{ch}</span>)}</div>
+                <div className="change-chips">{result.changes.map((ch, i) => <span key={ch} className={`change ${toneOf(ch)}`} style={{ animationDelay: `${120 + i * 50}ms` }}>{ch}</span>)}</div>
               )}
             </section>
           )}
@@ -217,6 +224,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
       {tab === 'log' && <LogTab log={state.log} />}
       {tab === 'self' && <><SelfTab state={state} /><LifePanel state={state} onChange={onChange} /></>}
       {tab === 'more' && <MoreTab state={state} onLoad={(g) => { onChange(g); setResult(null); setNotice(null); go('home'); }} onNew={onNew} />}
+      </div>
       {playing && MINIGAMES[playing] && (
         <MiniGame kind={MINIGAMES[playing]} onDone={(score) => doAction(playing, score)} onCancel={() => setPlaying(null)} />
       )}
@@ -277,7 +285,7 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
           <p className="muted">{stageOf(state)}{c.alive ? '' : ' · deceased'}</p>
         </div>
         <div className="age">
-          <span className="age-num">{ageOf(state)}</span>
+          <AgeNum age={ageOf(state)} />
           <span className="age-label">age</span>
         </div>
       </div>
@@ -291,8 +299,8 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
       <p className="eyebrow">Vitals</p>
       <div className="stat-grid vitals">
         <Stat icon="health" label="Health" value={c.health} bar={c.health} color="var(--c-health)" />
-        <Stat icon="strain" label="Strain" value={`${c.strain}%`} bar={c.strain} color={band === 'fine' ? 'var(--c-money)' : 'var(--c-infamy)'} hint={band} />
-        <Stat icon="money" label="Money" value={compactMoney(c.money)} color="var(--c-money)" />
+        <Stat icon="strain" label="Strain" value={`${c.strain}%`} bar={c.strain} invert color={band === 'fine' ? 'var(--c-money)' : 'var(--c-infamy)'} hint={band} />
+        <Stat icon="money" label="Money" value={compactMoney(c.money)} num={c.money} color="var(--c-money)" />
       </div>
       <p className="eyebrow">Attributes</p>
       <div className="stat-grid attributes">
@@ -303,13 +311,13 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
       </div>
       <div className="stat-grid attributes wellbeing">
         <Stat icon="health" label="Happiness" value={lifeOf(state).happiness} bar={lifeOf(state).happiness} color="var(--c-health)" />
-        <Stat icon="warning" label="Stress" value={lifeOf(state).stress} bar={lifeOf(state).stress} color="var(--c-infamy)" hint="Sustained stress of 85 or more damages health. Take time for yourself in Act." />
+        <Stat icon="warning" label="Stress" value={lifeOf(state).stress} bar={lifeOf(state).stress} invert color="var(--c-infamy)" hint="Sustained stress of 85 or more damages health. Take time for yourself in Act." />
       </div>
       <p className="muted">Accounts, skills, property and your will: Character → Everyday life.</p>
       <p className="eyebrow">Reputation</p>
       <div className="stat-grid reputation">
         <Stat icon="star" label="Fame" value={signed(c.fame)} bar={c.fame} bipolar color="var(--c-fame)" />
-        <Stat icon="warning" label="Infamy" value={signed(c.infamy)} bar={c.infamy} bipolar color="var(--c-infamy)" />
+        <Stat icon="warning" label="Infamy" value={signed(c.infamy)} bar={c.infamy} invert bipolar color="var(--c-infamy)" />
         <Stat icon="mask" label="Cred" value={signed(c.streetCred)} bar={c.streetCred} bipolar color="var(--c-cred)" />
       </div>
 
@@ -323,11 +331,25 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
   );
 }
 
-function Stat({ icon, label, value, bar, color, hint, bipolar = false }: { icon: IconName; label: string; value: string | number; bar?: number; color: string; hint?: string; bipolar?: boolean }) {
+/** Display only: replays a short pop each time a number changes; `invert` marks stats where going up is bad. */
+function useBump(n: number, invert = false) {
+  const [s, setS] = useState({ n, k: 0, dir: '' });
+  if (n !== s.n) setS({ n, k: s.k + 1, dir: (n > s.n) !== invert ? 'up' : 'down' });
+  return s;
+}
+
+function AgeNum({ age }: { age: number }) {
+  const bump = useBump(age);
+  return <span className={`age-num${bump.dir ? ' age-roll' : ''}`} key={bump.k}>{age}</span>;
+}
+
+function Stat({ icon, label, value, bar, color, hint, num, invert, bipolar = false }: { icon: IconName; label: string; value: string | number; bar?: number; color: string; hint?: string; num?: number; invert?: boolean; bipolar?: boolean }) {
+  const bump = useBump(num ?? bar ?? 0, invert);
   return (
     <div className="stat" title={hint ? `${label}: ${hint}` : label}>
+      {bump.dir && <span className={`stat-glow ${bump.dir}`} key={`g${bump.k}`} aria-hidden="true" />}
       <div className="stat-label"><span aria-hidden><Icon name={icon} /></span>{label}</div>
-      <div className="stat-value">{value}</div>
+      <div className={`stat-value${bump.dir ? ` bump-${bump.dir}` : ''}`} key={bump.k}>{value}</div>
       {bar !== undefined && <div className={bipolar ? 'bar bipolar' : 'bar'} aria-hidden="true"><div style={{ width: `${bipolar ? Math.min(100, Math.abs(bar)) / 2 : Math.max(0, Math.min(100, bar))}%`, left: bipolar ? `${bar < 0 ? 50 - Math.min(100, Math.abs(bar)) / 2 : 50}%` : undefined, background: color }} /></div>}
       {bipolar && <span className="meter-caption">−100 · 0 · +100</span>}
     </div>
@@ -499,6 +521,7 @@ function MoreTab({ state, onLoad, onNew }: { state: GameState; onLoad: (g: GameS
         <p className="build-tag">{__BUILD__}</p>
       </div>
       <ThemeSettings />
+      <EffectsSettings />
       <section className="card">
         <h3>Save slots</h3>
         <p className="hint">Saves stay on this device.</p>
