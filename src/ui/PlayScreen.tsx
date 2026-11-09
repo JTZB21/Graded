@@ -107,7 +107,9 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
     onChange(next);
     setResult(resultOf(next));
     setNotice(null);
-    if (tab === 'act') requestAnimationFrame(() => document.getElementById(next.pending ? 'pending-choice' : 'action-result')?.scrollIntoView({ block: 'start' }));
+    // Stay where the player is in the Act menu; the result shows in a toast above the bottom nav instead.
+    // Only a new choice moves the page, since it replaces the menu.
+    if (tab === 'act' && next.pending) requestAnimationFrame(() => document.getElementById('pending-choice')?.scrollIntoView({ block: 'start' }));
   }
 
   function doInteract(personId: string, id: string) {
@@ -193,7 +195,16 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
 
       {tab === 'act' && (
         <>
-          {resultCard}
+          {state.pending && resultCard}
+          {!state.pending && result && (result.lines.length > 0 || result.changes.length > 0) && (
+            <section className="card result result-toast fx-enter" id="action-result" key={result.lines.join() + result.changes.join()} role="status" aria-live="polite">
+              <button className="toast-close" aria-label="Dismiss" onClick={() => setResult(null)}>×</button>
+              {result.lines.map((l, i) => <p key={i}>{l}</p>)}
+              {result.changes.length > 0 && (
+                <div className="change-chips">{result.changes.map((ch, i) => <span key={ch} className={`change ${toneOf(ch)}`} style={{ animationDelay: `${120 + i * 50}ms` }}>{ch}</span>)}</div>
+              )}
+            </section>
+          )}
           <ActTab state={state} actions={actions} energy={energy} onAct={doAction} />
         </>
       )}
@@ -255,7 +266,7 @@ function TopBar({ state, energy }: { state: GameState; energy: number }) {
 function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
   const c = state.character;
   const legal = c.inPrisonUntil ? `Prison until ${formatDate(c.inPrisonUntil)}` : c.record.length ? `${c.record.length} conviction${c.record.length > 1 ? 's' : ''}` : 'Clean record';
-  const power = c.graded ? `${notation(c)}${c.powersGone ? ' · gone dark' : ''}` : c.kindleAge !== null ? 'Baseline · marker+' : 'Baseline';
+  const power = c.graded ? `${notation(c)}${c.powersGone ? ' · gone dark' : ''}` : c.kindleAge !== null ? `Marker+ · powers due by ${Math.max(21, ageOf(state) + 1)}` : 'Baseline';
   const band = strainBand(c.strain);
   const age = ageOf(state);
   const school = c.college

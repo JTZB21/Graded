@@ -494,7 +494,11 @@ export function peopleBirthday(s: GameState, rng: Rng) {
     const seen = p.usedTurn !== undefined && (s.turn ?? 0) - p.usedTurn <= 1;
     const living = (c.livesWithFamily && (isParent(p) || p.relation === 'sibling')) || !!p.livesWithYou || (p.relation === 'child' && year - p.born < 18);
     // Estranged people and rivals stay where they are; nobody is working on those.
-    if (!p.estranged && p.relation !== 'rival') bond(p, seen || living ? -rng.int(0, 3) : -rng.int(3, p.relation === 'friend' || p.relation === 'partner' ? 10 : 6));
+    // Small children cannot keep up a relationship, so family bonds hold until 5 and fade gently until 18.
+    const age = year - c.born.year;
+    const childhood = age < 18 && (isParent(p) || p.relation === 'sibling');
+    const fade = childhood ? (age < 5 ? 0 : rng.int(0, 2)) : seen || living ? rng.int(0, 3) : rng.int(3, p.relation === 'friend' || p.relation === 'partner' ? 10 : 6);
+    if (!p.estranged && p.relation !== 'rival') bond(p, -fade);
     if (rng.chance(mortality(year - p.born))) {
       p.alive = false;
       say(s, rng, 'death', isFamily(p) || isLover(p) ? 'people.died.family' : 'people.died.friend', vars(p, { age: year - p.born }));
