@@ -115,3 +115,27 @@ describe('mini game skill', () => {
     expect(wins[1]).toBeGreaterThan(wins[0]);
   });
 });
+
+describe('young children (playtest fixes, 2026-11-07)', () => {
+  it('parent bonds hold while a baby cannot interact', () => {
+    let s = createGame({ age: 0, seed: 21, background: 'working class' });
+    const parents = () => knownPeople(s).filter((p) => p.relation === 'mother' || p.relation === 'father');
+    const start = parents().map((p) => p.bond);
+    for (let i = 0; i < 4; i++) {
+      if (s.pending) s = choose(s, s.pending.options[0].id);
+      s = ageUp(s, 'family').state;
+    }
+    parents().forEach((p, i) => expect(p.bond).toBeGreaterThanOrEqual(start[i]));
+  });
+
+  it('never has an old friend call a child with no friends', () => {
+    for (let seed = 1; seed <= 40; seed++) {
+      let s = createGame({ age: 0, seed });
+      for (let i = 0; i < 6 && s.character.alive; i++) {
+        if (s.pending) s = choose(s, s.pending.options[0].id);
+        s = ageUp(s, 'family').state;
+      }
+      expect(s.log.some((e) => e.text.includes('An old friend calls'))).toBe(false);
+    }
+  });
+});

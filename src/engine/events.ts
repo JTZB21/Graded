@@ -218,7 +218,8 @@ export const EVENTS: LifeEvent[] = [
   },
   {
     id: 'rent-hike',
-    weight: (c) => (c.livesWithFamily ? 0 : 1),
+    // A child on the street is not anybody's tenant.
+    weight: (c, ctx) => (c.livesWithFamily || ctx.age < 16 ? 0 : 1),
     run: (s, rng) => {
       const cost = pay(s, 600);
       say(s, rng, 'money', 'money.rent-hike', { money: cost });

@@ -1,6 +1,6 @@
 // Time skips: the engine ticks month by month, applies the focus, and rolls events.
 
-import { housingCost, lifeMonth, lifeBirthday } from './life';
+import { housingCost, lifeMonth, lifeBirthday, lifeOf } from './life';
 import timeline from '../data/timeline.json';
 import { ENERGY } from './actions';
 import lore from '../data/lore.json';
@@ -116,6 +116,12 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       if (age === 19 && c.livesWithFamily) {
         c.livesWithFamily = false;
         say(s, rng, 'life', 'life.move-out');
+      }
+      // Inside the Kindling Window, stress, injury and hard training can bring a Kindling forward (card: "often
+      // triggered by stress, injury, or terror"). Without a trigger it still comes on the drawn birthday, 21 at the latest.
+      if (c.kindleAge !== null && age >= 12 && age < c.kindleAge && !imprisonedNow(s)) {
+        const early = 0.1 + (lifeOf(s).stress >= 60 ? 0.15 : 0) + (c.health < 60 ? 0.15 : 0) + (focus === 'train' ? 0.1 : 0);
+        if (rng.chance(early)) c.kindleAge = age;
       }
       if (c.kindleAge !== null && age >= c.kindleAge) {
         say(s, rng, 'power', 'power.kindling-moment');
