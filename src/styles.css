@@ -415,3 +415,132 @@ a:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outl
 .people-empty { padding: 12px 3px; }
 .person-result { margin-top: 8px; }
 #action-result, #pending-choice { scroll-margin-top: 84px; }
+
+/* ---- Animations and effects. Display only; html[data-effects] is full, calm or off (Settings → Animations). */
+.fx-layer { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
+.fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* Floating stat changes rise from the button you pressed. */
+.fx-float { position: absolute; transform: translate(-50%, -50%); padding: 4px 10px; border-radius: 999px; font-size: .85rem; font-weight: 800; white-space: nowrap; background: var(--card); color: var(--ink); border: 1px solid var(--edge); box-shadow: 0 4px 14px rgba(0, 0, 0, .15); opacity: 0; animation: fx-rise 1.3s cubic-bezier(.2, .7, .3, 1) forwards; font-variant-numeric: tabular-nums; }
+.fx-float.good { color: var(--accent); border-color: var(--c-health); }
+.fx-float.bad { color: var(--c-infamy); border-color: var(--c-infamy); }
+@keyframes fx-rise {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(.7); }
+  15% { opacity: 1; transform: translate(-50%, -80%) scale(1.08); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -260%) scale(1); }
+}
+
+/* Big centred banners: birthdays, powers, grade, arrest, death. */
+.fx-banner { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 30px; border-radius: 22px; background: var(--card); border: 1px solid var(--edge); box-shadow: 0 18px 50px rgba(0, 0, 0, .25); animation: fx-banner 2s ease forwards; text-align: center; min-width: 160px; }
+.fx-banner strong { font-family: var(--serif); font-size: 3.4rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.fx-banner small { font: .72rem ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+@keyframes fx-banner {
+  0% { opacity: 0; transform: translate(-50%, -40%) scale(.6); }
+  14% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  22% { transform: translate(-50%, -50%) scale(1); }
+  80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -58%) scale(.96); }
+}
+.fx-banner-awaken { background: var(--power-bg); border-color: var(--power-edge); animation-duration: 2.8s; }
+.fx-banner-awaken strong { color: var(--power-ink); letter-spacing: .2em; font-size: 2.6rem; }
+.fx-banner-awaken strong span { display: inline-block; animation: fx-glitch .5s steps(2) both; }
+@keyframes fx-glitch {
+  0% { opacity: 0; transform: translateY(-14px) skewX(30deg); filter: blur(4px); }
+  50% { opacity: 1; transform: translateX(3px) skewX(-12deg); }
+  100% { opacity: 1; transform: none; filter: none; }
+}
+.fx-banner-grade { background: var(--power-bg); border-color: var(--power-edge); animation-duration: 2.2s; }
+.fx-banner-grade strong { color: var(--power-ink); font-size: 2.4rem; }
+.fx-banner-arrest { border: 3px solid var(--c-infamy); transform: translate(-50%, -50%) rotate(-6deg); animation: fx-stamp 2.4s ease forwards; }
+.fx-banner-arrest strong { color: var(--c-infamy); text-transform: uppercase; letter-spacing: .12em; font-size: 2.4rem; }
+@keyframes fx-stamp {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(-6deg) scale(2.2); }
+  12% { opacity: 1; transform: translate(-50%, -50%) rotate(-6deg) scale(.94); }
+  18% { transform: translate(-50%, -50%) rotate(-6deg) scale(1); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(-6deg) scale(1); }
+}
+.fx-banner-death { background: transparent; border: 0; box-shadow: none; animation-duration: 3.2s; }
+.fx-banner-death strong { color: #f1f1ec; font-size: 4.4rem; }
+.fx-banner-death small { color: #c9c9c2; }
+
+/* Whole-screen washes. */
+.fx-screen { position: absolute; inset: 0; }
+.fx-flash-power { background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, .85), var(--c-nerve) 30%, transparent 75%); animation: fx-flash .9s ease-out forwards; }
+.fx-flash-bad { box-shadow: inset 0 0 90px 10px var(--c-infamy); animation: fx-flash .6s ease-out forwards; }
+@keyframes fx-flash { 0% { opacity: .9; } 100% { opacity: 0; } }
+.fx-siren { animation: fx-siren .5s steps(1) 4; }
+@keyframes fx-siren {
+  0% { box-shadow: inset 60px 0 70px -30px rgba(220, 40, 40, .7); }
+  50% { box-shadow: inset -60px 0 70px -30px rgba(40, 90, 230, .7); }
+}
+.fx-dim { background: radial-gradient(ellipse at center, rgba(10, 10, 10, .55), rgba(5, 5, 5, .92)); animation: fx-dim 3.2s ease forwards; }
+@keyframes fx-dim { 0% { opacity: 0; } 20%, 75% { opacity: 1; } 100% { opacity: 0; } }
+
+/* Tabs and cards slide in; result chips pop one by one. */
+.tab-view > :not(.age-dock) { animation: fx-in .32s cubic-bezier(.2, .7, .3, 1) both; }
+.tab-view > :nth-child(2) { animation-delay: 40ms; }
+.tab-view > :nth-child(3) { animation-delay: 80ms; }
+.tab-view > :nth-child(4) { animation-delay: 120ms; }
+.tab-view > :nth-child(n+5) { animation-delay: 160ms; }
+@keyframes fx-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.fx-enter { animation: fx-pop .4s cubic-bezier(.2, .9, .3, 1.2) both; }
+@keyframes fx-pop { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+.decision { position: relative; }
+.decision::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; animation: fx-call 2.4s ease-in-out infinite; }
+@keyframes fx-call { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 0 3px var(--c-fame); opacity: .5; } }
+.change { animation: fx-chip .35s cubic-bezier(.2, .9, .3, 1.3) both; }
+@keyframes fx-chip { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+.change.good { background: var(--accent-soft); color: var(--accent); }
+.change.bad { background: color-mix(in srgb, var(--c-infamy) 18%, var(--card)); color: var(--c-infamy); }
+
+/* Stats: bars glide, numbers pop green or red when they move. */
+.stat { position: relative; overflow: hidden; }
+.bar div { transition: width .7s cubic-bezier(.2, .7, .3, 1), left .7s cubic-bezier(.2, .7, .3, 1); }
+.stat-value.bump-up { animation: fx-bump-up .7s ease; }
+.stat-value.bump-down { animation: fx-bump-down .7s ease; }
+@keyframes fx-bump-up { 0% { transform: scale(1); } 30% { transform: scale(1.22) translateY(-2px); color: var(--accent); } 100% { transform: none; } }
+@keyframes fx-bump-down { 0% { transform: none; } 20% { transform: translateX(-3px); color: var(--c-infamy); } 40% { transform: translateX(3px); color: var(--c-infamy); } 100% { transform: none; } }
+.stat-value { transform-origin: left center; }
+.stat-glow { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; animation: fx-glow 1s ease-out forwards; }
+.stat-glow.up { background: radial-gradient(circle at 30% 50%, color-mix(in srgb, var(--c-health) 35%, transparent), transparent 70%); }
+.stat-glow.down { background: radial-gradient(circle at 30% 50%, color-mix(in srgb, var(--c-infamy) 35%, transparent), transparent 70%); }
+@keyframes fx-glow { from { opacity: 1; } to { opacity: 0; } }
+.age-num.age-roll { animation: fx-roll .6s cubic-bezier(.2, .9, .3, 1.3); }
+@keyframes fx-roll { from { opacity: 0; transform: translateY(60%) rotateX(80deg); } to { opacity: 1; transform: none; } }
+
+/* Energy pips fill and drain; graded avatars carry a slow aura. */
+.energy i { transition: background-color .3s ease, transform .3s ease; }
+.energy i.on { animation: fx-pip .4s ease both; }
+@keyframes fx-pip { from { transform: scale(.4); } to { transform: none; } }
+.avatar.graded { animation: fx-aura 3.6s ease-in-out infinite; }
+@keyframes fx-aura { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-nerve) 30%, transparent), 0 0 22px color-mix(in srgb, var(--c-nerve) 45%, transparent); } }
+
+/* Buttons: a light sweep across Age up, a press dip on tiles. */
+.age-up { position: relative; overflow: hidden; }
+.age-up::after { content: ''; position: absolute; top: 0; bottom: 0; left: -40%; width: 30%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .45), transparent); transform: skewX(-20deg); animation: fx-sheen 4.5s ease-in-out infinite; pointer-events: none; }
+@keyframes fx-sheen { 0%, 70% { left: -40%; } 100% { left: 130%; } }
+.tile, .pill { transition: transform .12s ease, border-color .2s ease, background-color .2s ease; }
+.tile:active:not(:disabled) { transform: scale(.96); }
+.sheet-backdrop { animation: fx-flash-in .2s ease both; }
+.sheet-panel { animation: fx-sheet .3s cubic-bezier(.2, .8, .3, 1) both; }
+@keyframes fx-flash-in { from { opacity: 0; } }
+@keyframes fx-sheet { from { transform: translateY(40%); opacity: .4; } }
+
+/* Settings card for the effect level. */
+.fx-choice { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 76px; }
+.fx-choice small { font-weight: 500; font-size: .7rem; color: var(--muted); line-height: 1.3; }
+.fx-preview { margin-top: 12px; }
+
+/* Calm: keep fades and number pops, drop movement, flashing and loops. */
+:root[data-effects="calm"] .tab-view > *, :root[data-effects="calm"] .fx-enter, :root[data-effects="calm"] .sheet-panel { animation-name: fx-fade; }
+:root[data-effects="calm"] .fx-banner, :root[data-effects="calm"] .fx-banner-arrest { animation-name: fx-dim; }
+:root[data-effects="calm"] .fx-banner-awaken strong span { animation: none; }
+:root[data-effects="calm"] .fx-float { animation-name: fx-fade-out; }
+:root[data-effects="calm"] .avatar.graded, :root[data-effects="calm"] .age-up::after, :root[data-effects="calm"] .decision::after { animation: none; }
+:root[data-effects="calm"] .stat-value.bump-up, :root[data-effects="calm"] .stat-value.bump-down { animation: none; }
+@keyframes fx-fade { from { opacity: 0; } }
+@keyframes fx-fade-out { 0% { opacity: 0; } 15%, 70% { opacity: 1; } 100% { opacity: 0; } }
+/* Off: no animation or transition anywhere. */
+:root[data-effects="off"] *, :root[data-effects="off"] *::before, :root[data-effects="off"] *::after { animation: none !important; transition: none !important; }

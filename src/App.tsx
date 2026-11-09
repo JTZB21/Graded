@@ -4,6 +4,7 @@ import type { GameState } from './engine/types';
 import { autosave, clearAutosave, loadAutosave, loadSlot, slotInfo, SLOTS } from './save';
 import { CreateScreen } from './ui/CreateScreen';
 import { PlayScreen } from './ui/PlayScreen';
+import { FxLayer } from './ui/Effects';
 
 export default function App() {
   const [game, setGame] = useState<GameState | null>(() => loadAutosave());
@@ -43,6 +44,7 @@ export default function App() {
       ) : (
         <><CreateScreen onStart={setGame} /><ThemeSettings /></>
       )}
+      <FxLayer />
     </main>
   );
 }
