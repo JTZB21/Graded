@@ -1,6 +1,8 @@
 // Family and friends. Everyone you know has a bond (0-100) that you build by spending time with them
 // and that fades if you don't. The engine decides every number here; the writer describes it.
 
+import { checkTitles } from './titles';
+import { offer } from './decisions';
 import { dollars } from './economy';
 import { Rng } from './random';
 import { clamp } from './rules';
@@ -428,7 +430,8 @@ export function interactionsWith(s: GameState, personId: string): InteractionVie
   const tired = usedThisTurn(s, p) >= PER_TURN;
   return INTERACTIONS.filter((i) => i.when(x)).map((i) => {
     const price = i.price ? dollars(i.price(x), s.date.year) : 0;
-    const disabled = tired ? 'Already spent time together this year' : price > 0 && s.character.money < price ? 'Cannot afford it' : undefined;
+    const capped = isLover(p) && ((['gift', 'give-money'].includes(i.id) && (x.c.romanceGifts ?? 0) >= 3) ? '3 gifts this year already' : (['date', 'dinner'].includes(i.id) && (x.c.romanceActivities ?? 0) >= 2) ? '2 romance activities this year already' : undefined);
+    const disabled = (capped || undefined) ?? (tired ? 'Already spent time together this year' : price > 0 && s.character.money < price ? 'Cannot afford it' : undefined);
     return { id: i.id, label: i.label, price, disabled };
   });
 }
@@ -445,8 +448,13 @@ export function interact(state: GameState, personId: string, id: string): GameSt
   p.usedCount = (p.usedTurn === turn ? p.usedCount ?? 0 : 0) + 1;
   p.usedTurn = turn;
   p.moments++;
+  if (isLover(p)) {
+    if (['gift', 'give-money'].includes(id)) s.character.romanceGifts = (s.character.romanceGifts ?? 0) + 1;
+    if (['date', 'dinner'].includes(id)) s.character.romanceActivities = (s.character.romanceActivities ?? 0) + 1;
+  }
   s.character.money -= view.price;
   INTERACTIONS.find((i) => i.id === id)!.apply(s, rng, ctxOf(s, p));
+  checkTitles(s, rng);
   s.rngState = rng.state;
   return s;
 }
@@ -515,5 +523,13 @@ export function peopleBirthday(s: GameState, rng: Rng) {
       c.people.splice(c.people.indexOf(p), 1);
       say(s, rng, 'life', 'people.rival-gone', vars(p));
     }
+  }
+}
+
+/** Birthday offers never overwrite another decision. */
+export function romanceBirthday(s: GameState, rng: Rng) {
+  if (s.pending || ageOf(s) < 18) return;
+  for (const p of around(s, p => p.relation === 'partner' && !p.estranged && p.bond >= 60 && personAge(s, p) >= 18)) {
+    if (rng.chance(0.18)) { offer(s, rng, 'partner-proposal', 'people.proposal', {}, p); return; }
   }
 }

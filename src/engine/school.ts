@@ -2,6 +2,8 @@
 // and where you study decides who you know at eighteen. The engine owns every number here (GPA,
 // tuition, months of study); the writer only names the place and describes it.
 
+import { effective } from './gear';
+import { ensureLife } from './life';
 import { dollars } from './economy';
 import { Rng } from './random';
 import { clamp } from './rules';
@@ -76,6 +78,7 @@ const FOCUS_GPA: Record<Focus, number> = { school: 0.3, work: -0.15, train: -0.0
 export function schoolYear(s: GameState, rng: Rng, focus: Focus) {
   const c = s.character;
   if (!c.school) return;
+  schoolExam(s, rng, focus);
   const before = c.gpa ?? startGpa(c);
   let by = FOCUS_GPA[focus] + (c.mind - 5) * 0.04 + rng.int(-10, 10) / 100;
   if (c.school === 'parochial-charter') by += 0.05;
@@ -164,6 +167,7 @@ export function admits(s: GameState, kind: CollegeKind): boolean {
 /** Whether tuition is waived on admission (merit scholarships and fellowships). */
 export function scholarshipFor(c: Character, kind: CollegeKind): boolean {
   const gpa = c.gpa ?? startGpa(c);
+  if (kind === 'state' && c.examScholarship && gpa >= 3) return true;
   if (kind === 'state') return gpa >= 3.5 || c.mind >= 8;
   if (kind === 'spire') return c.mind >= 8 && gpa >= 3.7;
   return kind === 'ashgrove';
@@ -266,4 +270,15 @@ export function ensureSchool(s: GameState) {
   if (c.college === undefined) {
     c.college = age >= 18 && c.collegeMonths > 0 && c.education !== 'college' ? { kind: 'state', months: Math.round(c.collegeMonths * 4 / 3), scholarship: false } : null;
   }
+}
+
+export function schoolExam(s: GameState, rng: Rng, focus: Focus) {
+  const c = s.character, age = ageOf(s);
+  if (!c.alive || !c.school || c.education !== 'none' || age < 8 || age > 15 || c.exam?.year === s.date.year) return;
+  const score = Math.round(clamp(20 + effective(c, 'mind') * 4 + (c.gpa ?? startGpa(c)) * 10 + (focus === 'school' ? 10 : 0) + rng.int(-15, 15), 0, 100));
+  const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : 'D';
+  c.exam = { year: s.date.year, score, grade };
+  if (grade === 'A') { changeGpa(c, 0.1); if (rng.chance(0.08)) c.examScholarship = true; }
+  if (grade === 'D') { changeGpa(c, -0.1); const l = ensureLife(s); l.happiness = Math.max(0, l.happiness - 3); }
+  say(s, rng, 'life', `school.exam.${grade}`, { score });
 }

@@ -48,6 +48,14 @@ export interface Offense {
 }
 
 export interface Character {
+  romanceGifts?: number;
+  romanceActivities?: number;
+  exam?: { year: number; score: number; grade: 'A' | 'B' | 'C' | 'D' } | null;
+  examScholarship?: boolean;
+  titles?: string[];
+  displayedTitle?: string | null;
+  legacyAwarded?: boolean;
+  highestOrgRank?: number;
   life?: Life;
   name: string;
   gender: Gender;
@@ -185,6 +193,9 @@ export interface Decision {
 }
 
 export interface GameState {
+  legacyPoints?: number;
+  returningPeople?: Person[];
+  legacyStart?: { open: boolean; attributes: number; money: boolean; standing: boolean; org?: OrgId } | null;
   version: 1;
   rngState: number;
   date: YearMonth;

@@ -22,3 +22,5 @@ Full plan with diagrams and decisions: https://claude.ai/code/artifact/780a087b-
 - **People, Work and School** — Added context contacts, relationship filters, a job board, career reviews, and a school report card. Study groups and workplace coaching carry over into People.
 
 7. [x] **Ladders, gear and aging (2026-11-12).** Original mechanics informed by the systems in the Manhua Life APK (no text or art taken): organisations with five ranks each (Aurelian Hero Development, the Low Kings, the Choir, Equal Ground) with standing, promotion bars, yearly stipends and perks (`src/engine/orgs.ts`); gear in four slots and six tiers, each about 1.45 times stronger (`src/engine/gear.ts`); most health falls 1 a year after 50 and 2 after 70 (never below 25), healing slows with age, and low health doubles natural death; soft caps make each point past 90% of a stat take two gains.
+
+8. [x] **Romance, exams and family legacy (2026-11-12).** Shared annual romance caps, adult birthday proposals, annual school exams, legacy points and capped heir purchases, returning family contacts, and 34 earned titles.

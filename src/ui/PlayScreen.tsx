@@ -3,6 +3,8 @@ import { ThemeSettings } from './ThemeSettings';
 import { netWorth } from '../engine/life';
 import { LifePanel } from './LifePanel';
 import { lifeOf } from '../engine/life';
+import { titleName, TITLES, selectTitle } from '../engine/titles';
+import { buyLegacy, finishLegacy, legacyBlock, type LegacyPurchase } from '../engine/legacy';
 import { continueAsHeir, heirsOf } from '../engine/legacy';
 import { Icon, type IconName } from './Icon';
 import { useMemo, useState } from 'react';
@@ -161,6 +163,11 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
       {tab !== 'home' && <TopBar state={state} energy={energy} />}
       {tab !== 'home' && decision}
 
+      {state.legacyStart?.open && <section className="card">
+        <h2>Family head starts</h2><p>{state.legacyPoints ?? 0} legacy points. Choose before your first Age up. Attributes: 8 points each, maximum +2 total. Money: 5 points for $2,000 in 2026 dollars. Organisation: 5 points for 20 standing at entry rank.</p>
+        {(['body','mind','charm','nerve','money','standing'] as LegacyPurchase[]).map(item => <button className="pill" key={item} disabled={!!legacyBlock(state,item)} title={legacyBlock(state,item)} onClick={() => onChange(buyLegacy(state,item))}>{item}{legacyBlock(state,item) && <small> · {legacyBlock(state,item)}</small>}</button>)}
+        <button className="pill" onClick={() => onChange(finishLegacy(state))}>Finish head starts</button>
+      </section>}
       <div className="tab-view" key={tab}>
       {tab === 'home' && (
         <>
@@ -227,7 +234,7 @@ export function PlayScreen({ state, onChange, onNew }: { state: GameState; onCha
         </>
       )}
       {tab === 'log' && <LogTab log={state.log} />}
-      {tab === 'self' && <><SelfTab state={state} /><LifePanel state={state} onChange={onChange} /></>}
+      {tab === 'self' && <><section className="card"><h2>Earned titles</h2><p>{state.legacyPoints ?? 0} legacy points</p><label>Display beside your name <select value={c.displayedTitle ?? ''} onChange={e => onChange(selectTitle(state,e.target.value || null))}><option value="">No title</option>{TITLES.filter(t => c.titles?.includes(t.id)).map(t => <option key={t.id} value={t.id}>{t.name}</option>)}</select></label><p>{TITLES.filter(t => c.titles?.includes(t.id)).map(t => t.name).join(' · ') || 'No titles earned yet.'}</p></section><SelfTab state={state} /><LifePanel state={state} onChange={onChange} /></>}
       {tab === 'more' && <MoreTab state={state} onLoad={(g) => { onChange(g); setResult(null); setNotice(null); go('home'); }} onNew={onNew} />}
       </div>
       {playing && MINIGAMES[playing] && (
@@ -285,7 +292,7 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
       <div className="profile-head">
         <div className={`avatar${c.graded ? ' graded' : ''}`}>{initials(c.name)}</div>
         <div className="who">
-          <h2>{c.name}</h2>
+          <h2>{c.name}{c.displayedTitle && <small> · {titleName(c.displayedTitle)}</small>}</h2>
           <p>{formatDate(state.date)} · {c.district}</p>
           <p className="muted">{stageOf(state)}{c.alive ? '' : ' · deceased'}</p>
         </div>

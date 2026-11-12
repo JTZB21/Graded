@@ -1,6 +1,8 @@
 // Choices. A pausing event offers a decision; time stops until the player picks an option.
 // Every effect of every option is applied here, by the engine. The writer only describes them.
 
+import { settleLegacy } from './legacy';
+import { checkTitles } from './titles';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, prisonName, RENT, sentence } from './economy';
 import { addPerson, around, bondAll, isFamily, isParent, peopleOf, vars as personVars } from './people';
 import { kindle } from './powers';
@@ -69,6 +71,16 @@ export function arrest(s: GameState, rng: Rng, offense: string, base: [number, n
 }
 
 export const DECISIONS: Record<string, DecisionSpec> = {
+  'partner-proposal': { kind: 'life', options: [
+    { id: 'accept', label: 'Accept', when: (s, p) => !!p && p.alive && p.relation === 'partner' && ageOf(s) >= 18 && s.date.year - p.born >= 18,
+      apply: (s, rng, p) => {
+        if (!p || !p.alive || p.relation !== 'partner' || ageOf(s) < 18 || s.date.year - p.born < 18) throw new Error('Both partners must be adults');
+        p.relation = 'spouse'; p.livesWithYou = !s.character.livesWithFamily; bond(p, 10);
+        say(s, rng, 'life', 'people.proposal.accept', personVars(p));
+      } },
+    { id: 'time', label: 'Ask for time', apply: (s, rng, p) => { say(s, rng, 'life', 'people.proposal.time', p ? personVars(p) : {}); } },
+    { id: 'no', label: 'Say no', apply: (s, rng, p) => { bond(p, -10); say(s, rng, 'life', 'people.proposal.no', p ? personVars(p) : {}); } },
+  ] },
   'aurelian-recruiter': {
     kind: 'event',
     options: [
@@ -1205,6 +1217,8 @@ export function choose(state: GameState, optionId: string): GameState {
     s.character.alive = false;
     say(s, rng, 'death', 'death.injuries');
   }
+  checkTitles(s, rng);
+  settleLegacy(s);
   s.rngState = rng.state;
   return s;
 }

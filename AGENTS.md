@@ -33,3 +33,5 @@ Run `npm run build` and `npm test`; both must pass.
 
 ## Plan
 `docs/PLAN.md` lists the milestones. Update its status line when you finish one.
+
+- Earned titles live in `src/engine/titles.ts` (`title.`). Legacy rewards and head starts live in `legacy.ts` (`legacy.`). Exams use `school.exam.`; incoming proposals use `people.proposal`.

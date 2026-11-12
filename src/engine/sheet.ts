@@ -44,6 +44,7 @@ export function sheetRows(s: GameState): SheetRow[] {
     { label: 'Home', value: c.livesWithFamily ? `with family in ${c.district}` : `renting in ${c.district}` },
     { label: 'Leaning', value: c.leaning },
   ];
+  if (c.exam) rows.push({ label: 'Latest exam', value: `${c.exam.grade} · ${c.exam.score}/100 · ${c.exam.year}` });
   const age = ageOf(s);
   if (c.school && age >= 6) {
     const where = schoolName(c, Math.min(age, 17));

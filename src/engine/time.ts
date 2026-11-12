@@ -1,5 +1,8 @@
 // Time skips: the engine ticks month by month, applies the focus, and rolls events.
 
+import { checkTitles } from './titles';
+import { settleLegacy, returningYear } from './legacy';
+import { romanceBirthday } from './people';
 import { housingCost, lifeMonth, lifeBirthday, lifeOf } from './life';
 import timeline from '../data/timeline.json';
 import { ENERGY } from './actions';
@@ -134,6 +137,10 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
         stoppedBy = 'kindling';
       }
       if (!imprisonedNow(s) && birthdayMilestone(s, rng, age) && !stoppedBy) stoppedBy = 'event';
+      returningYear(s, rng);
+      checkTitles(s, rng);
+      romanceBirthday(s, rng);
+      if (s.pending && !stoppedBy) stoppedBy = 'event';
     }
 
     const imprisoned = c.inPrisonUntil && before(s.date, c.inPrisonUntil);
@@ -205,9 +212,12 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
     log(s, 'money', `${passed >= 12 ? 'This year' : `Over ${passed} months`} your money ${delta >= 0 ? 'grew' : 'fell'} by $${Math.abs(delta).toLocaleString('en-US')}.`);
   }
   if (passed > 0) {
+    c.romanceGifts = 0; c.romanceActivities = 0;
+    if (s.legacyStart) s.legacyStart.open = false;
     s.energy = ENERGY;
     s.turn = (s.turn ?? 0) + 1;
   }
+  settleLegacy(s);
   s.rngState = rng.state;
   return { state: s, monthsPassed: passed, stoppedBy };
 }
