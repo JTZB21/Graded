@@ -1,3 +1,5 @@
+import { checkTitles } from './titles';
+import { settleLegacy } from './legacy';
 // Actions: things the player does between turns (each Age up is a turn). Each turn gives a little
 // energy; every action spends some and may cost money. The engine decides every effect and roll
 // here; the writer (./writer) only describes the outcome.
@@ -883,6 +885,8 @@ export function act(state: GameState, id: string, skill = 0.5): GameState {
     s.pending = null;
     say(s, rng, 'death', 'death.injuries');
   }
+  checkTitles(s, rng);
+  settleLegacy(s);
   s.rngState = rng.state;
   return s;
 }

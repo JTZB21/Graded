@@ -9,11 +9,12 @@ const money = (amount: number) => `$${amount.toLocaleString('en-US')}`;
 
 export function SchoolStatus({ state }: { state: GameState }) {
   const school = currentSchool(state);
-  const { college, gpa, credentials, education } = state.character;
+  const { college, gpa, credentials, education, exam } = state.character;
   return (
     <div className="card activity-status">
       <p className="eyebrow">Report card</p>
       <h4>{school?.label ?? 'Education and skills'}</h4>
+      {exam && <p>Latest exam: {exam.grade} · {exam.score}/100 · {exam.year}</p>}
       {school ? <p><strong>{gpa?.toFixed(2) ?? '—'} GPA</strong> · 4.00 scale. Study and spend time with classmates to improve your grades.</p>
         : <p className="muted">{education === 'none' ? 'No diploma yet.' : `Completed ${education}.`}</p>}
       {college && (

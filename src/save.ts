@@ -48,6 +48,17 @@ export function migrate(g: GameState): GameState {
     const id = (s.character.ties ?? []).map(orgForTie).find((x) => x);
     s.character.org = id ? { id, rank: 0, standing: 0, since: s.date.year } : null;
   }
+  s.character.romanceGifts ??= 0;
+  s.character.romanceActivities ??= 0;
+  s.character.exam ??= null;
+  s.character.examScholarship ??= false;
+  s.character.titles ??= [];
+  s.character.displayedTitle ??= null;
+  s.character.highestOrgRank ??= s.character.org?.rank ?? 0;
+  s.character.legacyAwarded ??= false;
+  s.legacyPoints ??= 0;
+  s.returningPeople ??= [];
+  s.legacyStart ??= null;
   return s;
 }
 

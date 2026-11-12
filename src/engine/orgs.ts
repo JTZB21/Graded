@@ -177,6 +177,7 @@ export function promotionBlock(c: Character): string | undefined {
 
 export function promote(c: Character) {
   c.org!.rank++;
+  c.highestOrgRank = Math.max(c.highestOrgRank ?? 0, c.org!.rank);
   c.org!.standing = 0;
 }
 

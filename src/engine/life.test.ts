@@ -37,7 +37,7 @@ describe('everyday life', () => {
   });
   it('writes money with a dollar sign', () => {
     const s = act(adult(), 'save-money');
-    expect(s.log.at(-1)!.text).toMatch(/\$\d/);
+    expect(s.log.filter(e => e.kind === 'money').at(-1)!.text).toMatch(/\$\d/);
   });
   it('migrates old saves without changing cash or consuming dice', () => {
     const s = adult(); delete s.character.life;

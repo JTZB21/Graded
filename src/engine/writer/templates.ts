@@ -22,6 +22,7 @@ const v = (t: string, when: Cond): Variant => ({ t, when });
  * The writer refuses to use them earlier, so era words inside them are safe.
  */
 export const KEY_FROM: Record<string, number> = {
+  'title.bureau': 1962,
   'event.low-kings': 2011,
   'choice.lowkings.': 2011,
   'event.choir-offer': 1990,
@@ -43,6 +44,18 @@ export const KEY_FROM: Record<string, number> = {
 };
 
 export const TEMPLATES: Record<string, Variant[]> = {
+  'title.bureau': ['You acquire another name: {title}. Your file gets a thicker cover.', 'Your name goes into circulation as {title}. You get no right of reply.'],
+  "people.proposal": ["{person} sets a ring on your table. The receipt stays folded.", "{person} asks you to marry. You get no paperwork to read first."],
+  "people.proposal.accept": ["You sign up for a shared address and separate liabilities. {person} puts on the ring.", "You accept. {person} starts pricing a ceremony against the rent."],
+  "people.proposal.time": ["You ask for time. {person} closes the box.", "You leave the date blank. {person} keeps the receipt."],
+  "people.proposal.no": ["You say no. {person} takes the ring back.", "You decline. {person} clears the box from your table."],
+  "legacy.return": ["{person} knows the family through {ancestor}. You get a number that still works.", "{person} brings up {ancestor}. You inherit another contact with a long memory."],
+  "title.earned": ["You acquire a new name on the street: {title}. Nobody pays you for it.", "Your name collects another attachment: {title}. The city keeps its own records."],
+  "school.exam.A": ["Your exam comes back marked A: {score} out of 100. The red ink is included in tuition.", "You receive {score} out of 100 and an A on the annual exam. Another number enters your file."],
+  "school.exam.B": ["Your exam comes back marked B: {score} out of 100. The red ink is included in tuition.", "You receive {score} out of 100 and a B on the annual exam. Another number enters your file."],
+  "school.exam.C": ["Your exam comes back marked C: {score} out of 100. The red ink is included in tuition.", "You receive {score} out of 100 and a C on the annual exam. Another number enters your file."],
+  "school.exam.D": ["Your exam comes back marked D: {score} out of 100. The red ink is included in tuition.", "You receive {score} out of 100 and a D on the annual exam. Another number enters your file."],
+
 
   // ---------- Gear (gear.ts) ----------
   'gear.buy': [
