@@ -3,7 +3,9 @@ import { lifeOf } from './life';
 
 import { CATEGORIES, RANK_INFO, strainBand } from './rules';
 import { COLLEGES, schoolName } from './school';
-import { ageOf, notation, stageOf } from './state';
+import { ageOf, maxHealth, notation, stageOf } from './state';
+import { GEAR_SLOTS, gearSummary, itemName } from './gear';
+import { ORGS, standingNeeded, topRank } from './orgs';
 import type { GameState } from './types';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -21,7 +23,7 @@ export function statusPanel(s: GameState): string {
     `📅 ${formatDate(s.date)} | 📍 ${c.district}, ${s.city}`,
     `👤 ${c.name} · Age ${ageOf(s)} (${stageOf(s)})${c.alive ? '' : ' · deceased'}`,
     `⚡ ${power}`,
-    `❤️ ${c.health}/100 | 🔥 Strain ${c.strain}% (${strainBand(c.strain)}) | 💵 ${money(c.money)}`,
+    `❤️ ${c.health}/${maxHealth(c)} | 🔥 Strain ${c.strain}% (${strainBand(c.strain)}) | 💵 ${money(c.money)}`,
     `🪪 ${c.license === 'none' ? 'no license' : `${c.license} License`} | ⚖️ ${legal}`,
     `⭐ Fame ${signed(c.fame)} | ☠️ Infamy ${signed(c.infamy)} | 🕶️ Street Cred ${signed(c.streetCred)}`,
   ].join('\n');
@@ -58,6 +60,11 @@ export function sheetRows(s: GameState): SheetRow[] {
       rows.push({ label: i === 0 ? 'Primary power' : `Power ${i + 1}`, value: `${p.rank}-Rank ${RANK_INFO[p.rank].name}, ${p.category} (${CATEGORIES[p.category]})${p.description ? `: ${p.description}` : ''}` }),
     );
   }
+  if (c.org) {
+    const o = ORGS[c.org.id];
+    rows.push({ label: 'Organisation', value: `${o.name} · ${o.ranks[c.org.rank]} (rank ${c.org.rank + 1} of 5)${topRank(c) ? '' : ` · standing ${c.org.standing}/${standingNeeded(c)}`} · since ${c.org.since}` });
+  }
+  if (gearSummary(c) !== 'none') rows.push({ label: 'Gear', value: gearSummary(c) });
   for (const r of c.record) rows.push({ label: `Record ${r.year}`, value: `${r.offense}, ${r.sentenceMonths} months` });
   return rows;
 }
@@ -87,6 +94,10 @@ export function changes(before: GameState, after: GameState): string[] {
   num('Street Cred', a.streetCred, b.streetCred);
   if (a.grade !== b.grade && b.grade) out.push(`Grade ${b.grade}`);
   if (a.district !== b.district) out.push(`Moved to ${b.district}`);
+  if (a.org?.id !== b.org?.id) out.push(b.org ? `Joined ${ORGS[b.org.id].name}` : `Left ${ORGS[a.org!.id].name}`);
+  else if (a.org && b.org && a.org.rank !== b.org.rank) out.push(`Rank: ${ORGS[b.org.id].ranks[b.org.rank]}`);
+  else if (a.org && b.org && a.org.standing !== b.org.standing) num('Standing', a.org.standing, b.org.standing);
+  for (const g of GEAR_SLOTS) if ((a.gear?.[g] ?? 0) !== (b.gear?.[g] ?? 0)) out.push((b.gear?.[g] ?? 0) ? `New: ${itemName(g, b.gear![g]!)}` : `Lost: ${itemName(g, a.gear![g]!)}`);
   if (a.job?.title !== b.job?.title) out.push(b.job ? `New job: ${b.job.title}` : 'No job');
   if (a.job && b.job && a.job.title === b.job.title && a.job.salary !== b.job.salary) out.push(`Salary ${money(b.job.salary)}`);
   if (a.license !== b.license) out.push(`${b.license === 'none' ? 'No' : b.license} license`);

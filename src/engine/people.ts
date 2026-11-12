@@ -4,7 +4,7 @@
 import { dollars } from './economy';
 import { Rng } from './random';
 import { clamp } from './rules';
-import { ageOf, changeAttr, changeRep } from './state';
+import { ageOf, changeAttr, changeRep, heal } from './state';
 import type { Background, Character, GameState, Person, Relation } from './types';
 import { FIRST_NAMES, LAST_NAMES, say } from './writer/writer';
 
@@ -229,7 +229,7 @@ export const INTERACTIONS: InteractionSpec[] = [
     when: (x) => !x.cold && x.age >= 12 && !x.imprisoned && !(x.parent && x.c.livesWithFamily) && !x.p.livesWithYou && !(x.p.relation === 'child' && x.pAge < 18),
     apply: (s, rng, x) => {
       bond(x.p, rng.int(4, 9));
-      x.c.health = Math.min(100, x.c.health + 2);
+      heal(x.c, 2);
       say(s, rng, 'life', 'people.visit', vars(x.p));
     },
   },
@@ -285,7 +285,7 @@ export const INTERACTIONS: InteractionSpec[] = [
     when: (x) => isLover(x.p) && !x.imprisoned,
     apply: (s, rng, x) => {
       bond(x.p, rng.int(7, 14));
-      x.c.health = Math.min(100, x.c.health + 3);
+      heal(x.c, 3);
       say(s, rng, 'life', 'people.date', vars(x.p));
     },
   },
@@ -341,7 +341,7 @@ export const INTERACTIONS: InteractionSpec[] = [
     when: (x) => x.p.relation === 'child' && x.pAge >= 1 && x.pAge < 18 && !x.imprisoned,
     apply: (s, rng, x) => {
       bond(x.p, rng.int(8, 14));
-      x.c.health = Math.min(100, x.c.health + 2);
+      heal(x.c, 2);
       say(s, rng, 'life', 'people.play', vars(x.p));
     },
   },

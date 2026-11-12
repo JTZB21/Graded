@@ -17,7 +17,7 @@ import { choose } from '../engine/decisions';
 import { CATEGORIES, RANK_INFO, strainBand } from '../engine/rules';
 import { changes, formatDate, sheetRows } from '../engine/sheet';
 import { COLLEGES, schoolName } from '../engine/school';
-import { ageOf, notation, stageOf } from '../engine/state';
+import { ageOf, LOW_HEALTH, maxHealth, notation, stageOf } from '../engine/state';
 import { ageUp, availableFocuses, FOCUS_LABELS, monthsToBirthday } from '../engine/time';
 import type { Focus, GameState, LogEntry } from '../engine/types';
 
@@ -40,6 +40,9 @@ const ACTION_ICONS: Record<string, IconName> = {
   patrol: 'shield', 'odd-job': 'tools', 'job-hunt': 'briefcase', raise: 'trend', quit: 'door', family: 'home', 'night-out': 'glass',
   volunteer: 'people', 'make-friend': 'people', move: 'box', steal: 'hand', fight: 'fight', 'crew-job': 'mask', hustle: 'dice',
   club: 'star', 'skip-class': 'door', enroll: 'book', 'drop-out': 'door', 'part-time': 'briefcase', 'buy-car': 'pin', roam: 'pin', date: 'health',
+  'gear-armor': 'shield', 'gear-weapon': 'fight', 'gear-tech': 'tools', 'gear-style': 'star',
+  'org-join-aurelian': 'star', 'org-join-low-kings': 'mask', 'org-join-choir': 'mask', 'org-join-equal-ground': 'scales',
+  'org-work': 'people', 'org-promote': 'trend', 'org-leave': 'door',
 };
 const GROUP_META: Record<ActionGroup, { icon: IconName; dot: string }> = {
   'Body and mind': { icon: 'body', dot: 'var(--c-body)' },
@@ -47,6 +50,8 @@ const GROUP_META: Record<ActionGroup, { icon: IconName; dot: string }> = {
   Work: { icon: 'briefcase', dot: 'var(--c-money)' },
   Powers: { icon: 'bolt', dot: 'var(--c-mind)' },
   Money: { icon: 'money', dot: 'var(--c-money)' },
+  Gear: { icon: 'shield', dot: 'var(--c-body)' },
+  Organisation: { icon: 'id', dot: 'var(--c-fame)' },
   'People and places': { icon: 'people', dot: 'var(--c-charm)' },
   Underworld: { icon: 'mask', dot: 'var(--c-infamy)' },
   Inside: { icon: 'lock', dot: 'var(--c-cred)' },
@@ -298,7 +303,7 @@ function ProfileCard({ state, energy }: { state: GameState; energy: number }) {
 
       <p className="eyebrow">Vitals</p>
       <div className="stat-grid vitals">
-        <Stat icon="health" label="Health" value={c.health} bar={c.health} color="var(--c-health)" />
+        <Stat icon="health" label="Health" value={maxHealth(c) < 100 ? `${c.health}/${maxHealth(c)}` : c.health} bar={c.health} color={c.health < LOW_HEALTH ? 'var(--c-infamy)' : 'var(--c-health)'} hint={c.health < LOW_HEALTH ? 'Low: natural death is twice as likely. Rest or see a doctor.' : maxHealth(c) < 100 ? 'Your most health falls with age after 50.' : undefined} />
         <Stat icon="strain" label="Strain" value={`${c.strain}%`} bar={c.strain} invert color={band === 'fine' ? 'var(--c-money)' : 'var(--c-infamy)'} hint={band} />
         <Stat icon="money" label="Money" value={compactMoney(c.money)} num={c.money} color="var(--c-money)" />
       </div>

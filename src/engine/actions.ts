@@ -6,20 +6,22 @@ import { currentCareer, ensureLife, freshCareer, lifeOf } from './life';
 import { LIFE_ACTIONS } from './lifeActions';
 import { arrest, offer } from './decisions';
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, JOBS, RENT } from './economy';
+import { BONUS, effective, GEAR, GEAR_SLOTS, gearPrice, injure, itemName, tierOf, upgradeBlock } from './gear';
+import { crewPayBonus, enlist, gainStanding, joinBlock, leave, lookoutCover, ORG_IDS, ORGS, promote, promotionBlock, topRank } from './orgs';
 import { addPerson, around, bondAll, isFamily, isLover, isParent, peopleOf, spendTimeWithPeer, tryMakeFriend, vars as personVars } from './people';
 import { changeGpa, COLLEGES, currentSchool, mark, marked } from './school';
 import { ageRate, gainProgress } from './powers';
 import { Rng } from './random';
 import { GRADES, RANKS, type Rank } from './rules';
-import { addMonths, ageOf, changeAttr, changeRep, type Attribute } from './state';
+import { addMonths, ageOf, changeAttr, changeRep, heal, type Attribute } from './state';
 import type { Character, District, GameState } from './types';
 import { say } from './writer/writer';
 
 /** Energy per turn (one Age up, about a year). Moving time refills it. */
 export const ENERGY = 6;
 
-export type ActionGroup = 'Body and mind' | 'School' | 'Work' | 'Powers' | 'Money' | 'People and places' | 'Underworld' | 'Inside';
-export const ACTION_GROUPS: ActionGroup[] = ['Body and mind', 'School', 'Work', 'Powers', 'Money', 'People and places', 'Underworld', 'Inside'];
+export type ActionGroup = 'Body and mind' | 'School' | 'Work' | 'Powers' | 'Money' | 'Gear' | 'Organisation' | 'People and places' | 'Underworld' | 'Inside';
+export const ACTION_GROUPS: ActionGroup[] = ['Body and mind', 'School', 'Work', 'Powers', 'Money', 'Gear', 'Organisation', 'People and places', 'Underworld', 'Inside'];
 
 interface Ctx {
   s: GameState;
@@ -41,6 +43,8 @@ export const MINIGAMES: Record<string, 'memory' | 'lockpick' | 'timing'> = {
 export interface ActionSpec {
   id: string;
   label: string;
+  /** A label that depends on the character (the next gear tier, the organisation's work). */
+  labelFor?: (x: Ctx) => string;
   group: ActionGroup;
   /** Energy spent. */
   cost: number;
@@ -72,8 +76,8 @@ const powered = (c: Character) => c.graded && !c.powersGone && c.powers.length >
 const rankOf = (c: Character): Rank | undefined => (powered(c) ? c.powers[0].rank : undefined);
 const rankIdx = (c: Character) => (powered(c) ? RANKS.indexOf(c.powers[0].rank) : -1);
 const gradeIdx = (c: Character) => (c.grade ? GRADES.indexOf(c.grade) : 0);
-const hurt = (c: Character, by: number) => { c.health = Math.max(0, c.health - by); };
-const heal = (c: Character, by: number) => { c.health = Math.min(100, c.health + by); };
+const hurt = (c: Character, by: number) => injure(c, by);
+
 const free = (x: Ctx) => !x.imprisoned;
 /** In school (6-17) or enrolled in college. */
 const student = (x: Ctx) => (x.age >= 6 && x.age < 18 && !!x.c.school && x.c.education === 'none') || !!x.c.college;
@@ -98,12 +102,13 @@ function addStrain(c: Character, amount: number) {
 /** Over 70% Strain the body starts to fail ("Strain, Burnout, and Flares"). */
 function strainCheck(s: GameState, rng: Rng) {
   const c = s.character;
+  // Strain damage comes from inside: armor does not help.
   if (c.strain > 90 && rng.chance(0.6)) {
-    hurt(c, rng.int(20, 40));
+    c.health = Math.max(0, c.health - rng.int(20, 40));
     c.strain = 30;
     say(s, rng, 'power', 'act.strain.critical');
   } else if (c.strain > 70 && rng.chance(0.35)) {
-    hurt(c, rng.int(6, 15));
+    c.health = Math.max(0, c.health - rng.int(6, 15));
     say(s, rng, 'power', 'act.strain.danger');
   }
 }
@@ -124,7 +129,7 @@ export const ACTIONS: ActionSpec[] = [
     apply: (s, rng, x) => {
       const life = ensureLife(s);
       life.used[`apply-${job.id}`] = s.turn ?? 0;
-      const chance = 0.25 + x.c.charm * 0.04 + (x.c.education === 'college' ? 0.1 : 0);
+      const chance = 0.25 + effective(x.c, 'charm') * 0.04 + (x.c.education === 'college' ? 0.1 : 0);
       if (!rng.chance(chance)) {
         say(s, rng, 'life', 'act.work.application-declined', { job: job.title });
         return;
@@ -367,7 +372,7 @@ export const ACTIONS: ActionSpec[] = [
       const c = x.c;
       addStrain(c, 25);
       const licensed = c.license === 'Vigilance';
-      const roll = rng.int(1, 10) + c.nerve + c.body / 2 + rankIdx(c) + gradeIdx(c);
+      const roll = rng.int(1, 10) + c.nerve + effective(c, 'body') / 2 + rankIdx(c) + gradeIdx(c);
       if (!licensed && rng.chance(Math.max(0.03, 0.12 + c.infamy / 500 - c.nerve * 0.005))) {
         // Unlicensed heroics are vigilantism, a felony.
         changeRep(c, 'fame', 1);
@@ -623,7 +628,7 @@ export const ACTIONS: ActionSpec[] = [
     when: (x) => free(x) && x.age >= 10,
     apply: (s, rng, x) => {
       const c = x.c;
-      if (rng.chance(Math.max(0.02, (0.14 - c.nerve * 0.008 + c.infamy / 1000) * (1.5 - x.skill)))) {
+      if (rng.chance(Math.max(0.02, (0.14 - c.nerve * 0.008 - BONUS[tierOf(c, 'tech')] * 0.01 + c.infamy / 1000 - lookoutCover(c)) * (1.5 - x.skill)))) {
         changeRep(c, 'infamy', 1);
         if (x.age < 16) {
           say(s, rng, 'law', 'act.steal.caught-minor');
@@ -649,7 +654,7 @@ export const ACTIONS: ActionSpec[] = [
     apply: (s, rng, x) => {
       const c = x.c;
       if (powered(c)) addStrain(c, 20);
-      const you = c.body + c.nerve + (powered(c) ? (rankIdx(c) + 1) * 2 + gradeIdx(c) : 0) + rng.int(1, 10) + Math.round((x.skill - 0.5) * 6);
+      const you = effective(c, 'body') + c.nerve + (powered(c) ? (rankIdx(c) + 1) * 2 + gradeIdx(c) : 0) + rng.int(1, 10) + Math.round((x.skill - 0.5) * 6);
       // Promoters match you near your weight class, with a thumb on the scale.
       const them = c.body + c.nerve + (powered(c) ? (rankIdx(c) + 1) * 2 : 0) + rng.int(2, 10);
       if (you >= them) {
@@ -675,17 +680,138 @@ export const ACTIONS: ActionSpec[] = [
     apply: (s, rng, x) => {
       const c = x.c;
       const choir = tied(c, 'the Choir');
-      if (rng.chance(Math.max(0.02, 0.07 - c.nerve * 0.004 + c.infamy / 1500))) {
+      if (rng.chance(Math.max(0.02, 0.07 - c.nerve * 0.004 + c.infamy / 1500 - lookoutCover(c)))) {
         const { months, prison } = arrest(s, rng, choir ? 'Trafficking (Choir shipment)' : 'Receiving stolen goods', [6, 30]);
         say(s, rng, 'law', 'act.crew-job.caught', { months, prison });
         return;
       }
       const [lo, hi] = crimePay(rankOf(c));
-      const pay = dollars(Math.round(rng.int(lo, hi) / 2), x.year);
+      const pay = dollars(Math.round((rng.int(lo, hi) / 2) * crewPayBonus(c)), x.year);
       c.money += pay;
+      gainStanding(s, rng.int(5, 10));
       if (choir) changeRep(c, 'infamy', 2);
       else changeRep(c, 'streetCred', rng.int(2, 3));
       say(s, rng, 'money', choir ? 'act.crew-job.choir' : 'act.crew-job.lowkings', { money: pay });
+    },
+  },
+
+  // ---------- Gear ----------
+  ...GEAR_SLOTS.map((slot): ActionSpec => ({
+    id: `gear-${slot}`,
+    label: GEAR[slot].label,
+    labelFor: (x) => `${tierOf(x.c, slot) ? 'Upgrade to' : 'Buy'} ${itemName(slot, Math.min(tierOf(x.c, slot) + 1, GEAR[slot].names.length))}`,
+    group: 'Gear',
+    cost: 1,
+    actualPrice: (x) => gearPrice(Math.min(tierOf(x.c, slot) + 1, GEAR[slot].names.length), x.year),
+    when: (x) => free(x) && x.age >= GEAR[slot].minAge && tierOf(x.c, slot) < GEAR[slot].names.length,
+    blocked: (x) => upgradeBlock(x.c, slot, x.age),
+    apply: (s, rng, x) => {
+      const before = tierOf(x.c, slot);
+      const tier = before + 1;
+      x.c.gear = { ...(x.c.gear ?? {}), [slot]: tier };
+      say(s, rng, 'money', before ? 'gear.upgrade' : 'gear.buy', { item: itemName(slot, tier), old: itemName(slot, before), money: gearPrice(tier, x.year) });
+    },
+  })),
+
+  // ---------- Organisation ----------
+  ...ORG_IDS.map((id): ActionSpec => ({
+    id: `org-join-${id}`,
+    label: `Join ${ORGS[id].name}`,
+    group: 'Organisation',
+    cost: 1,
+    when: (x) => free(x) && x.age >= 12 && !x.c.org && x.year >= ORGS[id].founded,
+    blocked: (x) => joinBlock(x.s, id, x.age),
+    apply: (s, rng, x) => {
+      const c = x.c;
+      enlist(s, id);
+      if (id === 'aurelian') { changeRep(c, 'fame', 2); if (c.leaning === 'undecided') c.leaning = 'hero'; }
+      if (id === 'low-kings') { changeRep(c, 'streetCred', 4); changeRep(c, 'infamy', 1); }
+      if (id === 'choir') { changeRep(c, 'infamy', 3); if (c.leaning === 'undecided') c.leaning = 'villain'; }
+      if (id === 'equal-ground') changeRep(c, 'fame', 1);
+      say(s, rng, 'life', `org.${id}.join`, { title: ORGS[id].ranks[0] });
+    },
+  })),
+  {
+    id: 'org-work',
+    label: 'Put in work',
+    labelFor: (x) => ORGS[x.c.org!.id].work,
+    group: 'Organisation',
+    cost: 2,
+    when: (x) => free(x) && !!x.c.org,
+    apply: (s, rng, x) => {
+      const c = x.c;
+      const m = c.org!;
+      const title = ORGS[m.id].ranks[m.rank];
+      switch (m.id) {
+        case 'aurelian': {
+          gainStanding(s, rng.int(8, 16) + Math.floor(effective(c, 'charm') / 2));
+          changeRep(c, 'fame', rng.int(1, 2));
+          if (rng.chance(0.1)) {
+            hurt(c, rng.int(5, 15));
+            say(s, rng, 'event', 'org.aurelian.work-hurt', { title });
+          } else say(s, rng, 'event', 'org.aurelian.work', { title });
+          break;
+        }
+        case 'low-kings': {
+          gainStanding(s, rng.int(8, 16) + Math.floor(c.nerve / 2));
+          changeRep(c, 'streetCred', rng.int(1, 3));
+          say(s, rng, 'event', 'org.low-kings.work', { title });
+          break;
+        }
+        case 'choir': {
+          if (rng.chance(Math.max(0.01, 0.04 - lookoutCover(c)))) {
+            const { months, prison } = arrest(s, rng, 'Racketeering (Choir collection)', [3, 12]);
+            say(s, rng, 'law', 'org.choir.work-caught', { months, prison });
+            break;
+          }
+          gainStanding(s, rng.int(8, 16) + Math.floor(effective(c, 'mind') / 2));
+          changeRep(c, 'infamy', rng.int(1, 2));
+          const pay = dollars(Math.round(rng.int(300, 1500) * (1 + m.rank)), x.year);
+          c.money += pay;
+          say(s, rng, 'money', 'org.choir.work', { title, money: pay });
+          break;
+        }
+        case 'equal-ground': {
+          gainStanding(s, rng.int(8, 16) + Math.floor(effective(c, 'charm') / 2));
+          changeRep(c, 'fame', 1);
+          if (c.infamy > 0) changeRep(c, 'infamy', -1);
+          say(s, rng, 'event', rng.chance(0.15) ? 'org.equal-ground.detained' : 'org.equal-ground.work', { title });
+          break;
+        }
+      }
+    },
+  },
+  {
+    id: 'org-promote',
+    label: 'Ask for a promotion',
+    group: 'Organisation',
+    cost: 1,
+    when: (x) => free(x) && !!x.c.org && !topRank(x.c),
+    blocked: (x) => promotionBlock(x.c),
+    apply: (s, rng, x) => {
+      promote(x.c);
+      const m = x.c.org!;
+      say(s, rng, 'life', `org.${m.id}.promoted`, { title: ORGS[m.id].ranks[m.rank] });
+    },
+  },
+  {
+    id: 'org-leave',
+    label: 'Walk away',
+    group: 'Organisation',
+    cost: 1,
+    when: (x) => free(x) && !!x.c.org,
+    apply: (s, rng, x) => {
+      const c = x.c;
+      const id = c.org!.id;
+      leave(c);
+      if (id === 'choir' && rng.chance(0.4)) {
+        hurt(c, rng.int(10, 25));
+        say(s, rng, 'event', 'org.choir.leave-hurt');
+        return;
+      }
+      if (id === 'low-kings') changeRep(c, 'streetCred', -5);
+      if (id === 'aurelian') changeRep(c, 'fame', -3);
+      say(s, rng, 'life', `org.${id}.leave`);
     },
   },
 
@@ -733,7 +859,7 @@ export function availableActions(s: GameState): ActionView[] {
     const disabled = a.blocked?.(x)
       ?? (energy < a.cost ? 'Not enough energy this year' : undefined)
       ?? (price > 0 && x.c.money < price ? 'Cannot afford it' : undefined);
-    return { id: a.id, label: a.label, group: a.group, cost: a.cost, price, disabled };
+    return { id: a.id, label: a.labelFor?.(x) ?? a.label, group: a.group, cost: a.cost, price, disabled };
   });
 }
 

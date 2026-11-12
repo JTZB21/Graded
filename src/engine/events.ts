@@ -9,7 +9,7 @@ import { addPerson, around, bondAll, isFamily, isParent, vars as personVars } fr
 import { RANKS } from './rules';
 import type { Rng } from './random';
 import { changeGpa, enrollSchool, mark, marked, schoolName } from './school';
-import { ageOf, changeAttr, changeRep } from './state';
+import { ageOf, changeAttr, changeRep, heal as healBy } from './state';
 import type { Character, District, Focus, GameState, Person } from './types';
 import { say } from './writer/writer';
 
@@ -294,7 +294,7 @@ interface Milestone {
 
 const friendOf = (s: GameState) => around(s, (p) => p.relation === 'friend' && !p.estranged).sort((a, b) => b.bond - a.bond)[0];
 const near = (s: GameState, rng: Rng) => Math.max(4, ageOf(s) + rng.int(-1, 1));
-const heal = (s: GameState, by: number) => { s.character.health = Math.min(100, s.character.health + by); };
+const heal = (s: GameState, by: number) => healBy(s.character, by);
 
 export const MILESTONES: Milestone[] = [
   {

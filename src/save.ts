@@ -4,7 +4,8 @@
 import { ensureLife } from './engine/life';
 import { ensurePeople } from './engine/people';
 import { ensureSchool } from './engine/school';
-import { ageOf } from './engine/state';
+import { orgForTie } from './engine/orgs';
+import { ageHealth, ageOf } from './engine/state';
 import { formatDate } from './engine/sheet';
 import type { GameState } from './engine/types';
 
@@ -40,6 +41,13 @@ export function migrate(g: GameState): GameState {
   ensureSchool(s);
   ensureLife(s);
   s.turn ??= 0;
+  // Health over a lifetime: older saves had no age-based most health.
+  if (s.character.maxHealth === undefined) ageHealth(s.character, ageOf(s));
+  // Organisations: a save that already joined the Low Kings, the Choir or Aurelian through a choice starts at the bottom rank.
+  if (s.character.org === undefined) {
+    const id = (s.character.ties ?? []).map(orgForTie).find((x) => x);
+    s.character.org = id ? { id, rank: 0, standing: 0, since: s.date.year } : null;
+  }
   return s;
 }
 
