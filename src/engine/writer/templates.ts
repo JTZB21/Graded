@@ -37,9 +37,130 @@ export const KEY_FROM: Record<string, number> = {
   'act.crew-job.lowkings': 2011,
   'choice.enroll.ashgrove': 1979,
   'school.graduate.ashgrove': 1979,
+  'org.low-kings.': 2011,
+  'org.choir.': 1990,
+  'org.equal-ground.': 2000,
 };
 
 export const TEMPLATES: Record<string, Variant[]> = {
+
+  // ---------- Gear (gear.ts) ----------
+  'gear.buy': [
+    'You buy a {item} for ${money}. The receipt goes in a drawer with the others.',
+    'You pay ${money} for a {item}. The man behind the counter asks no questions you have to answer.',
+    v('A stall under the Foundry overpass sells you a {item} for ${money}, cash, no box.', { districts: ['Old Foundry'] }),
+  ],
+  'gear.upgrade': [
+    'You trade up from the {old} to a {item}. ${money} gone.',
+    'The {old} goes in the back of the closet. The {item} cost ${money}.',
+  ],
+
+  // ---------- Organisations (orgs.ts) ----------
+  'org.aurelian.join': [
+    'Aurelian Hero Development signs you as a {title}. The contract runs forty pages; the image clause runs six.',
+    'A brand manager named {npc} shakes your hand and photographs it. You are an Aurelian {title} now, and the photo is company property.',
+  ],
+  'org.aurelian.work': [
+    'You cut a ribbon at a mall in Kesler Heights and smile for nine hours. The brand team logs it as {title} outreach.',
+    'Aurelian books you for a charity visit. The children get signed photos; the cameras get the children.',
+    'You film a rescue that was rehearsed twice that morning. The {title} reel goes out by dinner.',
+  ],
+  'org.aurelian.work-hurt': [
+    'The staged rescue goes off script when the stunt rig fails. Aurelian pays the hospital and keeps the footage.',
+    'A "sparring partner" hits harder than the contract says. You finish the shoot with a cracked rib.',
+  ],
+  'org.aurelian.promoted': [
+    'Aurelian moves you up to {title}. Your face gets bigger on the lobby screen and your morality clause gets longer.',
+    'The brand team calls a meeting to announce you as {title}. They have already printed the merchandise.',
+  ],
+  'org.aurelian.leave': [
+    'You buy out your Aurelian contract. Legal reminds you the non-compete runs five years.',
+    'You walk out of Hero Development. By the afternoon your page on the company site is gone.',
+  ],
+  'org.aurelian.stipend': [
+    'Aurelian deposits your {title} retainer: ${money}, less the brand team\'s cut.',
+    'Your {title} retainer from Aurelian clears: ${money}.',
+  ],
+  'org.aurelian.dropped': [
+    'Aurelian reads your arrest report before you do. A courier delivers the termination letter and collects your access badge.',
+    'The morality clause applies to you, not the company. Aurelian drops you the week your record goes public.',
+  ],
+  'org.low-kings.join': [
+    'Dez Uwaifo slides a plain steel ring across the soup-kitchen table. You are a {title} with the Low Kings now.',
+    v('The Low Kings take you in as a {title}. The rules are short: never sell Rush, never hurt kids, never talk to the Bureau.', { from: 2014 }),
+    'The Low Kings take you in as a {title}. The rules are short: never hurt kids, never talk to the Bureau.',
+  ],
+  'org.low-kings.work': [
+    'You work a shift at the soup kitchen, then walk three blocks of Riverside until the corners are quiet.',
+    'You stand outside a corner store the Choir has been leaning on. Nobody leans on it while you are there.',
+    'You help strip a car in the chop shop out back. The money goes to rent for a family on Mercer Street.',
+  ],
+  'org.low-kings.promoted': [
+    'Dez makes you a {title}. Nobody throws a party; three more people start asking you what to do.',
+    'The Low Kings move you up to {title}. Your ring stays the same; the blocks you answer for do not.',
+  ],
+  'org.low-kings.leave': [
+    'You hand the steel ring back. Dez puts it in a drawer and does not look up.',
+    'You stop showing up at the soup kitchen. The Low Kings stop saying your name.',
+  ],
+  'org.low-kings.stipend': [
+    'The Low Kings send your {title} share from the chop shop: ${money}.',
+    'An envelope with ${money} comes from the Low Kings, your {title} cut for the year.',
+  ],
+  'org.choir.join': [
+    'A woman in a grey coat hands you a card embossed with a single musical note. You are a Choir {title} now.',
+    'The Choir takes you on as a {title}. Someone gives you a phone that only rings once.',
+  ],
+  'org.choir.work': [
+    'You collect from six shops on the Choir\'s route. Your cut is ${money}.',
+    'You drive a car with sealed crates from the port to a warehouse and do not open the trunk. ${money}.',
+    'You sit in on a meeting and say nothing, as instructed. The Choir pays its {title} ${money} for the silence.',
+  ],
+  'org.choir.work-caught': [
+    'The ERU is waiting at the third shop. {months} months in {prison}; the Choir lawyer arrives before the paperwork does.',
+    'A collection goes wrong on camera. You get {months} months in {prison}.',
+  ],
+  'org.choir.promoted': [
+    'The Choir moves you up to {title}. Your phone starts ringing twice.',
+    'You are a {title} now. People who used to give you orders start asking for favours.',
+  ],
+  'org.choir.leave': [
+    'You tell your contact you are out. The Choir lets it go. The Choir always collects later.',
+    'You break the phone that rings once. Nobody calls you again, which is its own kind of message.',
+  ],
+  'org.choir.leave-hurt': [
+    'Two men are waiting at your door the night you quit the Choir. They do not speak. You need stitches.',
+    'The Choir accepts your resignation in a parking garage. You leave with broken fingers.',
+  ],
+  'org.choir.stipend': [
+    'The Choir pays its debts. Your {title} share arrives in cash: ${money}.',
+    'A {title}\'s cut from the Choir: ${money}, counted twice.',
+  ],
+  'org.equal-ground.join': [
+    'Equal Ground signs you up as a {title}. Your first job is folding four hundred flyers about Rank-based sentencing.',
+    'You join Equal Ground as a {title}. Imani Brooks shakes your hand on her way to court.',
+  ],
+  'org.equal-ground.work': [
+    'You organise a rally outside City Hall. Two hundred people come; one local station sends a camera.',
+    'You spend a month registering low-Rank voters door to door in the Foundry.',
+    'You sit in on a sentencing hearing and post the transcript. Equal Ground\'s lawyers use it in an appeal.',
+  ],
+  'org.equal-ground.detained': [
+    'Police clear the rally and you spend the night in a holding cell. Equal Ground\'s lawyer has you out by breakfast, no charges.',
+    'Counter-protesters throw bottles; police arrest the marchers. You are released without charge the next morning.',
+  ],
+  'org.equal-ground.promoted': [
+    'Equal Ground names you {title}. The title comes with more meetings and no more money.',
+    'You are Equal Ground\'s new {title}. The Bureau opens a file on you the same week.',
+  ],
+  'org.equal-ground.leave': [
+    'You step back from Equal Ground. The group chat goes on without you.',
+    'You hand in your keys to the Equal Ground office. Someone younger takes your desk.',
+  ],
+  'org.equal-ground.stipend': [
+    'Equal Ground pays its {title} a stipend: ${money}, from donations that came in small bills.',
+    'Your {title} stipend from Equal Ground arrives: ${money}.',
+  ],
   'act.work.application-declined': [
     'The office files your application for {job}. A short letter arrives to say the position is filled.',
     'You interview for {job}. The manager thanks you for coming in and leaves the decision at that.',

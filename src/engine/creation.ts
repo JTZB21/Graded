@@ -7,7 +7,7 @@ import { dollars, eligibleJobs, hire, jobLicense } from './economy';
 import { kindle } from './powers';
 import { Rng, newSeed } from './random';
 import { type Category, type Rank } from './rules';
-import { changeAttr, changeRep, GRADE_STEP_MONTHS, nextGrade } from './state';
+import { changeAttr, changeRep, GRADE_STEP_MONTHS, healthCap, nextGrade } from './state';
 import type { Background, Character, District, GameState, Gender, Leaning } from './types';
 import { say } from './writer/writer';
 
@@ -97,7 +97,8 @@ export function createGame(opts: CreationOptions = {}): GameState {
     mind: rollAttr(rng),
     charm: rollAttr(rng),
     nerve: rollAttr(rng),
-    health: 100,
+    health: healthCap(age),
+    maxHealth: healthCap(age),
     strain: 0,
     money: 0,
     job: null,

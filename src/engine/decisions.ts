@@ -4,10 +4,12 @@
 import { crimePay, dollars, eligibleJobs, hire, jobLicense, prisonName, RENT, sentence } from './economy';
 import { addPerson, around, bondAll, isFamily, isParent, peopleOf, vars as personVars } from './people';
 import { kindle } from './powers';
+import { confiscate } from './gear';
+import { enlist, lawyerDiscount, orgForTie } from './orgs';
 import { Rng } from './random';
 import { clamp } from './rules';
 import { admits, changeGpa, COLLEGES, enroll, mark, scholarshipFor, schoolName, yearlyTuition } from './school';
-import { addMonths, ageOf, changeAttr, changeRep } from './state';
+import { addMonths, ageOf, changeAttr, changeRep, heal } from './state';
 import type { Character, CollegeKind, District, GameState, LogEntry, Person, SchoolKind } from './types';
 import { say, write, type Vars } from './writer/writer';
 
@@ -28,11 +30,17 @@ interface DecisionSpec {
 const tie = (c: Character, group: string) => {
   c.ties = [...new Set([...(c.ties ?? []), group])];
 };
+/** Joins a group through a choice: an organisation (see orgs.ts) also starts a membership, if there is none. */
+const join = (s: GameState, group: string) => {
+  const id = orgForTie(group);
+  if (id && !s.character.org) enlist(s, id);
+  else tie(s.character, group);
+};
 const tied = (c: Character, group: string) => (c.ties ?? []).includes(group);
 const crew = (c: Character) => tied(c, 'Low Kings') || tied(c, 'the Choir');
 const hurt = (c: Character, by: number) => { c.health = Math.max(0, c.health - by); };
 const rankOf = (c: Character) => (c.graded && !c.powersGone ? c.powers[0].rank : undefined);
-const heal = (c: Character, by: number) => { c.health = Math.min(100, c.health + by); };
+
 const bond = (p: Person | undefined, by: number) => { if (p) p.bond = clamp(p.bond + by, 0, 100); };
 const money = (s: GameState, amount2026: number) => dollars(amount2026, s.date.year);
 const usd = (n: number) => `$${n.toLocaleString('en-US')}`;
@@ -51,6 +59,8 @@ export function arrest(s: GameState, rng: Rng, offense: string, base: [number, n
   const rank = rankOf(c);
   let months = sentence(rng.int(base[0], base[1]), rank);
   if (tied(c, 'the Choir')) months = Math.round(months * 0.75); // the Choir pays for lawyers
+  months = Math.max(1, Math.round(months * lawyerDiscount(c)));
+  confiscate(c);
   c.record.push({ year: s.date.year, offense, sentenceMonths: months });
   c.inPrisonUntil = addMonths(s.date, months);
   c.job = null;
@@ -67,7 +77,7 @@ export const DECISIONS: Record<string, DecisionSpec> = {
         label: 'Sign with Aurelian',
         apply: (s, rng) => {
           const c = s.character;
-          tie(c, 'Aurelian');
+          join(s, 'Aurelian');
           if (c.leaning === 'undecided') c.leaning = 'hero';
           if (ageOf(s) < 18) {
             const bonus = dollars(5000, s.date.year);
@@ -103,7 +113,7 @@ export const DECISIONS: Record<string, DecisionSpec> = {
         label: 'Take the steel ring',
         apply: (s, rng) => {
           const c = s.character;
-          tie(c, 'Low Kings');
+          join(s, 'Low Kings');
           changeRep(c, 'streetCred', 8);
           changeRep(c, 'infamy', 3);
           say(s, rng, 'event', 'choice.lowkings.join');
@@ -127,7 +137,7 @@ export const DECISIONS: Record<string, DecisionSpec> = {
         when: (s) => !tied(s.character, 'Low Kings'),
         apply: (s, rng) => {
           const c = s.character;
-          tie(c, 'the Choir');
+          join(s, 'the Choir');
           const [lo, hi] = crimePay(rankOf(c));
           const pay = dollars(rng.int(lo, hi), s.date.year);
           c.money += pay;
@@ -235,7 +245,7 @@ export const DECISIONS: Record<string, DecisionSpec> = {
         when: (s) => crew(s.character),
         apply: (s, rng) => {
           const c = s.character;
-          c.health = Math.min(100, c.health + 15);
+          heal(c, 15);
           changeRep(c, 'streetCred', 2);
           changeRep(c, 'infamy', 1);
           say(s, rng, 'event', 'choice.neardeath.crew');

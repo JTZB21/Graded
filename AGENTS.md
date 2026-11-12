@@ -11,6 +11,7 @@ A browser life-sim built from an existing SillyTavern card. The design is alread
 - Choices are engine code too: every option's effect lives in `src/engine/decisions.ts`.
 - Time moves only by Age up (`ageUp` in `src/engine/time.ts`), which lands on the next birthday. Energy (6) is per turn, not per month.
 - Actions the player takes between turns (work out, study, patrol, fight, move...) live in `src/engine/actions.ts`: each has an energy cost, an optional price, and engine-applied effects. Their text keys start with `act.`. Mini games (`src/ui/MiniGames.tsx`) only report a 0-1 score; the engine turns it into odds (`MINIGAMES` and `skill` in actions.ts).
+- Organisations (a rank ladder beside power Rank, one at a time) live in `src/engine/orgs.ts` (text keys `org.`); gear tiers in `src/engine/gear.ts` (text keys `gear.`). Use `effective()` for an attribute in a roll so gear counts, `injure()` for an outside injury so armor counts, and `heal()` so health respects the age cap.
 - Family and friends live in `src/engine/people.ts` (text keys `people.`). Saves live in `src/save.ts` (localStorage); add a step to `migrate()` when the save shape changes.
 
 ## Decisions already made by the owner

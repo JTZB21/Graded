@@ -77,6 +77,8 @@ export interface Character {
   nerve: number;
 
   health: number;
+  /** Most health for your age (see healthCap in state.ts). Missing means 100. */
+  maxHealth?: number;
   strain: number;
   money: number;
   job: Job | null;
@@ -111,6 +113,27 @@ export interface Character {
   car?: 'beater' | 'reliable' | null;
   /** One-off life moments that already happened (milestones, once-in-a-life choices). */
   done?: string[];
+  /** Half points banked toward a stat past its soft cap (see changeRep and changeAttr). */
+  soft?: Partial<Record<'fame' | 'infamy' | 'streetCred' | 'body' | 'mind' | 'charm' | 'nerve', number>>;
+  /** The organisation you belong to (see orgs.ts). One at a time. */
+  org?: Membership | null;
+  /** Gear you own, one item per slot, by tier (see gear.ts). */
+  gear?: Partial<Record<GearSlot, number>>;
+}
+
+export type OrgId = 'aurelian' | 'low-kings' | 'choir' | 'equal-ground';
+export type GearSlot = 'armor' | 'weapon' | 'tech' | 'style';
+
+export interface Membership {
+  id: OrgId;
+  /** Index into the organisation's ranks, 0 = the bottom. */
+  rank: number;
+  /** Progress toward the next rank, 0-100. Resets on promotion. */
+  standing: number;
+  /** Calendar year you joined. */
+  since: number;
+  /** Turn you last put in work (standing drifts down after a year without it). */
+  workedTurn?: number;
 }
 
 export type Relation = 'mother' | 'father' | 'guardian' | 'sibling' | 'friend' | 'rival' | 'partner' | 'spouse' | 'child' | 'protege';

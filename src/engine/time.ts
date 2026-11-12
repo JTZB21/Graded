@@ -10,8 +10,10 @@ import { birthdayMilestone, EVENT_CHANCE, EVENTS, MUNDANE_CHANCE, MUNDANE_EVENTS
 import { around, bondAll, isFamily, isLover, peopleBirthday } from './people';
 import { admits, collegeMonth, collegeYear, COLLEGES, enroll, expel, graduationPerks, marked, schoolName, schoolYear } from './school';
 import { birthdayChecks, kindle, practice } from './powers';
+import { confiscate, injure } from './gear';
+import { crewPayBonus, lawyerDiscount, lookoutCover, orgYear } from './orgs';
 import { Rng } from './random';
-import { addMonths, ageOf, before, changeAttr, changeRep, log } from './state';
+import { addMonths, ageHealth, ageOf, before, changeAttr, changeRep, heal, log, LOW_HEALTH, monthlyRegen } from './state';
 import type { Focus, GameState } from './types';
 import { say } from './writer/writer';
 
@@ -79,6 +81,8 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
 
     if (s.date.month === c.born.month) {
       say(s, rng, 'life', 'life.birthday');
+      ageHealth(c, age);
+      orgYear(s, rng, imprisonedNow(s));
       birthdayChecks(s, rng);
       peopleBirthday(s, rng);
       if (focus === 'family' && !imprisonedNow(s)) bondAll(s, p => isFamily(p) || isLover(p), 4);
@@ -161,7 +165,7 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
     }
     if (c.graded) practice(s, rng, focus === 'train' && !imprisoned);
 
-    c.health = Math.min(100, c.health + (focus === 'rest' ? 12 : 4));
+    heal(c, monthlyRegen(age, focus === 'rest'));
     c.strain = focus === 'train' && c.graded && !c.powersGone ? 15 : 0;
 
     lifeMonth(s, rng, focus, !!imprisoned);
@@ -179,13 +183,13 @@ export function advance(state: GameState, months: number, focus: Focus): SkipRes
       // Inside: the yard, the Quell schedule, the hierarchy.
       const rank = c.graded && !c.powersGone ? c.powers[0].rank : undefined;
       if (rng.chance(0.3)) {
-        c.health = Math.max(0, c.health - rng.int(5, 20));
+        injure(c, rng.int(5, 20));
         changeRep(c, 'streetCred', 2);
         say(s, rng, 'law', 'law.prison-fight', { prison: prisonName(rank, s.date.year) });
       } else say(s, rng, 'law', 'law.prison-day', { prison: prisonName(rank, s.date.year) });
     }
 
-    if (c.health <= 0 || rng.chance(mortality(age) / 12)) {
+    if (c.health <= 0 || rng.chance((mortality(age) * (c.health < LOW_HEALTH ? 2 : 1)) / 12)) {
       c.alive = false;
       say(s, rng, 'death', c.health <= 0 ? 'death.injuries' : 'death.natural');
       s.pending = null;
@@ -247,14 +251,16 @@ function applyFocus(s: GameState, rng: Rng, focus: Focus, age: number, tally: { 
       if (!rng.chance(0.5)) break;
       const rank = c.graded && !c.powersGone ? c.powers[0].rank : undefined;
       const [lo, hi] = crimePay(rank);
-      const take = dollars(rng.int(lo, hi), s.date.year);
+      const take = dollars(Math.round(rng.int(lo, hi) * crewPayBonus(c)), s.date.year);
       c.money += take;
       changeRep(c, 'streetCred', rng.int(1, 3));
       changeRep(c, 'infamy', 1);
       // Arrest odds rise with Infamy and fall with Nerve.
-      if (rng.chance(Math.max(0.01, 0.05 + c.infamy / 1000 - c.nerve * 0.003))) {
+      if (rng.chance(Math.max(0.01, 0.05 + c.infamy / 1000 - c.nerve * 0.003 - lookoutCover(c)))) {
         let months = sentence(rng.int(6, 30), rank);
         if ((c.ties ?? []).includes('the Choir')) months = Math.round(months * 0.75); // Choir lawyers
+        months = Math.max(1, Math.round(months * lawyerDiscount(c)));
+        confiscate(c);
         c.record.push({ year: s.date.year, offense: rank ? 'Unlicensed power use in a felony' : 'Armed robbery', sentenceMonths: months });
         c.inPrisonUntil = addMonths(s.date, months);
         c.job = null;
